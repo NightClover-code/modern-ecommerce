@@ -8,6 +8,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "axios": "^0.24.0",
     "next": "12.0.7",
     "react": "17.0.2",
     "react-bootstrap": "^2.1.0",

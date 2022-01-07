@@ -1,11 +1,15 @@
-//importing utils
-import products from '../../utils/products';
+//importing types & utils
 import { v4 as randomID } from 'uuid';
+import { ProductInterface } from '../../interfaces';
 //importing components
 import { Row, Col } from 'react-bootstrap';
 import Item from './Item';
 
-const Products = () => {
+interface ProductsProps {
+  products: ProductInterface[];
+}
+
+const Products: React.FC<ProductsProps> = ({ products }) => {
   return (
     <>
       <h1 className="py-2">Latest products</h1>
