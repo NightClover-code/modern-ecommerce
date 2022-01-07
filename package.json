@@ -1,0 +1,16 @@
+{
+  "name": "proshop",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/NightClover-code/mern-ecommerce",
+  "scripts": {
+    "start:server": "npm run start:dev --prefix server",
+    "start:client": "npm run dev --prefix client",
+    "start": "concurrently npm:start:*"
+  },
+  "author": "Achraf Elmouhib <elmouhib2003achraf@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.0.0"
+  }
+}
