@@ -9,7 +9,7 @@ const Home = () => {
   return (
     <>
       <SEO {...seoConfig} />
-      <main className="wrapper py-3">
+      <main className="wrapper py-5">
         <Container>
           <Products />
         </Container>
