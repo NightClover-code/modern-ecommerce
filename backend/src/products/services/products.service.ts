@@ -4,6 +4,12 @@ import products from 'src/data/products';
 @Injectable()
 export class ProductsService {
   findAll() {
-    return JSON.stringify(products);
+    return products;
+  }
+
+  findOne(id: string) {
+    const product = products.find(p => p._id === id);
+
+    return product;
   }
 }
