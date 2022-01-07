@@ -14,7 +14,7 @@ const Item: React.FC<ProductInterface> = ({
   price,
 }) => {
   return (
-    <Card className="my-3 p-3 rounded">
+    <Card className="my-3 p-3 rounded cursor-pointer" role="button">
       <Link href={`/product/${_id}`} passHref>
         <Card.Img src={image} variant="top"></Card.Img>
       </Link>
