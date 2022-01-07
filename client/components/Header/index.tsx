@@ -1,3 +1,4 @@
+//importing components
 import Link from 'next/link';
 import { Navbar, Container, Nav } from 'react-bootstrap';
 
