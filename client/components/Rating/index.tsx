@@ -14,7 +14,7 @@ const Rating: React.FC<RatingProps> = ({ value, text }) => {
       <Star value={value} value1={4} value2={3.5} />
       <Star value={value} value1={5} value2={4.5} />
 
-      <span>{text && text}</span>
+      <span className="ms-1">{text && text}</span>
     </div>
   );
 };

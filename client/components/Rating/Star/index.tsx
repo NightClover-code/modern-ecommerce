@@ -8,6 +8,7 @@ const Star: React.FC<StarProps> = ({ value, value1, value2 }) => {
   return (
     <span>
       <i
+        style={{ color: '#f8e825' }}
         className={
           value >= value1
             ? 'fas fa-star'

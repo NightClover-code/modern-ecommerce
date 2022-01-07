@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Card } from 'react-bootstrap';
 import Rating from '../../Rating';
 
-const Product: React.FC<ProductInterface> = ({
+const Item: React.FC<ProductInterface> = ({
   _id,
   image,
   name,
@@ -27,15 +27,17 @@ const Product: React.FC<ProductInterface> = ({
         </Link>
 
         <Card.Text as="div">
-          <div className="my-2">
+          <div className="my-3">
             <Rating value={rating} text={`${numReviews} reviews`} />
           </div>
         </Card.Text>
 
-        <Card.Text as="h3">${price}</Card.Text>
+        <Card.Text as="h3" className="py-1">
+          ${price}
+        </Card.Text>
       </Card.Body>
     </Card>
   );
 };
 
-export default Product;
+export default Item;

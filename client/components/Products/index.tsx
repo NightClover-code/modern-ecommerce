@@ -3,7 +3,7 @@ import products from '../../utils/products';
 import { v4 as randomID } from 'uuid';
 //importing components
 import { Row, Col } from 'react-bootstrap';
-import Product from './Item';
+import Item from './Item';
 
 const Products = () => {
   return (
@@ -12,7 +12,7 @@ const Products = () => {
       <Row>
         {products.map(product => (
           <Col sm={12} md={6} lg={4} xl={3} key={randomID()}>
-            <Product {...product} />
+            <Item {...product} />
           </Col>
         ))}
       </Row>
