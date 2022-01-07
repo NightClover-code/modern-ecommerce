@@ -1,11 +1,11 @@
 //importing types & utils
-import products from '../../utils/products';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { seoConfig } from '../../utils';
 //importing components
 import Link from 'next/link';
 import ProductDetails from '../../components/ProductDetails';
 import SEO from '../../components/SEO';
+import { productsAPI } from '../../lib';
 
 const Product: NextPage<{ product: any }> = ({ product }) => {
   return (
@@ -22,17 +22,19 @@ const Product: NextPage<{ product: any }> = ({ product }) => {
 };
 
 export const getStaticProps: GetStaticProps = async ({ params }) => {
-  const product = products.find(p => p._id === params?.id);
+  const { data } = await productsAPI.get(`/products/${params?.id}`);
 
   return {
     props: {
-      product,
+      product: data,
     },
   };
 };
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  const paths = products.map(p => ({
+  const products = await productsAPI.get('/products');
+
+  const paths = products.data.map((p: any) => ({
     params: { id: p._id },
   }));
 
