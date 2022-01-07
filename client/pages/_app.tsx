@@ -1,4 +1,5 @@
 import '../styles/index.css';
+import '../styles/bootstrap.min.css';
 import type { AppProps } from 'next/app';
 import MainLayout from '../layouts/MainLayout';
 
