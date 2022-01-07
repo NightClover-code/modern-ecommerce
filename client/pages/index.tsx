@@ -3,6 +3,7 @@ import { seoConfig } from '../utils';
 //importing components
 import SEO from '../components/SEO';
 import { Container } from 'react-bootstrap';
+import Products from '../components/Products';
 
 const Home = () => {
   return (
@@ -10,7 +11,7 @@ const Home = () => {
       <SEO {...seoConfig} />
       <main className="wrapper py-3">
         <Container>
-          <h1>Welcome to proshop</h1>
+          <Products />
         </Container>
       </main>
     </>
