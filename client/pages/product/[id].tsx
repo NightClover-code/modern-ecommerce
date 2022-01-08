@@ -1,11 +1,11 @@
 //importing types & utils
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { seoConfig } from '../../utils';
+import { productsAPI } from '../../lib';
 //importing components
 import Link from 'next/link';
 import ProductDetails from '../../components/ProductDetails';
 import SEO from '../../components/SEO';
-import { productsAPI } from '../../lib';
 
 const Product: NextPage<{ product: any }> = ({ product }) => {
   return (
