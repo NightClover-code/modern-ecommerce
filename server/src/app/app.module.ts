@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
-import { connectDB } from 'src/config/db';
-import { ProductsModule } from 'src/products/products.module';
+import { connectDB } from '../utils/config';
+import { ProductsModule } from '../products/products.module';
 import { AppController } from './controller/app.controller';
 import { AppService } from './services/app.service';
 
