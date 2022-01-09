@@ -1,12 +1,21 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MongooseModule } from '@nestjs/mongoose';
+import { connectDB } from 'src/config/db';
 import { ProductsModule } from 'src/products/products.module';
 import { AppController } from './controller/app.controller';
 import { AppService } from './services/app.service';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ envFilePath: `.env.${process.env.NODE_ENV}` }),
+    ConfigModule.forRoot({
+      envFilePath: `.env.${process.env.NODE_ENV}`,
+    }),
+    MongooseModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: connectDB,
+    }),
     ProductsModule,
   ],
   controllers: [AppController],
