@@ -1,9 +1,9 @@
 import { ConfigService } from '@nestjs/config';
 import { MongooseModuleOptions } from '@nestjs/mongoose';
 
-export const connectDB = async (
+export const connectDB = (
   configService: ConfigService
-): Promise<MongooseModuleOptions> => {
+): MongooseModuleOptions => {
   const dbPassword = configService.get<string>('MONGODB_PASSWORD');
   const dbName = configService.get<string>('MONGODB_DATABASE_NAME');
 
