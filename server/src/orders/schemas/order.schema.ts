@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { Product } from 'src/products/schemas/product.schema';
+import { OrderItems, PaymentResult, ShippingAddress } from 'src/interfaces';
 import { User } from 'src/users/schemas/user.schema';
 
 export type OrderDocument = Order & mongoose.Document;
@@ -26,13 +26,7 @@ export class Order {
       },
     ],
   })
-  orderItems: {
-    name: string;
-    qty: number;
-    image: string;
-    price: number;
-    product: Product;
-  }[];
+  orderItems: OrderItems[];
 
   @Prop({
     required: true,
@@ -43,23 +37,13 @@ export class Order {
       country: { required: true },
     },
   })
-  shippingAddress: {
-    address: string;
-    city: string;
-    postalCode: string;
-    country: string;
-  };
+  shippingAddress: ShippingAddress;
 
   @Prop({ required: true })
   paymentMethod: string;
 
   @Prop({ required: true })
-  paymentResult: {
-    id: string;
-    status: string;
-    updateTime: string;
-    emailAddress: string;
-  };
+  paymentResult: PaymentResult;
 
   @Prop({ required: true, default: 0.0 })
   taxPrice: number;

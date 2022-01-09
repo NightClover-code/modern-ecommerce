@@ -15,4 +15,9 @@ export interface OrderItems {
   product: Product;
 }
 
-export interface PaymentResult {}
+export interface PaymentResult {
+  id: string;
+  status: string;
+  updateTime: string;
+  emailAddress: string;
+}
