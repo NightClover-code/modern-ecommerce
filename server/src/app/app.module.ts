@@ -5,6 +5,7 @@ import { connectDB } from '../utils/config';
 import { ProductsModule } from '../products/products.module';
 import { AppController } from './controller/app.controller';
 import { AppService } from './services/app.service';
+import { UsersModule } from 'src/users/users.module';
 
 @Module({
   imports: [
@@ -17,6 +18,7 @@ import { AppService } from './services/app.service';
       useFactory: connectDB,
     }),
     ProductsModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [AppService],

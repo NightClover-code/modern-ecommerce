@@ -9,7 +9,7 @@ export class ProductsService {
     @InjectModel(Product.name) private productModel: Model<ProductDocument>
   ) {}
 
-  async findAll() {
+  async findMany() {
     const products = await this.productModel.find({});
 
     if (!products.length) throw new NotFoundException('No products found.');
@@ -23,5 +23,13 @@ export class ProductsService {
     if (!product) throw new NotFoundException('No product with given ID.');
 
     return product;
+  }
+
+  async createMany(products: Product[]) {
+    await this.productModel.insertMany(products);
+  }
+
+  async deleteMany() {
+    await this.productModel.deleteMany({});
   }
 }
