@@ -1,4 +1,4 @@
-import bycrypt from 'bcryptjs';
+import * as bycrypt from 'bcryptjs';
 
 export const users = [
   {
@@ -11,10 +11,12 @@ export const users = [
     name: 'John Doe',
     email: 'john@example.com',
     password: bycrypt.hashSync('123456', 10),
+    isAdmin: false,
   },
   {
     name: 'Jane Doe',
     email: 'jane@example.com',
     password: bycrypt.hashSync('123456', 10),
+    isAdmin: false,
   },
 ];
