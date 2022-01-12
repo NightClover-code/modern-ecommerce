@@ -7,6 +7,7 @@ import { AppController } from './controller/app.controller';
 import { AppService } from './services/app.service';
 import { UsersModule } from 'src/users/users.module';
 import { SeedsModule } from 'src/seeds/seeds.module';
+import { CommandModule } from 'nestjs-command';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { SeedsModule } from 'src/seeds/seeds.module';
       inject: [ConfigService],
       useFactory: connectDB,
     }),
+    CommandModule,
     ProductsModule,
     UsersModule,
     SeedsModule,

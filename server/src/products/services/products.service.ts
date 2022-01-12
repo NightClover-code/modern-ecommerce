@@ -26,7 +26,7 @@ export class ProductsService {
   }
 
   async createMany(products: Product[]) {
-    await this.productModel.insertMany(products);
+    return await this.productModel.insertMany(products);
   }
 
   async deleteMany() {

@@ -8,7 +8,7 @@ export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
   async createMany(users: User[]) {
-    await this.userModel.insertMany(users);
+    return await this.userModel.insertMany(users);
   }
 
   async deleteMany() {
