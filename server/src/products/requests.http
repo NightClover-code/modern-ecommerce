@@ -2,4 +2,4 @@
 GET http://localhost:4000/products
 
 ### fetching product by id
-GET http://localhost:4000/products/2
+GET http://localhost:4000/products/61de20a955e4ae63f1f39089

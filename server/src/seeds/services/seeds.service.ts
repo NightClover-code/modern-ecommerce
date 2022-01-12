@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Command } from 'nestjs-command';
 import { ProductsService } from 'src/products/services/products.service';
 import { UsersService } from 'src/users/services/users.service';
-import { products } from 'src/utils/products';
-import { users } from 'src/utils/users';
+import { products } from 'src/utils/data/products';
+import { users } from 'src/utils/data/users';
 
 @Injectable()
 export class SeedsService {
