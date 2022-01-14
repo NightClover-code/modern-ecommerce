@@ -1,6 +1,7 @@
 import * as mongoose from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { User } from 'src/users/schemas/user.schema';
+import PromptSync from 'prompt-sync';
 
 export type ProductDocument = Product & mongoose.Document;
 
@@ -29,6 +30,9 @@ export class Product {
 
   @Prop({ required: true })
   category: string;
+
+  @Prop({ require: true })
+  image: string;
 
   @Prop({ required: true })
   description: string;
