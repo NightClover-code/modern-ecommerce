@@ -1,5 +1,7 @@
-const haha = () => {
-  return 'lole';
-};
+import { combineReducers } from 'redux';
 
-export default haha;
+export const reducers = combineReducers({
+  lole: () => '',
+});
+
+export type RootState = ReturnType<typeof reducers>;
