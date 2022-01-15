@@ -1,7 +1,6 @@
 import * as mongoose from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { User } from 'src/users/schemas/user.schema';
-import PromptSync from 'prompt-sync';
 
 export type ProductDocument = Product & mongoose.Document;
 
