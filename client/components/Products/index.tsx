@@ -6,6 +6,8 @@ import { useProductsActions, useTypedSelector } from '../../hooks';
 //importing components
 import { Row, Col } from 'react-bootstrap';
 import Item from './Item';
+import Loader from '../Loader';
+import Message from '../Message';
 
 const Products: React.FC = () => {
   const { fetchProducts } = useProductsActions();
@@ -22,9 +24,9 @@ const Products: React.FC = () => {
       <h1 className="py-2">Latest products</h1>
       <Row>
         {loading ? (
-          <h2>Loading...</h2>
+          <Loader />
         ) : error ? (
-          <h3>{error}</h3>
+          <Message variant="danger">{error}</Message>
         ) : (
           products.map(product => (
             <Col sm={12} md={6} lg={4} xl={3} key={randomID()}>

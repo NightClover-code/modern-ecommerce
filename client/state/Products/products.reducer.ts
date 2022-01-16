@@ -1,21 +1,13 @@
-import { ProductInterface } from '../../interfaces';
 import { ActionType } from './products.action-types';
 import { ProductsAction } from './products.actions';
+import {
+  productInitialState,
+  productsInitialState,
+} from './products.initial-state';
+import { ProductsState, ProductState } from './products.state';
 
-export interface ProductsState {
-  loading: boolean;
-  error: string | null;
-  products: ProductInterface[];
-}
-
-const initialState: ProductsState = {
-  loading: false,
-  error: null,
-  products: [],
-};
-
-const productsReducer = (
-  state: ProductsState = initialState,
+export const productsReducer = (
+  state: ProductsState = productsInitialState,
   action: ProductsAction
 ): ProductsState => {
   switch (action.type) {
@@ -30,4 +22,18 @@ const productsReducer = (
   }
 };
 
-export default productsReducer;
+export const productReducer = (
+  state: ProductState = productInitialState,
+  action: ProductsAction
+): ProductState => {
+  switch (action.type) {
+    case ActionType.FETCH_PRODUCT_START:
+      return { loading: true, product: null, error: null };
+    case ActionType.FETCH_PRODUCT_SUCCESS:
+      return { loading: false, product: action.payload, error: null };
+    case ActionType.FETCH_PRODUCT_ERROR:
+      return { loading: false, product: null, error: action.payload };
+    default:
+      return state;
+  }
+};
