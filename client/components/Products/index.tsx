@@ -1,11 +1,11 @@
 //importing types & utils
 import { v4 as randomID } from 'uuid';
+//importing hooks
+import { useEffect } from 'react';
+import { useProductsActions, useTypedSelector } from '../../hooks';
 //importing components
 import { Row, Col } from 'react-bootstrap';
 import Item from './Item';
-import { useEffect } from 'react';
-import { useProductsActions } from '../../hooks/useActions';
-import { useTypedSelector } from '../../hooks/useTypedSelector';
 
 const Products: React.FC = () => {
   const { fetchProducts } = useProductsActions();
