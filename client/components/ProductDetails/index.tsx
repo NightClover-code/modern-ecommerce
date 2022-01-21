@@ -26,10 +26,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ pageId, router }) => {
   const [qty, setQty] = useState(0);
 
   const { fetchProduct } = useProductsActions();
-  const { loading, error, product } = useTypedSelector(state => state.product);
+  const { loading, error, data } = useTypedSelector(state => state.product);
 
   const { image, name, price, countInStock, description, rating, numReviews } =
-    product;
+    data;
 
   useEffect(() => {
     if (!pageId) return;

@@ -3,11 +3,11 @@ import { ProductInterface } from '../../interfaces';
 export interface ProductsState {
   loading: boolean;
   error: string | null;
-  products: ProductInterface[];
+  data: ProductInterface[];
 }
 
 export interface ProductState {
   loading: boolean;
   error: string | null;
-  product: ProductInterface;
+  data: ProductInterface;
 }

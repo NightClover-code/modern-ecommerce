@@ -14,7 +14,7 @@ export const productsReducer = (
     case ActionTypes.FETCH_PRODUCTS_START:
       return { ...state, loading: true };
     case ActionTypes.FETCH_PRODUCTS_SUCCESS:
-      return { ...state, loading: false, products: action.payload };
+      return { ...state, loading: false, data: action.payload };
     case ActionTypes.FETCH_PRODUCTS_ERROR:
       return { ...state, error: action.payload };
     default:
@@ -30,7 +30,7 @@ export const productReducer = (
     case ActionTypes.FETCH_PRODUCT_START:
       return { ...state, loading: true };
     case ActionTypes.FETCH_PRODUCT_SUCCESS:
-      return { ...state, loading: false, product: action.payload };
+      return { ...state, loading: false, data: action.payload };
     case ActionTypes.FETCH_PRODUCT_ERROR:
       return { ...state, error: action.payload };
     default:

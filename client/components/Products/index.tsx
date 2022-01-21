@@ -11,9 +11,7 @@ import Message from '../Message';
 
 const Products: React.FC = () => {
   const { fetchProducts } = useProductsActions();
-  const { loading, error, products } = useTypedSelector(
-    state => state.products
-  );
+  const { loading, error, data } = useTypedSelector(state => state.products);
 
   useEffect(() => {
     fetchProducts();
@@ -28,7 +26,7 @@ const Products: React.FC = () => {
         ) : error ? (
           <Message variant="danger">{error}</Message>
         ) : (
-          products.map(product => (
+          data.map(product => (
             <Col sm={12} md={6} lg={4} xl={3} key={randomID()}>
               <Item {...product} />
             </Col>

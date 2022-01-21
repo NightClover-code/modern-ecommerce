@@ -16,11 +16,11 @@ const product = {
 export const productsInitialState: ProductsState = {
   loading: false,
   error: null,
-  products: [],
+  data: [],
 };
 
 export const productInitialState: ProductState = {
   loading: false,
   error: null,
-  product,
+  data: product,
 };
