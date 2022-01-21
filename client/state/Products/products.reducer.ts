@@ -12,11 +12,11 @@ export const productsReducer = (
 ): ProductsState => {
   switch (action.type) {
     case ActionType.FETCH_PRODUCTS_START:
-      return { loading: true, products: [], error: null };
+      return { ...state, loading: true };
     case ActionType.FETCH_PRODUCTS_SUCCESS:
-      return { loading: false, products: action.payload, error: null };
+      return { ...state, loading: false, products: action.payload };
     case ActionType.FETCH_PRODUCTS_ERROR:
-      return { loading: false, products: [], error: action.payload };
+      return { ...state, error: action.payload };
     default:
       return state;
   }
@@ -28,11 +28,11 @@ export const productReducer = (
 ): ProductState => {
   switch (action.type) {
     case ActionType.FETCH_PRODUCT_START:
-      return { loading: true, product: null, error: null };
+      return { ...state, loading: true };
     case ActionType.FETCH_PRODUCT_SUCCESS:
-      return { loading: false, product: action.payload, error: null };
+      return { ...state, loading: false, product: action.payload };
     case ActionType.FETCH_PRODUCT_ERROR:
-      return { loading: false, product: null, error: action.payload };
+      return { ...state, error: action.payload };
     default:
       return state;
   }

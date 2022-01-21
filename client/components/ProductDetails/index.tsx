@@ -1,18 +1,27 @@
-//importing types
-import { ProductInterface } from '../../interfaces';
 //importing components
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
 import Rating from '../Rating';
+import { useProductsActions, useTypedSelector } from '../../hooks';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
-const ProductDetails: React.FC<ProductInterface> = ({
-  image,
-  name,
-  rating,
-  numReviews,
-  price,
-  description,
-  countInStock,
-}) => {
+interface ProductDetailsProps {
+  pageId: string | string[] | undefined;
+}
+
+const ProductDetails: React.FC<ProductDetailsProps> = ({ pageId }) => {
+  const { fetchProduct } = useProductsActions();
+  const { loading, error, product } = useTypedSelector(state => state.product);
+
+  const { image, name, price, countInStock, description, rating, numReviews } =
+    product;
+
+  useEffect(() => {
+    if (!pageId) return;
+
+    fetchProduct(pageId as string);
+  }, [fetchProduct, pageId]);
+
   return (
     <Row>
       <Col md={6}>

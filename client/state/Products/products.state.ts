@@ -9,5 +9,5 @@ export interface ProductsState {
 export interface ProductState {
   loading: boolean;
   error: string | null;
-  product: ProductInterface | null;
+  product: ProductInterface;
 }
