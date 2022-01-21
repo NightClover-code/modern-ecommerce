@@ -1,17 +1,30 @@
-//importing hooks
+//importing hooks & utils
+import { v4 as randomID } from 'uuid';
 import { useProductsActions, useTypedSelector } from '../../hooks';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { NextRouter } from 'next/router';
 //importing components
-import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
+import {
+  Row,
+  Col,
+  Image,
+  ListGroup,
+  Card,
+  Button,
+  Form,
+} from 'react-bootstrap';
 import Rating from '../Rating';
 import Loader from '../Loader';
 import Message from '../Message';
 
 interface ProductDetailsProps {
   pageId: string | string[] | undefined;
+  router: NextRouter;
 }
 
-const ProductDetails: React.FC<ProductDetailsProps> = ({ pageId }) => {
+const ProductDetails: React.FC<ProductDetailsProps> = ({ pageId, router }) => {
+  const [qty, setQty] = useState(0);
+
   const { fetchProduct } = useProductsActions();
   const { loading, error, product } = useTypedSelector(state => state.product);
 
@@ -23,6 +36,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ pageId }) => {
 
     fetchProduct(pageId as string);
   }, [fetchProduct, pageId]);
+
+  const onAddToCartHandler = () => {
+    router.push(`/cart/${pageId}?qty=${qty}`);
+  };
 
   return (
     <>
@@ -68,8 +85,34 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ pageId }) => {
                   </Row>
                 </ListGroup.Item>
 
+                {countInStock > 0 && (
+                  <ListGroup.Item>
+                    <Row>
+                      <Col>Qty</Col>
+                      <Col>
+                        <Form.Control
+                          as="select"
+                          value={qty}
+                          onChange={e => setQty(parseInt(e.target.value))}
+                        >
+                          {[...Array(countInStock).keys()].map(x => (
+                            <option key={randomID()} value={x + 1}>
+                              {x + 1}
+                            </option>
+                          ))}
+                        </Form.Control>
+                      </Col>
+                    </Row>
+                  </ListGroup.Item>
+                )}
+
                 <ListGroup.Item>
-                  <Button className="w-100" type="button">
+                  <Button
+                    onClick={onAddToCartHandler}
+                    className="w-100"
+                    type="button"
+                    disabled={countInStock === 0}
+                  >
                     Add To Cart
                   </Button>
                 </ListGroup.Item>
