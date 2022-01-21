@@ -1,3 +1,5 @@
+import { CartItemInterface } from '../../interfaces';
+
 export interface CartState {
-  cartItems: any[];
+  cartItems: CartItemInterface[];
 }

@@ -1,4 +1,4 @@
-import { ActionType } from './products.action-types';
+import { ActionTypes } from './products.action-types';
 import { ProductsAction } from './products.actions';
 import {
   productInitialState,
@@ -11,11 +11,11 @@ export const productsReducer = (
   action: ProductsAction
 ): ProductsState => {
   switch (action.type) {
-    case ActionType.FETCH_PRODUCTS_START:
+    case ActionTypes.FETCH_PRODUCTS_START:
       return { ...state, loading: true };
-    case ActionType.FETCH_PRODUCTS_SUCCESS:
+    case ActionTypes.FETCH_PRODUCTS_SUCCESS:
       return { ...state, loading: false, products: action.payload };
-    case ActionType.FETCH_PRODUCTS_ERROR:
+    case ActionTypes.FETCH_PRODUCTS_ERROR:
       return { ...state, error: action.payload };
     default:
       return state;
@@ -27,11 +27,11 @@ export const productReducer = (
   action: ProductsAction
 ): ProductState => {
   switch (action.type) {
-    case ActionType.FETCH_PRODUCT_START:
+    case ActionTypes.FETCH_PRODUCT_START:
       return { ...state, loading: true };
-    case ActionType.FETCH_PRODUCT_SUCCESS:
+    case ActionTypes.FETCH_PRODUCT_SUCCESS:
       return { ...state, loading: false, product: action.payload };
-    case ActionType.FETCH_PRODUCT_ERROR:
+    case ActionTypes.FETCH_PRODUCT_ERROR:
       return { ...state, error: action.payload };
     default:
       return state;
