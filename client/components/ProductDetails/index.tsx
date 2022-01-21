@@ -1,9 +1,9 @@
+//importing hooks
+import { useProductsActions, useTypedSelector } from '../../hooks';
+import { useEffect } from 'react';
 //importing components
 import { Row, Col, Image, ListGroup, Card, Button } from 'react-bootstrap';
 import Rating from '../Rating';
-import { useProductsActions, useTypedSelector } from '../../hooks';
-import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 import Loader from '../Loader';
 import Message from '../Message';
 
