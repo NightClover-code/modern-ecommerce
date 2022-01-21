@@ -1,13 +1,22 @@
+//importing styles
 import '../styles/index.css';
 import '../styles/bootstrap.min.css';
+//importing utils
+import { cartItemsFromStorage } from '../utils';
+import { useStore } from '../state';
 import type { AppProps } from 'next/app';
+//importing components
 import MainLayout from '../layouts/MainLayout';
 import { Container } from 'react-bootstrap';
 import { Provider } from 'react-redux';
-import { useStore } from '../state';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const store = useStore(pageProps.initialReduxState);
+  const initialState = {
+    cart: { cartItems: cartItemsFromStorage },
+    ...pageProps.initialReduxState,
+  };
+
+  const store = useStore(initialState);
 
   return (
     <Provider store={store}>
