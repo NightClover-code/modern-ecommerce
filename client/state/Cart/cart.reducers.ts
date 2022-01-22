@@ -11,7 +11,7 @@ export const cartReducer = (
     case ActionTypes.CART_ADD_ITEM:
       const item = action.payload;
 
-      const itemExists = state.cartItems.find(
+      const itemExists = state.cartItems.some(
         x => x.productId === item.productId
       );
 

@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps }: AppProps) {
   const [storageItems, setStorageItems] = useState([]);
 
   useEffect(() => {
-    const cartItemsFromStorage = localStorage.getItem('cartItems')
+    let cartItemsFromStorage = localStorage.getItem('cartItems')
       ? JSON.parse(localStorage.getItem('cartItems')!)
       : [];
 
