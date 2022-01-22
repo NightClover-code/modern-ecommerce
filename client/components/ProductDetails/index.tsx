@@ -1,6 +1,10 @@
 //importing hooks & utils
 import { v4 as randomID } from 'uuid';
-import { useProductsActions, useTypedSelector } from '../../hooks';
+import {
+  useCartActions,
+  useProductsActions,
+  useTypedSelector,
+} from '../../hooks';
 import { useEffect, useState } from 'react';
 import { NextRouter } from 'next/router';
 //importing components
@@ -26,6 +30,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ pageId, router }) => {
   const [qty, setQty] = useState(1);
 
   const { fetchProduct } = useProductsActions();
+  const { addToCart } = useCartActions();
   const { loading, error, data } = useTypedSelector(state => state.product);
 
   const { image, name, price, countInStock, description, rating, numReviews } =
@@ -38,7 +43,9 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ pageId, router }) => {
   }, [fetchProduct, pageId]);
 
   const onAddToCartHandler = () => {
-    router.push(`/cart/${pageId}?qty=${qty}`);
+    addToCart(data._id, qty);
+
+    router.push('/cart');
   };
 
   return (

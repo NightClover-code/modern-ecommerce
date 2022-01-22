@@ -11,24 +11,11 @@ import {
 } from 'react-bootstrap';
 import { v4 as randomID } from 'uuid';
 import { NextRouter } from 'next/router';
-import { useEffect } from 'react';
 import Message from '../Message';
 
-interface CartProps {
-  router: NextRouter;
-}
-
-const Cart: React.FC<CartProps> = ({ router }) => {
-  const { id, qty } = router.query;
-
+const Cart: React.FC = () => {
   const { cartItems } = useTypedSelector(state => state.cart);
   const { addToCart } = useCartActions();
-
-  useEffect(() => {
-    if (id) {
-      addToCart(id as string, parseInt(qty as string));
-    }
-  }, [addToCart, qty, id]);
 
   const onRemoveFromCartHandler = (id: string) => {
     console.log('remove');
