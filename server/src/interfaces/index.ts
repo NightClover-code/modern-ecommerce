@@ -7,7 +7,7 @@ export interface ShippingAddress {
   country: string;
 }
 
-export interface OrderItems {
+export interface OrderItem {
   name: string;
   qty: number;
   image: string;
