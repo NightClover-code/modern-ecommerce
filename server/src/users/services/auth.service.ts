@@ -13,7 +13,7 @@ export class AuthService {
   async signin(email: string, password: string) {
     const user = await this.usersService.findOne(email);
 
-    if (!user) throw new NotFoundException('user not found');
+    if (!user) throw new NotFoundException('Invalid email');
 
     const isValidPassword = await bcrypt.compare(password, user.password);
 
