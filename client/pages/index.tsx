@@ -5,7 +5,7 @@ import { NextPage } from 'next';
 import SEO from '../components/SEO';
 import Products from '../components/Products';
 
-const Home: NextPage = () => {
+const HomePage: NextPage = () => {
   return (
     <>
       <SEO {...seoConfig} />
@@ -16,4 +16,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default HomePage;

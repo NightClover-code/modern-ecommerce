@@ -8,6 +8,8 @@ export const addToCart =
   async (dispatch: Dispatch<CartAction>, getState: () => RootState) => {
     const { _id, name, countInStock, image, price } = getState().product.data;
 
+    if (_id.length < 1) return;
+
     dispatch({
       type: ActionTypes.CART_ADD_ITEM,
       payload: {

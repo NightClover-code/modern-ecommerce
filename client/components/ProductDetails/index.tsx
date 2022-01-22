@@ -23,7 +23,7 @@ interface ProductDetailsProps {
 }
 
 const ProductDetails: React.FC<ProductDetailsProps> = ({ pageId, router }) => {
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState(1);
 
   const { fetchProduct } = useProductsActions();
   const { loading, error, data } = useTypedSelector(state => state.product);

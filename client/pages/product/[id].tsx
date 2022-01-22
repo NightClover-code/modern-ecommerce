@@ -7,7 +7,7 @@ import Link from 'next/link';
 import ProductDetails from '../../components/ProductDetails';
 import SEO from '../../components/SEO';
 
-const Product: NextPage = () => {
+const ProductPage: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -24,4 +24,4 @@ const Product: NextPage = () => {
   );
 };
 
-export default Product;
+export default ProductPage;
