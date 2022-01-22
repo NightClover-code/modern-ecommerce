@@ -1,4 +1,11 @@
-import { Controller } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
+import { CreateUserDto } from '../dtos';
+import { UsersService } from '../services/users.service';
 
-@Controller('users')
-export class UsersController {}
+@Controller('auth')
+export class UsersController {
+  constructor(private usersService: UsersService) {}
+
+  @Post('/signin')
+  logInUser(@Body() { email, password }: CreateUserDto) {}
+}
