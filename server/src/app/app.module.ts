@@ -6,7 +6,6 @@ import { ProductsModule } from '../products/products.module';
 import { AppController } from './controller/app.controller';
 import { AppService } from './services/app.service';
 import { UsersModule } from 'src/users/users.module';
-import { SeedsModule } from 'src/seeds/seeds.module';
 import { CommandModule } from 'nestjs-command';
 
 @Module({
@@ -22,7 +21,6 @@ import { CommandModule } from 'nestjs-command';
     CommandModule,
     ProductsModule,
     UsersModule,
-    SeedsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
