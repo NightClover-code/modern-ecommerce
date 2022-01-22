@@ -1,0 +1,8 @@
+### signin user
+POST http://localhost:4000/auth/signin
+content-type: application/json
+
+{
+  "email": "john@example.com", 
+  "password": "ahah"
+}
