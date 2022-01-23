@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import * as bcrypt from 'bcryptjs';
-import { User } from '../schemas/user.schema';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()

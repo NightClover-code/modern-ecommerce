@@ -23,6 +23,6 @@ export const configureJWT = (
 
   return {
     secret: jwtSecret,
-    signOptions: { expiresIn: '60s' },
+    signOptions: { expiresIn: '1d' },
   };
 };

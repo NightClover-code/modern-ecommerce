@@ -7,3 +7,6 @@ content-type: application/json
   "password": "123456"
 }
 
+### getting current user 
+GET http://localhost:4000/auth/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkpvaG4gRG9lIiwic3ViIjoiNjFkZTI0NjA0NDFjOWZjZjNlNjFkYjIwIiwiaWF0IjoxNjQyOTc2OTU4LCJleHAiOjE2NDI5NzcwMTh9.MGXvNJz_qPDT2zXLNDCE1BluS8On0e-Kn_oOaq2Lcfw

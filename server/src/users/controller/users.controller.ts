@@ -6,6 +6,7 @@ import {
   Request,
   UseGuards,
 } from '@nestjs/common';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { LocalAuthGuard } from 'src/guards/local-auth.guard';
 import { Serialize } from 'src/interceptors';
 import { CreateUserDto } from '../dtos/create-user.dto';
@@ -26,5 +27,11 @@ export class UsersController {
     const { access_token } = await this.authService.login(name, _id);
 
     return access_token;
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('profile')
+  getProfile(@Request() req: any) {
+    return req;
   }
 }
