@@ -27,6 +27,14 @@ export class UsersService {
     return user;
   }
 
+  async findById(id: string) {
+    const user = this.userModel.findById(id);
+
+    if (!user) throw new NotFoundException('user not found');
+
+    return user;
+  }
+
   async findAll() {
     const users = this.userModel.find({});
 

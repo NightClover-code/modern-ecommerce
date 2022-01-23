@@ -1,18 +1,9 @@
-import {
-  Body,
-  Controller,
-  Get,
-  Post,
-  Request,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Post, Request, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { LocalAuthGuard } from 'src/guards/local-auth.guard';
 import { Serialize } from 'src/interceptors';
-import { CreateUserDto } from '../dtos/create-user.dto';
 import { UserDto } from '../dtos/user.dto';
 import { AuthService } from '../services/auth.service';
-import { UsersService } from '../services/users.service';
 
 @Controller('auth')
 @Serialize(UserDto)
@@ -32,6 +23,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@Request() req: any) {
-    return req;
+    return req.user;
   }
 }
