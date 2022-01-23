@@ -14,7 +14,7 @@ import { UserDto } from '../dtos/user.dto';
 import { UsersService } from '../services/users.service';
 
 @Controller('auth')
-// @Serialize(UserDto)
+@Serialize(UserDto)
 export class UsersController {
   constructor(
     private usersService: UsersService,
