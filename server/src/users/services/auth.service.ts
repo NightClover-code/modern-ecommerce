@@ -10,7 +10,7 @@ import * as bcrypt from 'bcryptjs';
 export class AuthService {
   constructor(private usersService: UsersService) {}
 
-  async signin(email: string, password: string) {
+  async validateUser(email: string, password: string) {
     const user = await this.usersService.findOne(email);
 
     if (!user) throw new NotFoundException('Invalid email');
