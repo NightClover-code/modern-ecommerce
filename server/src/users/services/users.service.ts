@@ -27,6 +27,12 @@ export class UsersService {
     return user;
   }
 
+  async findAll() {
+    const users = this.userModel.find({});
+
+    return users;
+  }
+
   async deleteMany() {
     await this.userModel.deleteMany({});
   }

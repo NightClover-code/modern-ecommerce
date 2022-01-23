@@ -1,8 +1,9 @@
 ### signin user
-POST http://localhost:4000/auth/signin
+POST http://localhost:4000/auth/login
 content-type: application/json
 
 {
   "email": "john@example.com", 
   "password": "123456"
 }
+
