@@ -1,5 +1,0 @@
-### fetching all products
-GET http://localhost:4000/products
-
-### fetching product by id
-GET http://localhost:4000/products/61de2460441c9fcf3e61db23

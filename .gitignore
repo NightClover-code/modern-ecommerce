@@ -2,6 +2,7 @@
 
 #seeds
 seeds
+*.http
 
 # dependencies
 dist
