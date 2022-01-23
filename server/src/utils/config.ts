@@ -1,4 +1,5 @@
 import { ConfigService } from '@nestjs/config';
+import { JwtModuleOptions } from '@nestjs/jwt';
 import { MongooseModuleOptions } from '@nestjs/mongoose';
 
 export const connectDB = (
@@ -12,5 +13,16 @@ export const connectDB = (
   return {
     uri: mongodbUri,
     autoIndex: false,
+  };
+};
+
+export const configureJWT = (
+  configService: ConfigService
+): JwtModuleOptions => {
+  const jwtSecret = configService.get<string>('JWT_SECRET');
+
+  return {
+    secret: jwtSecret,
+    signOptions: { expiresIn: '60s' },
   };
 };
