@@ -8,19 +8,19 @@ import { LoginDto } from '../dtos/login.dto';
 import { UserDocument } from '../schemas/user.schema';
 import { AuthService } from '../services/auth.service';
 
-@Controller('auth')
 @Serialize(LoginDto)
+@Controller('auth')
 export class UsersController {
   constructor(private authService: AuthService) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@CurrentUser() user: UserDocument) {
-    const { name, _id } = user;
+    const { name, _id, isAdmin } = user;
 
     const { accessToken } = await this.authService.login(name, _id);
 
-    return { user, accessToken };
+    return { name, _id, isAdmin, accessToken };
   }
 
   @UseGuards(JwtAuthGuard)
