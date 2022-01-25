@@ -39,9 +39,13 @@ export class AuthService {
 
     if (existingUser) throw new BadRequestException('Email is already in use.');
 
+    const salt = await bcrypt.genSalt(10);
+
+    const encryptedPassword = await bcrypt.hash(password, salt);
+
     const user = await this.usersService.create({
       email,
-      password,
+      password: encryptedPassword,
       isAdmin: false,
       name,
     });

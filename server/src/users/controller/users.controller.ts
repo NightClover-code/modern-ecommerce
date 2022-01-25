@@ -38,6 +38,8 @@ export class UsersController {
   async register(@Body() { name, email, password }: CreateUserDto) {
     const user = await this.authService.register(name, email, password);
 
+    await this.authService.login(user.name, user._id);
+
     return user;
   }
 }
