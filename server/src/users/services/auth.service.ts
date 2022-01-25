@@ -33,4 +33,19 @@ export class AuthService {
       access_token: this.jwtService.sign(payload),
     };
   }
+
+  async register(name: string, email: string, password: string) {
+    const existingUser = await this.usersService.findOne(email);
+
+    if (existingUser) throw new BadRequestException('Email is already in use.');
+
+    const user = await this.usersService.create({
+      email,
+      password,
+      isAdmin: false,
+      name,
+    });
+
+    return user;
+  }
 }

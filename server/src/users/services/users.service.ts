@@ -13,10 +13,10 @@ export class UsersService {
     return createdUsers;
   }
 
-  async create(email: string, password: string) {
-    const user = await this.userModel.create({ email, password });
+  async create(user: User) {
+    const createdUser = await this.userModel.create(user);
 
-    return user;
+    return createdUser;
   }
 
   async findOne(email: string) {
