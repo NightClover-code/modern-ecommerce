@@ -1,6 +1,6 @@
 import { Expose } from 'class-transformer';
 
-export class UserDto {
+export class LoginDto {
   @Expose()
   email: string;
 
@@ -12,4 +12,7 @@ export class UserDto {
 
   @Expose()
   isAdmin: boolean;
+
+  @Expose()
+  accessToken?: string;
 }

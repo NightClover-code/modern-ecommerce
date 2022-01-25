@@ -7,7 +7,7 @@ import { Model } from 'mongoose';
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async createMany(users: UserDocument[]) {
+  async createMany(users: Partial<UserDocument>[]) {
     const createdUsers = await this.userModel.insertMany(users);
 
     return createdUsers;

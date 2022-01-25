@@ -18,7 +18,6 @@ export class SerializeInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     return next.handle().pipe(
       map((data: any) => {
-        //code running before response is sent out
         return plainToClass(this.dto, data, {
           excludeExtraneousValues: true,
         });
