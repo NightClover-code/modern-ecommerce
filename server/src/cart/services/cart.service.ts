@@ -1,20 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { ProductDocument } from 'src/products/schemas/product.schema';
-
-export interface CartItem {
-  productId: string;
-  name: string;
-  image: string;
-  price: number;
-  countInStock: number;
-  qty: number;
-}
+import { Cart } from '../schemas/cart.schema';
 
 @Injectable()
 export class CartService {
-  cartItems: CartItem[] = [];
+  cart = new Cart();
 
-  create(product: ProductDocument, qty: number) {
+  addCartItem(product: ProductDocument, qty: number) {
     const { name, image, price, _id, countInStock } = product;
 
     const cartItem = {
@@ -26,24 +18,26 @@ export class CartService {
       qty,
     };
 
-    const itemExists = this.cartItems.find(x => x.productId === product._id);
+    const itemExists = this.cart.cartItems.find(
+      x => x.productId === product._id
+    );
 
     console.log(itemExists);
 
     if (itemExists) {
-      this.cartItems = this.cartItems.map(x =>
+      this.cart.cartItems = this.cart.cartItems.map(x =>
         x.productId === itemExists.productId ? cartItem : x
       );
 
       return cartItem;
     } else {
-      this.cartItems.push(cartItem);
+      this.cart.cartItems.push(cartItem);
 
       return cartItem;
     }
   }
 
-  findMany() {
-    return this.cartItems;
+  findAllItems() {
+    return this.cart.cartItems;
   }
 }

@@ -7,14 +7,14 @@ export class CartController {
 
   @Post()
   addToCart(@Body() { product, qty }: any) {
-    const cartItem = this.cartService.create(product, qty);
+    const cartItem = this.cartService.addCartItem(product, qty);
 
     return cartItem;
   }
 
   @Get()
   getCartItems() {
-    const cartItems = this.cartService.findMany();
+    const cartItems = this.cartService.findAllItems();
 
     return cartItems;
   }
