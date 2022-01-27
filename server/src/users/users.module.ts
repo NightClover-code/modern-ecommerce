@@ -7,8 +7,6 @@ import { AuthService } from './services/auth.service';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { LocalStrategy } from '../strategies/local.strategy';
-import { ConfigService } from '@nestjs/config';
-import { configureJWT } from 'src/utils/config';
 import { JwtStrategy } from 'src/strategies/jwt.strategy';
 
 @Module({
@@ -20,9 +18,9 @@ import { JwtStrategy } from 'src/strategies/jwt.strategy';
       },
     ]),
     PassportModule,
-    JwtModule.registerAsync({
-      inject: [ConfigService],
-      useFactory: configureJWT,
+    JwtModule.register({
+      secret: process.env.JWT_SECRET,
+      signOptions: { expiresIn: '1d' },
     }),
   ],
   controllers: [UsersController],

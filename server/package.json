@@ -33,6 +33,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
     "cross-env": "^7.0.3",
+    "dotenv": "^14.3.2",
     "mongoose": "^6.1.5",
     "nestjs-command": "^3.1.1",
     "passport": "^0.5.2",
