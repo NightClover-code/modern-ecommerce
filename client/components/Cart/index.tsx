@@ -10,7 +10,6 @@ import {
   Card,
 } from 'react-bootstrap';
 import { v4 as randomID } from 'uuid';
-import { NextRouter } from 'next/router';
 import Message from '../Message';
 
 const Cart: React.FC = () => {

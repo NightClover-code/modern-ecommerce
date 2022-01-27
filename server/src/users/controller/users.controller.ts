@@ -16,11 +16,11 @@ export class UsersController {
   @UseGuards(LocalAuthGuard)
   @Post('login')
   async login(@CurrentUser() user: UserDocument) {
-    const { name, _id, isAdmin } = user;
+    const { name, _id, email, isAdmin } = user;
 
     const { accessToken } = await this.authService.login(name, _id);
 
-    return { name, _id, isAdmin, accessToken };
+    return { name, _id, isAdmin, email, accessToken };
   }
 
   @UseGuards(JwtAuthGuard)
