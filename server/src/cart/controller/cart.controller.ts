@@ -9,13 +9,13 @@ export class CartController {
   addToCart(@Body() { product, qty }: any, @Session() session: any) {
     this.cartService.cart = session.cart ? session.cart : { cartItems: [] };
 
-    // const cartItem = this.cartService.addCartItem(product, qty);
+    const cartItem = this.cartService.addCartItem(product, qty);
 
     session.cart = this.cartService.cart;
 
     console.log(session.cart);
 
-    // return cartItem;
+    return cartItem;
   }
 
   @Get()
