@@ -1,3 +1,7 @@
+export interface CartInterface {
+  cartItems: CartItem[];
+}
+
 export interface CartItem {
   productId: string;
   name: string;
@@ -8,5 +12,5 @@ export interface CartItem {
 }
 
 export class Cart {
-  cartItems: CartItem[] = [];
+  constructor(public cart: CartInterface = { cartItems: [] }) {}
 }

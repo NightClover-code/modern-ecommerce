@@ -4,7 +4,7 @@ import { Cart } from '../schemas/cart.schema';
 
 @Injectable()
 export class CartService {
-  cart = new Cart();
+  cart = new Cart().cart;
 
   addCartItem(product: ProductDocument, qty: number) {
     const { name, image, price, _id, countInStock } = product;
@@ -21,8 +21,6 @@ export class CartService {
     const itemExists = this.cart.cartItems.find(
       x => x.productId === product._id
     );
-
-    console.log(itemExists);
 
     if (itemExists) {
       this.cart.cartItems = this.cart.cartItems.map(x =>
