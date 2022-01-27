@@ -12,7 +12,7 @@ import { CommandModule } from 'nestjs-command';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: `.env.${process.env.NODE_ENV}`,
+      envFilePath: ['.env.development'],
     }),
     MongooseModule.forRootAsync({
       inject: [ConfigService],
