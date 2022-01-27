@@ -13,9 +13,9 @@ async function bootstrap() {
       secret: process.env.SESSION_KEY,
       resave: false,
       saveUninitialized: false,
-      store: new MongoStore({
-        mongooseConnection: mongoose.connection,
-      }),
+      // store: new MongoStore({
+      //   mongooseConnection: mongoose.connection,
+      // }),
       cookie: {
         maxAge: 180 * 60 * 1000,
       },

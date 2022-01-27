@@ -7,6 +7,7 @@ import { AppController } from './controller/app.controller';
 import { AppService } from './services/app.service';
 import { UsersModule } from 'src/users/users.module';
 import { CommandModule } from 'nestjs-command';
+import { CartModule } from 'src/cart/cart.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { CommandModule } from 'nestjs-command';
     CommandModule,
     ProductsModule,
     UsersModule,
+    CartModule,
   ],
   controllers: [AppController],
   providers: [AppService],
