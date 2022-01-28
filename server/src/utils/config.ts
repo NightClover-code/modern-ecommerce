@@ -14,3 +14,22 @@ export const connectDB = (
     autoIndex: false,
   };
 };
+
+export const corsConfig = () => ({
+  origin: process.env.CLIENT_URL,
+  methods: 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+  credentials: true,
+});
+
+export const sessionConfig = (MongoDBStore: any) => ({
+  secret: process.env.SESSION_KEY,
+  resave: false,
+  saveUninitialized: false,
+  store: new MongoDBStore({
+    uri: process.env.MONGODB_URL,
+    collection: 'sessions',
+  }),
+  cookie: {
+    maxAge: 180 * 60 * 1000,
+  },
+});
