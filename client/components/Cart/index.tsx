@@ -11,10 +11,15 @@ import {
 } from 'react-bootstrap';
 import { v4 as randomID } from 'uuid';
 import Message from '../Message';
+import { useEffect } from 'react';
 
 const Cart: React.FC = () => {
   const { cartItems } = useTypedSelector(state => state.cart);
-  const { addToCart } = useCartActions();
+  const { addToCart, getCartItems } = useCartActions();
+
+  useEffect(() => {
+    getCartItems();
+  }, [getCartItems]);
 
   const onRemoveFromCartHandler = (id: string) => {
     console.log('remove');
@@ -44,7 +49,12 @@ const Cart: React.FC = () => {
                     <Form.Control
                       as="select"
                       value={item.qty}
-                      // onChange={e => addToCart(item, parseInt(e.target.value))}
+                      onChange={e =>
+                        addToCart({
+                          qty: parseInt(e.target.value),
+                          productId: item.productId,
+                        })
+                      }
                     >
                       {[...Array(item.countInStock).keys()].map(x => (
                         <option key={randomID()} value={x + 1}>

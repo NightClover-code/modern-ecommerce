@@ -43,7 +43,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ pageId, router }) => {
   }, [fetchProduct, pageId]);
 
   const onAddToCartHandler = () => {
-    addToCart(data, qty);
+    addToCart({
+      product: data,
+      qty,
+    });
 
     router.push('/cart');
   };

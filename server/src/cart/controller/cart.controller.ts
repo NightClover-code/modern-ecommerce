@@ -6,10 +6,10 @@ export class CartController {
   constructor(private cartService: CartService) {}
 
   @Post()
-  addToCart(@Body() { product, qty }: any, @Session() session: any) {
+  addToCart(@Body() { product, qty, productId }: any, @Session() session: any) {
     this.cartService.cart = session.cart ? session.cart : { cartItems: [] };
 
-    const cartItem = this.cartService.addCartItem(product, qty);
+    const cartItem = this.cartService.addCartItem({ qty, product, productId });
 
     session.cart = this.cartService.cart;
 

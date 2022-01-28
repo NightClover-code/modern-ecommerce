@@ -8,8 +8,8 @@ export const cartReducer = (
   action: CartAction
 ): CartState => {
   switch (action.type) {
-    case ActionTypes.CART_ADD_ITEM:
-
+    case ActionTypes.GET_CART_ITEMS:
+      return { ...state, cartItems: action.payload };
     default:
       return state;
   }
