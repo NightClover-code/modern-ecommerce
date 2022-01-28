@@ -1,4 +1,5 @@
 export enum ActionTypes {
   CART_ADD_ITEM = 'CART_ADD_ITEM',
   CART_REMOVE_ITEM = 'CART_REMOVE_ITEM',
+  GET_CART_ITEMS = 'GET_CART_ITEMS',
 }

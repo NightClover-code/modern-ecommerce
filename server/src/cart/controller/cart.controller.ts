@@ -20,6 +20,8 @@ export class CartController {
 
   @Get()
   getCartItems(@Session() session: any) {
+    console.log(session);
+
     return session.cart ? session.cart.cartItems : null;
   }
 }

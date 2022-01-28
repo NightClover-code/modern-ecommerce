@@ -1,5 +1,7 @@
+import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { ConfigService } from '@nestjs/config';
 import { MongooseModuleOptions } from '@nestjs/mongoose';
+import { SessionOptions } from 'express-session';
 
 export const connectDB = (
   configService: ConfigService
@@ -15,13 +17,13 @@ export const connectDB = (
   };
 };
 
-export const corsConfig = () => ({
+export const corsConfig = (): CorsOptions => ({
   origin: process.env.CLIENT_URL,
   methods: 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
   credentials: true,
 });
 
-export const sessionConfig = (MongoDBStore: any) => ({
+export const sessionConfig = (MongoDBStore: any): SessionOptions => ({
   secret: process.env.SESSION_KEY,
   resave: false,
   saveUninitialized: false,
@@ -30,6 +32,7 @@ export const sessionConfig = (MongoDBStore: any) => ({
     collection: 'sessions',
   }),
   cookie: {
+    //recycling cookies every 3h
     maxAge: 180 * 60 * 1000,
   },
 });

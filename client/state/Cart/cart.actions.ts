@@ -1,7 +1,7 @@
 import { CartItemInterface } from '../../interfaces';
 import { ActionTypes } from './cart.action-types';
 
-export type CartAction = CartAddItem | CartRemoveItem;
+export type CartAction = CartAddItem | CartRemoveItem | GetCartItems;
 
 export interface CartAddItem {
   type: ActionTypes.CART_ADD_ITEM;
@@ -11,4 +11,9 @@ export interface CartAddItem {
 export interface CartRemoveItem {
   type: ActionTypes.CART_REMOVE_ITEM;
   payload: string;
+}
+
+export interface GetCartItems {
+  type: ActionTypes.GET_CART_ITEMS;
+  payload: CartItemInterface[];
 }
