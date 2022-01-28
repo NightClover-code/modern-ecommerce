@@ -23,8 +23,6 @@ export const addToCart =
       { withCredentials: true }
     );
 
-    console.log(data);
-
     dispatch({
       type: ActionTypes.CART_ADD_ITEM,
       payload: data,

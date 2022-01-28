@@ -5,6 +5,7 @@ export type CartAction = CartAddItem | CartRemoveItem | GetCartItems;
 
 export interface CartAddItem {
   type: ActionTypes.CART_ADD_ITEM;
+  payload: CartItemInterface;
 }
 
 export interface CartRemoveItem {
