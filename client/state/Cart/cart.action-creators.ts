@@ -1,30 +1,48 @@
 import { Dispatch } from 'redux';
 import { RootState } from '..';
+import { ProductInterface } from '../../interfaces';
 import { productsAPI } from '../../lib';
 import { ActionTypes } from './cart.action-types';
 import { CartAction } from './cart.actions';
 
 export const addToCart =
-  (productId: string, qty: number) =>
+  (product: ProductInterface, qty: number) =>
   async (dispatch: Dispatch<CartAction>, getState: () => RootState) => {
-    const { data } = await productsAPI.get(`/products/${productId}`);
-
-    const { _id, name, countInStock, image, price } = data;
-
-    dispatch({
-      type: ActionTypes.CART_ADD_ITEM,
-      payload: {
-        productId: _id,
-        name,
-        countInStock,
-        image,
-        price,
+    const res = await productsAPI.post(
+      '/cart',
+      {
+        product,
         qty,
       },
-    });
-
-    localStorage.setItem(
-      'cartItems',
-      JSON.stringify(getState().cart.cartItems)
+      { withCredentials: true }
     );
+
+    console.log(res);
+
+    // const { data } = await productsAPI.get('/cart', {
+    //   headers: {
+    //     // 'Set-Cookie':
+    //   },
+    // });
+
+    // console.log(data);
+
+    // const { _id, name, countInStock, image, price } = data;
+
+    // dispatch({
+    //   type: ActionTypes.CART_ADD_ITEM,
+    //   payload: {
+    //     productId: _id,
+    //     name,
+    //     countInStock,
+    //     image,
+    //     price,
+    //     qty,
+    //   },
+    // });
+
+    // localStorage.setItem(
+    //   'cartItems',
+    //   JSON.stringify(getState().cart.cartItems)
+    // );
   };

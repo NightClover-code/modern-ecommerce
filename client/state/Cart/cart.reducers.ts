@@ -28,12 +28,6 @@ export const cartReducer = (
         ...state,
         cartItems: [...state.cartItems, item],
       };
-
-    case ActionTypes.GET_CART_ITEMS:
-      return {
-        ...state,
-        cartItems: action.payload,
-      };
     default:
       return state;
   }

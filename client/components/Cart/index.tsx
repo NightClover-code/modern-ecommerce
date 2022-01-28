@@ -44,9 +44,7 @@ const Cart: React.FC = () => {
                     <Form.Control
                       as="select"
                       value={item.qty}
-                      onChange={e =>
-                        addToCart(item.productId, parseInt(e.target.value))
-                      }
+                      // onChange={e => addToCart(item, parseInt(e.target.value))}
                     >
                       {[...Array(item.countInStock).keys()].map(x => (
                         <option key={randomID()} value={x + 1}>
