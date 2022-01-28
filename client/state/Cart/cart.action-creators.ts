@@ -13,27 +13,49 @@ interface AddToCart {
 export const addToCart =
   ({ qty, productId, product }: AddToCart) =>
   async (dispatch: Dispatch<CartAction>) => {
-    const { data } = await productsAPI.post(
-      '/cart',
-      {
-        product,
-        qty,
-        productId,
-      },
-      { withCredentials: true }
-    );
+    try {
+      dispatch({
+        type: ActionTypes.ADD_CART_ITEM_START,
+      });
 
-    dispatch({
-      type: ActionTypes.CART_ADD_ITEM,
-      payload: data,
-    });
+      const { data } = await productsAPI.post(
+        '/cart',
+        {
+          product,
+          qty,
+          productId,
+        },
+        { withCredentials: true }
+      );
+
+      dispatch({
+        type: ActionTypes.ADD_CART_ITEM_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: ActionTypes.ADD_CART_ITEM_ERROR,
+        payload: error.message,
+      });
+    }
   };
 
 export const getCartItems = () => async (dispatch: Dispatch<CartAction>) => {
-  const { data } = await productsAPI.get('/cart', { withCredentials: true });
+  try {
+    dispatch({
+      type: ActionTypes.FETCH_CART_ITEMS_START,
+    });
 
-  dispatch({
-    type: ActionTypes.GET_CART_ITEMS,
-    payload: data,
-  });
+    const { data } = await productsAPI.get('/cart', { withCredentials: true });
+
+    dispatch({
+      type: ActionTypes.FETCH_CART_ITEMS_SUCCESS,
+      payload: data,
+    });
+  } catch (error: any) {
+    dispatch({
+      type: ActionTypes.FETCH_CART_ITEMS_ERROR,
+      payload: error.message,
+    });
+  }
 };
