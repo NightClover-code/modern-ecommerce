@@ -13,15 +13,13 @@ export class CartController {
 
     session.cart = this.cartService.cart;
 
-    console.log(session.cart);
+    console.log(session);
 
     return cartItem;
   }
 
   @Get()
-  getCartItems() {
-    const cartItems = this.cartService.findAllItems();
-
-    return cartItems;
+  getCartItems(@Session() session: any) {
+    return session.cart ? session.cart.cartItems : null;
   }
 }

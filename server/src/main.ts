@@ -3,17 +3,25 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app/app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as session from 'express-session';
-import * as mongoose from 'mongoose';
-const MongoStore = require('connect-mongo');
+
+const MongoDBStore = require('connect-mongodb-session')(session);
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { cors: true });
+  const app = await NestFactory.create(AppModule);
+  app.enableCors({
+    origin: 'http://localhost:3000',
+    methods: 'GET, POST, OPTIONS, PUT, PATCH, DELETE',
+    credentials: true,
+  });
   app.use(
     session({
       secret: process.env.SESSION_KEY,
       resave: false,
       saveUninitialized: false,
-      // store: new MongoStore({}),
+      store: new MongoDBStore({
+        uri: process.env.MONGODB_URL,
+        collection: 'sessions',
+      }),
       cookie: {
         maxAge: 180 * 60 * 1000,
       },
