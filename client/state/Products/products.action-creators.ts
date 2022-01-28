@@ -19,7 +19,7 @@ export const fetchProducts =
     } catch (error: any) {
       dispatch({
         type: ActionTypes.FETCH_PRODUCTS_ERROR,
-        payload: error.mesage,
+        payload: error.message,
       });
     }
   };
@@ -40,7 +40,7 @@ export const fetchProduct =
     } catch (error: any) {
       dispatch({
         type: ActionTypes.FETCH_PRODUCT_ERROR,
-        payload: error.mesage,
+        payload: error.message,
       });
     }
   };
