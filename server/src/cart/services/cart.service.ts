@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { ProductDocument } from 'src/products/schemas/product.schema';
 import { Cart } from '../schemas/cart.schema';
 
@@ -13,6 +17,9 @@ export class CartService {
   cart = new Cart().cart;
 
   addCartItem({ qty, productId, product }: AddCartItem) {
+    if (!productId && !product)
+      throw new BadRequestException('No id or product provided.');
+
     if (product) {
       const { name, image, price, _id, countInStock } = product;
 

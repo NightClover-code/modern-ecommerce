@@ -7,6 +7,7 @@ import {
   Post,
   Session,
 } from '@nestjs/common';
+import { AddToCartDto } from '../dtos/add-to-cart.dto';
 import { CartService } from '../services/cart.service';
 
 @Controller('cart')
@@ -14,7 +15,10 @@ export class CartController {
   constructor(private cartService: CartService) {}
 
   @Post()
-  addToCart(@Body() { product, qty, productId }: any, @Session() session: any) {
+  addToCart(
+    @Body() { product, qty, productId }: AddToCartDto,
+    @Session() session: any
+  ) {
     this.cartService.cart = session.cart ? session.cart : { cartItems: [] };
 
     const cartItem = this.cartService.addCartItem({ qty, product, productId });
