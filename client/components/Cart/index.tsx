@@ -12,6 +12,7 @@ import {
 import { v4 as randomID } from 'uuid';
 import Message from '../Message';
 import { useEffect } from 'react';
+import Loader from '../Loader';
 
 const Cart: React.FC = () => {
   const { cartItems } = useTypedSelector(state => state.cart);

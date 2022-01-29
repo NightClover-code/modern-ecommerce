@@ -11,34 +11,26 @@ export const cartReducer = (
     case ActionTypes.ADD_CART_ITEM:
       const item = action.payload;
 
-      const itemExists = state.data.cartItems.find(
+      const itemExists = state.cartItems.find(
         x => x.productId === item.productId
       );
 
       if (itemExists) {
         return {
           ...state,
-          data: {
-            cartItems: state.data.cartItems.map(x =>
-              x.productId === itemExists.productId ? item : x
-            ),
-          },
+          cartItems: state.cartItems.map(x =>
+            x.productId === itemExists.productId ? item : x
+          ),
         };
       }
 
       return {
         ...state,
-        data: {
-          cartItems: [...state.data.cartItems, item],
-        },
+        cartItems: [...state.cartItems, item],
       };
 
-    case ActionTypes.FETCH_CART_ITEMS_START:
-      return { ...state, loading: true };
-    case ActionTypes.FETCH_CART_ITEMS_SUCCESS:
-      return { ...state, loading: false, data: { cartItems: action.payload } };
-    case ActionTypes.FETCH_CART_ITEMS_ERROR:
-      return { ...state, error: action.payload };
+    case ActionTypes.GET_CART_ITEMS:
+      return { ...state, cartItems: action.payload };
     default:
       return state;
   }

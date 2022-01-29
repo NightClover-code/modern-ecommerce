@@ -42,15 +42,6 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ pageId, router }) => {
     fetchProduct(pageId as string);
   }, [fetchProduct, pageId]);
 
-  const onAddToCartHandler = () => {
-    addToCart({
-      product: data,
-      qty,
-    });
-
-    router.push('/cart');
-  };
-
   return (
     <>
       {loading ? (
@@ -118,7 +109,12 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ pageId, router }) => {
 
                 <ListGroup.Item>
                   <Button
-                    onClick={onAddToCartHandler}
+                    onClick={() => {
+                      addToCart({
+                        product: data,
+                        qty,
+                      });
+                    }}
                     className="w-100"
                     type="button"
                     disabled={countInStock === 0}

@@ -3,6 +3,7 @@ import { ProductInterface } from '../../interfaces';
 import { productsAPI } from '../../lib';
 import { ActionTypes } from './cart.action-types';
 import { CartAction } from './cart.actions';
+import Router from 'next/router';
 
 interface AddToCart {
   qty: number;
@@ -14,10 +15,6 @@ export const addToCart =
   ({ qty, productId, product }: AddToCart) =>
   async (dispatch: Dispatch<CartAction>) => {
     try {
-      dispatch({
-        type: ActionTypes.ADD_CART_ITEM_START,
-      });
-
       const { data } = await productsAPI.post(
         '/cart',
         {
@@ -29,33 +26,25 @@ export const addToCart =
       );
 
       dispatch({
-        type: ActionTypes.ADD_CART_ITEM_SUCCESS,
+        type: ActionTypes.ADD_CART_ITEM,
         payload: data,
       });
+
+      Router.push('/cart');
     } catch (error: any) {
-      dispatch({
-        type: ActionTypes.ADD_CART_ITEM_ERROR,
-        payload: error.message,
-      });
+      console.log(error.message);
     }
   };
 
 export const getCartItems = () => async (dispatch: Dispatch<CartAction>) => {
   try {
-    dispatch({
-      type: ActionTypes.FETCH_CART_ITEMS_START,
-    });
-
     const { data } = await productsAPI.get('/cart', { withCredentials: true });
 
     dispatch({
-      type: ActionTypes.FETCH_CART_ITEMS_SUCCESS,
+      type: ActionTypes.GET_CART_ITEMS,
       payload: data,
     });
   } catch (error: any) {
-    dispatch({
-      type: ActionTypes.FETCH_CART_ITEMS_ERROR,
-      payload: error.message,
-    });
+    console.log(error.message);
   }
 };

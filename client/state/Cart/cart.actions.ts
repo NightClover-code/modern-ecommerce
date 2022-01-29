@@ -1,30 +1,16 @@
 import { CartItemInterface } from '../../interfaces';
 import { ActionTypes } from './cart.action-types';
 
-export type CartAction =
-  | GetCartItemsStart
-  | GetCartItemsSuccess
-  | GetCartItemsError
-  | AddCartItem
-  | RemoveCartItem;
+export type CartAction = GetCartItems | AddCartItem | RemoveCartItem;
 
 export interface AddCartItem {
   type: ActionTypes.ADD_CART_ITEM;
   payload: CartItemInterface;
 }
 
-export interface GetCartItemsStart {
-  type: ActionTypes.FETCH_CART_ITEMS_START;
-}
-
-export interface GetCartItemsSuccess {
-  type: ActionTypes.FETCH_CART_ITEMS_SUCCESS;
+export interface GetCartItems {
+  type: ActionTypes.GET_CART_ITEMS;
   payload: CartItemInterface[];
-}
-
-export interface GetCartItemsError {
-  type: ActionTypes.FETCH_CART_ITEMS_ERROR;
-  payload: string;
 }
 
 export interface RemoveCartItem {
