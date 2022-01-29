@@ -15,7 +15,11 @@ import { useEffect } from 'react';
 import Loader from '../Loader';
 
 const Cart: React.FC = () => {
-  const { cartItems } = useTypedSelector(state => state.cart);
+  const {
+    loading,
+    error,
+    data: { cartItems },
+  } = useTypedSelector(state => state.cart);
   const { addToCart, getCartItems } = useCartActions();
 
   useEffect(() => {
@@ -36,46 +40,54 @@ const Cart: React.FC = () => {
           </Message>
         ) : (
           <ListGroup variant="flush">
-            {cartItems.map(item => (
-              <ListGroup.Item key={randomID()}>
-                <Row>
-                  <Col md={2}>
-                    <Image src={item.image} alt={item.name} fluid rounded />
-                  </Col>
-                  <Col md={3}>
-                    <Link href={`/product/${item.productId}`}>{item.name}</Link>
-                  </Col>
-                  <Col md={2}>${item.price}</Col>
-                  <Col md={2}>
-                    <Form.Control
-                      as="select"
-                      value={item.qty}
-                      onChange={e =>
-                        addToCart({
-                          qty: parseInt(e.target.value),
-                          productId: item.productId,
-                        })
-                      }
-                    >
-                      {[...Array(item.countInStock).keys()].map(x => (
-                        <option key={randomID()} value={x + 1}>
-                          {x + 1}
-                        </option>
-                      ))}
-                    </Form.Control>
-                  </Col>
-                  <Col md={2}>
-                    <Button
-                      type="button"
-                      variant="light"
-                      onClick={() => onRemoveFromCartHandler(item.productId)}
-                    >
-                      <i className="fas fa-trash"></i>
-                    </Button>
-                  </Col>
-                </Row>
-              </ListGroup.Item>
-            ))}
+            {loading ? (
+              <Loader />
+            ) : error ? (
+              <Message variant="danger">{error}</Message>
+            ) : (
+              cartItems.map(item => (
+                <ListGroup.Item key={randomID()}>
+                  <Row>
+                    <Col md={2}>
+                      <Image src={item.image} alt={item.name} fluid rounded />
+                    </Col>
+                    <Col md={3}>
+                      <Link href={`/product/${item.productId}`}>
+                        {item.name}
+                      </Link>
+                    </Col>
+                    <Col md={2}>${item.price}</Col>
+                    <Col md={2}>
+                      <Form.Control
+                        as="select"
+                        value={item.qty}
+                        onChange={e =>
+                          addToCart({
+                            qty: parseInt(e.target.value),
+                            productId: item.productId,
+                          })
+                        }
+                      >
+                        {[...Array(item.countInStock).keys()].map(x => (
+                          <option key={randomID()} value={x + 1}>
+                            {x + 1}
+                          </option>
+                        ))}
+                      </Form.Control>
+                    </Col>
+                    <Col md={2}>
+                      <Button
+                        type="button"
+                        variant="light"
+                        onClick={() => onRemoveFromCartHandler(item.productId)}
+                      >
+                        <i className="fas fa-trash"></i>
+                      </Button>
+                    </Col>
+                  </Row>
+                </ListGroup.Item>
+              ))
+            )}
           </ListGroup>
         )}
       </Col>
