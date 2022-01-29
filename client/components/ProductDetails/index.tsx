@@ -23,10 +23,9 @@ import Message from '../Message';
 
 interface ProductDetailsProps {
   pageId: string | string[] | undefined;
-  router: NextRouter;
 }
 
-const ProductDetails: React.FC<ProductDetailsProps> = ({ pageId, router }) => {
+const ProductDetails: React.FC<ProductDetailsProps> = ({ pageId }) => {
   const [qty, setQty] = useState(1);
 
   const { fetchProduct } = useProductsActions();

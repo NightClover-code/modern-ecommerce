@@ -7,3 +7,14 @@
 main {
   min-height: 80vh;
 }
+
+h1 {
+  padding-bottom: 20px;
+  padding-top: 5px;
+  font-size: 1.8rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+  padding: 0.5rem 0;
+}

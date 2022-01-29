@@ -19,7 +19,7 @@ const Products: React.FC = () => {
 
   return (
     <>
-      <h1 className="py-2">Latest products</h1>
+      <h1>Latest products</h1>
       <Row>
         {loading ? (
           <Loader />

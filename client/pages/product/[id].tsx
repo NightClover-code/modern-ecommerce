@@ -18,7 +18,7 @@ const ProductPage: NextPage = () => {
         <Link href="/" passHref>
           <div className="btn btn-light my-3">Go Back</div>
         </Link>
-        <ProductDetails pageId={id} router={router} />
+        <ProductDetails pageId={id} />
       </main>
     </>
   );

@@ -7,7 +7,7 @@ const CartPage: NextPage = () => {
   return (
     <>
       <SEO {...seoConfig} />
-      <main className="wrapper py-4">
+      <main className="wrapper py-5">
         <Cart />
       </main>
     </>
