@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux';
 import { ProductInterface } from '../../interfaces';
-import { productsAPI } from '../../lib';
+import { proshopAPI } from '../../lib';
 import { ActionTypes } from './cart.action-types';
 import { CartAction } from './cart.actions';
 import Router from 'next/router';
@@ -21,7 +21,7 @@ export const addToCart =
         });
       }
 
-      const { data } = await productsAPI.post(
+      const { data } = await proshopAPI.post(
         '/cart',
         {
           product,
@@ -49,7 +49,7 @@ export const addToCart =
 
 export const removeFromCart =
   (id: string) => async (dispatch: Dispatch<CartAction>) => {
-    await productsAPI.delete(`/cart/${id}`, { withCredentials: true });
+    await proshopAPI.delete(`/cart/${id}`, { withCredentials: true });
 
     dispatch({
       type: ActionTypes.REMOVE_CART_ITEM,
@@ -67,7 +67,7 @@ export const getCartItems = () => async (dispatch: Dispatch<CartAction>) => {
       type: ActionTypes.GET_CART_ITEMS_START,
     });
 
-    const { data } = await productsAPI.get('/cart', { withCredentials: true });
+    const { data } = await proshopAPI.get('/cart', { withCredentials: true });
 
     dispatch({
       type: ActionTypes.GET_CART_ITEMS_SUCCESS,

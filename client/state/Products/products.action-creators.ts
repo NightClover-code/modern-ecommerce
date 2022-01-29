@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { productsAPI } from '../../lib';
+import { proshopAPI } from '../../lib';
 import { ActionTypes } from './products.action-types';
 import { ProductsAction } from './products.actions';
 
@@ -10,7 +10,7 @@ export const fetchProducts =
         type: ActionTypes.FETCH_PRODUCTS_START,
       });
 
-      const { data } = await productsAPI('/products');
+      const { data } = await proshopAPI('/products');
 
       dispatch({
         type: ActionTypes.FETCH_PRODUCTS_SUCCESS,
@@ -31,7 +31,7 @@ export const fetchProduct =
         type: ActionTypes.FETCH_PRODUCT_START,
       });
 
-      const { data } = await productsAPI.get(`/products/${id}`);
+      const { data } = await proshopAPI.get(`/products/${id}`);
 
       dispatch({
         type: ActionTypes.FETCH_PRODUCT_SUCCESS,
