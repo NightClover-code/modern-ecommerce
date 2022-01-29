@@ -15,6 +15,10 @@ export const addToCart =
   ({ qty, productId, product }: AddToCart) =>
   async (dispatch: Dispatch<CartAction>) => {
     try {
+      dispatch({
+        type: ActionTypes.ADD_CART_ITEM_START,
+      });
+
       const { data } = await productsAPI.post(
         '/cart',
         {
@@ -26,25 +30,35 @@ export const addToCart =
       );
 
       dispatch({
-        type: ActionTypes.ADD_CART_ITEM,
+        type: ActionTypes.ADD_CART_ITEM_SUCCESS,
         payload: data,
       });
 
       Router.push('/cart');
     } catch (error: any) {
-      console.log(error.message);
+      dispatch({
+        type: ActionTypes.ADD_CART_ITEM_ERROR,
+        payload: error.message,
+      });
     }
   };
 
 export const getCartItems = () => async (dispatch: Dispatch<CartAction>) => {
   try {
+    dispatch({
+      type: ActionTypes.GET_CART_ITEMS_START,
+    });
+
     const { data } = await productsAPI.get('/cart', { withCredentials: true });
 
     dispatch({
-      type: ActionTypes.GET_CART_ITEMS,
+      type: ActionTypes.GET_CART_ITEMS_SUCCESS,
       payload: data,
     });
   } catch (error: any) {
-    console.log(error.message);
+    dispatch({
+      type: ActionTypes.GET_CART_ITEMS_ERROR,
+      payload: error.message,
+    });
   }
 };

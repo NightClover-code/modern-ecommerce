@@ -1,3 +1,7 @@
 export const cartInitialState = {
-  cartItems: [],
+  loading: false,
+  error: null,
+  data: {
+    cartItems: [],
+  },
 };

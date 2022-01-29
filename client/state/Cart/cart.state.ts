@@ -1,5 +1,9 @@
 import { CartItemInterface } from '../../interfaces';
 
 export interface CartState {
-  cartItems: CartItemInterface[];
+  loading: boolean;
+  error: string | null;
+  data: {
+    cartItems: CartItemInterface[];
+  };
 }
