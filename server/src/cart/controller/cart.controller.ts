@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, Session } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Session,
+} from '@nestjs/common';
 import { CartService } from '../services/cart.service';
 
 @Controller('cart')
@@ -19,5 +27,16 @@ export class CartController {
   @Get()
   getCartItems(@Session() session: any) {
     return session.cart ? session.cart.cartItems : null;
+  }
+
+  @Delete('/:id')
+  removeCartItem(@Param('id') id: string, @Session() session: any) {
+    this.cartService.cart = session.cart ? session.cart : { cartItems: [] };
+
+    const cartItems = this.cartService.removeCartItem(id);
+
+    session.cart.cartItems = cartItems;
+
+    return cartItems;
   }
 }

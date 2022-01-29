@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { ProductDocument } from 'src/products/schemas/product.schema';
 import { Cart } from '../schemas/cart.schema';
 
@@ -47,6 +47,14 @@ export class CartService {
 
       return cartItem;
     }
+  }
+
+  removeCartItem(id: string) {
+    const itemExists = this.cart.cartItems.find(x => x.productId === id);
+
+    if (!itemExists) throw new NotFoundException('No cart item found.');
+
+    return this.cart.cartItems.filter(x => x.productId !== id);
   }
 
   findAllItems() {

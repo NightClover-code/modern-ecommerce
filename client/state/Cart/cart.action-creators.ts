@@ -36,8 +36,6 @@ export const addToCart =
         payload: data,
       });
 
-      console.log(Router);
-
       if (Router.asPath !== '/cart') {
         Router.push('/cart');
       }
@@ -46,6 +44,18 @@ export const addToCart =
         type: ActionTypes.ADD_CART_ITEM_ERROR,
         payload: error.message,
       });
+    }
+  };
+
+export const removeCartItem =
+  (id: string) => async (dispatch: Dispatch<CartAction>) => {
+    dispatch({
+      type: ActionTypes.REMOVE_CART_ITEM,
+      payload: id,
+    });
+    try {
+    } catch (error: any) {
+      console.log(error.message);
     }
   };
 

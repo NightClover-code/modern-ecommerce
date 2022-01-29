@@ -37,6 +37,16 @@ export const cartReducer = (
     case ActionTypes.ADD_CART_ITEM_ERROR:
       return { ...state, error: action.payload };
 
+    case ActionTypes.REMOVE_CART_ITEM:
+      return {
+        ...state,
+        data: {
+          cartItems: state.data.cartItems.filter(
+            x => x.productId !== action.payload
+          ),
+        },
+      };
+
     case ActionTypes.GET_CART_ITEMS_START:
       return { ...state, loading: true };
     case ActionTypes.GET_CART_ITEMS_SUCCESS:
