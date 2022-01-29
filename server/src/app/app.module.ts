@@ -13,7 +13,7 @@ import { CartModule } from 'src/cart/cart.module';
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: ['.env.development'],
+      envFilePath: ['.env'],
     }),
     MongooseModule.forRootAsync({
       inject: [ConfigService],
