@@ -1,3 +1,4 @@
+import Router from 'next/router';
 import { Dispatch } from 'redux';
 import { proshopAPI } from '../../lib';
 import { ActionTypes } from './user.action-types';
@@ -11,19 +12,31 @@ export const login =
         type: ActionTypes.USER_LOGIN_START,
       });
 
-      const { data } = await proshopAPI.post('/auth/login', {
-        email,
-        password,
-      });
+      const config = {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      };
+
+      const { data } = await proshopAPI.post(
+        '/auth/login',
+        {
+          email,
+          password,
+        },
+        config
+      );
 
       dispatch({
         type: ActionTypes.USER_LOGIN_SUCCESS,
         payload: data,
       });
+
+      Router.push('/');
     } catch (error: any) {
       dispatch({
         type: ActionTypes.USER_LOGIN_ERROR,
-        payload: error.message,
+        payload: error.response.data.message,
       });
     }
   };

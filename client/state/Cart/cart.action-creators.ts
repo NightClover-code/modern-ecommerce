@@ -42,7 +42,7 @@ export const addToCart =
     } catch (error: any) {
       dispatch({
         type: ActionTypes.ADD_CART_ITEM_ERROR,
-        payload: error.message,
+        payload: error.response.data.message,
       });
     }
   };
@@ -57,7 +57,7 @@ export const removeFromCart =
     });
     try {
     } catch (error: any) {
-      console.log(error.message);
+      console.log(error.response.data.message);
     }
   };
 
@@ -76,7 +76,7 @@ export const getCartItems = () => async (dispatch: Dispatch<CartAction>) => {
   } catch (error: any) {
     dispatch({
       type: ActionTypes.GET_CART_ITEMS_ERROR,
-      payload: error.message,
+      payload: error.response.data.message,
     });
   }
 };

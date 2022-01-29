@@ -13,7 +13,7 @@ export const userLoginReducer = (
     case ActionTypes.USER_LOGIN_SUCCESS:
       return { ...state, loading: false, data: action.payload };
     case ActionTypes.USER_LOGIN_ERROR:
-      return { ...state, error: action.payload };
+      return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }

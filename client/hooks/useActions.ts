@@ -1,7 +1,11 @@
 import { bindActionCreators } from 'redux';
 import { useDispatch } from 'react-redux';
 import { useMemo } from 'react';
-import { CartActionCreators, ProductsActionCreators } from '../state';
+import {
+  CartActionCreators,
+  ProductsActionCreators,
+  UserActionCreators,
+} from '../state';
 
 export const useProductsActions = () => {
   const dispatch = useDispatch();
@@ -16,5 +20,13 @@ export const useCartActions = () => {
 
   return useMemo(() => {
     return bindActionCreators(CartActionCreators, dispatch);
+  }, [dispatch]);
+};
+
+export const useUserActions = () => {
+  const dispatch = useDispatch();
+
+  return useMemo(() => {
+    return bindActionCreators(UserActionCreators, dispatch);
   }, [dispatch]);
 };

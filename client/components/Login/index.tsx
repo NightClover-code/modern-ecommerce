@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { FormEvent, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
-import { useTypedSelector } from '../../hooks';
+import { useTypedSelector, useUserActions } from '../../hooks';
 import FormContainer from '../FormContainer';
 import Loader from '../Loader';
 import Message from '../Message';
@@ -10,10 +10,13 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  const { login } = useUserActions();
   const { loading, error, data } = useTypedSelector(state => state.userLogin);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    login(email, password);
   };
 
   return (
