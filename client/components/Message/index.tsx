@@ -4,7 +4,7 @@ const Message: React.FC<{ variant?: string }> = ({
   variant = 'info',
   children,
 }) => {
-  return <Alert variant={variant}> {children}</Alert>;
+  return <Alert variant={variant}>{children}</Alert>;
 };
 
 export default Message;

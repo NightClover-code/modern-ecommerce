@@ -13,15 +13,11 @@ export class CartController {
 
     session.cart = this.cartService.cart;
 
-    console.log(session);
-
     return cartItem;
   }
 
   @Get()
   getCartItems(@Session() session: any) {
-    console.log(session);
-
     return session.cart ? session.cart.cartItems : null;
   }
 }

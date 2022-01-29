@@ -32,7 +32,7 @@ export const sessionConfig = (MongoDBStore: any): SessionOptions => ({
     collection: 'sessions',
   }),
   cookie: {
-    //recycling cookies every 3h
-    maxAge: 180 * 60 * 1000,
+    //recycling cookies every 3d
+    maxAge: 3 * 24 * 60 * 60 * 1000,
   },
 });
