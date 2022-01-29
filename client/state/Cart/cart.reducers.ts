@@ -20,6 +20,7 @@ export const cartReducer = (
       if (itemExists) {
         return {
           ...state,
+          loading: false,
           data: {
             cartItems: state.data.cartItems.map(x =>
               x.productId === itemExists.productId ? item : x

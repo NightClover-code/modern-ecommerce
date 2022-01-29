@@ -15,9 +15,11 @@ export const addToCart =
   ({ qty, productId, product }: AddToCart) =>
   async (dispatch: Dispatch<CartAction>) => {
     try {
-      dispatch({
-        type: ActionTypes.ADD_CART_ITEM_START,
-      });
+      if (product) {
+        dispatch({
+          type: ActionTypes.ADD_CART_ITEM_START,
+        });
+      }
 
       const { data } = await productsAPI.post(
         '/cart',
@@ -34,7 +36,11 @@ export const addToCart =
         payload: data,
       });
 
-      Router.push('/cart');
+      console.log(Router);
+
+      if (Router.asPath !== '/cart') {
+        Router.push('/cart');
+      }
     } catch (error: any) {
       dispatch({
         type: ActionTypes.ADD_CART_ITEM_ERROR,

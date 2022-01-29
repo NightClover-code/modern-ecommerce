@@ -32,6 +32,7 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ pageId, router }) => {
   const { fetchProduct } = useProductsActions();
   const { addToCart } = useCartActions();
   const { loading, error, data } = useTypedSelector(state => state.product);
+  const { cart } = useTypedSelector(state => state);
 
   const { image, name, price, countInStock, description, rating, numReviews } =
     data;
@@ -119,7 +120,11 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ pageId, router }) => {
                     type="button"
                     disabled={countInStock === 0}
                   >
-                    Add To Cart
+                    {cart.loading ? (
+                      <Loader options={{ width: '25px', height: '25px' }} />
+                    ) : (
+                      <>Add To Cart</>
+                    )}
                   </Button>
                 </ListGroup.Item>
               </ListGroup>

@@ -1,6 +1,11 @@
+import { CSSProperties } from 'react';
 import { Spinner } from 'react-bootstrap';
 
-const Loader = () => {
+interface LoaderProps {
+  options?: CSSProperties;
+}
+
+const Loader: React.FC<LoaderProps> = ({ options }) => {
   return (
     <Spinner
       animation="border"
@@ -10,6 +15,7 @@ const Loader = () => {
         height: '100px',
         margin: 'auto',
         display: 'block',
+        ...options,
       }}
     >
       <span className="sr-only">Loading</span>
