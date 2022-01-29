@@ -20,7 +20,7 @@ const Cart: React.FC = () => {
     error,
     data: { cartItems },
   } = useTypedSelector(state => state.cart);
-  const { addToCart, getCartItems, removeCartItem } = useCartActions();
+  const { addToCart, getCartItems, removeFromCart } = useCartActions();
 
   useEffect(() => {
     getCartItems();
@@ -77,7 +77,7 @@ const Cart: React.FC = () => {
                       <Button
                         type="button"
                         variant="light"
-                        onClick={() => removeCartItem(item.productId)}
+                        onClick={() => removeFromCart(item.productId)}
                       >
                         <i className="fas fa-trash"></i>
                       </Button>

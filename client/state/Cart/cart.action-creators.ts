@@ -47,8 +47,10 @@ export const addToCart =
     }
   };
 
-export const removeCartItem =
+export const removeFromCart =
   (id: string) => async (dispatch: Dispatch<CartAction>) => {
+    await productsAPI.delete(`/cart/${id}`, { withCredentials: true });
+
     dispatch({
       type: ActionTypes.REMOVE_CART_ITEM,
       payload: id,

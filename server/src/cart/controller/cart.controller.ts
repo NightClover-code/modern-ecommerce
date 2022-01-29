@@ -29,7 +29,7 @@ export class CartController {
     return session.cart ? session.cart.cartItems : null;
   }
 
-  @Delete('/:id')
+  @Delete(':id')
   removeCartItem(@Param('id') id: string, @Session() session: any) {
     this.cartService.cart = session.cart ? session.cart : { cartItems: [] };
 
