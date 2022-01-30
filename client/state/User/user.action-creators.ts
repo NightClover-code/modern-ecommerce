@@ -40,3 +40,18 @@ export const login =
       });
     }
   };
+
+export const getCurrentUser = () => async (dispatch: Dispatch<UserAction>) => {
+  try {
+    const { data } = await proshopAPI.get('/auth/profile', {
+      withCredentials: true,
+    });
+
+    dispatch({
+      type: ActionTypes.GET_CURRENT_USER,
+      payload: data,
+    });
+  } catch (error: any) {
+    console.log(error.response.data.message);
+  }
+};

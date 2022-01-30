@@ -22,4 +22,8 @@ export interface CartItemInterface {
 
 export interface UserInterface {
   _id: string;
+  email: string;
+  name: string;
+  isAdmin: boolean;
+  accessToken: string;
 }
