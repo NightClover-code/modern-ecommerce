@@ -4,11 +4,11 @@ import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { LocalAuthGuard } from 'src/guards/local-auth.guard';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { RegisterDto } from '../dtos/register.dto';
-import { LoginDto } from '../dtos/login.dto';
+import { UserDto } from '../dtos/user.dto';
 import { UserDocument } from '../schemas/user.schema';
 import { AuthService } from '../services/auth.service';
 
-@Serialize(LoginDto)
+@Serialize(UserDto)
 @Controller('auth')
 export class UsersController {
   constructor(private authService: AuthService) {}

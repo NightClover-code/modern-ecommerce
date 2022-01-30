@@ -19,3 +19,7 @@ export interface CartItemInterface {
   countInStock: number;
   qty: number;
 }
+
+export interface UserInterface {
+  _id: string;
+}
