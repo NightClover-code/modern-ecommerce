@@ -30,9 +30,9 @@ export const cartReducer = (
       }
 
       return {
-        ...state,
         loading: false,
         data: { cartItems: [...state.data.cartItems, item] },
+        error: null,
       };
     case ActionTypes.ADD_CART_ITEM_ERROR:
       return { ...state, loading: false, error: action.payload };
@@ -50,7 +50,11 @@ export const cartReducer = (
     case ActionTypes.GET_CART_ITEMS_START:
       return { ...state, loading: true };
     case ActionTypes.GET_CART_ITEMS_SUCCESS:
-      return { ...state, loading: false, data: { cartItems: action.payload } };
+      return {
+        loading: false,
+        data: { cartItems: action.payload },
+        error: null,
+      };
     case ActionTypes.GET_CART_ITEMS_ERROR:
       return { ...state, loading: false, error: action.payload };
 

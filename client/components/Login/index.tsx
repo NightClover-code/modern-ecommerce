@@ -16,7 +16,7 @@ const Login = () => {
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (!error) {
+    if (!error || (email.length > 0 && password.length > 0)) {
       login(email, password);
     }
   };
