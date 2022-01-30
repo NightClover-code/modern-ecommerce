@@ -7,16 +7,17 @@ import { UserAction } from './user.actions';
 export const login =
   (email: string, password: string) =>
   async (dispatch: Dispatch<UserAction>) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    };
+
     try {
       dispatch({
         type: ActionTypes.USER_LOGIN_START,
       });
-
-      const config = {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      };
 
       const { data } = await proshopAPI.post(
         '/auth/login',
@@ -32,6 +33,8 @@ export const login =
         payload: data,
       });
 
+      localStorage.setItem('accessToken', data.accessToken);
+
       Router.push('/');
     } catch (error: any) {
       dispatch({
@@ -41,17 +44,23 @@ export const login =
     }
   };
 
-export const getCurrentUser = () => async (dispatch: Dispatch<UserAction>) => {
-  try {
-    const { data } = await proshopAPI.get('/auth/profile', {
+export const getCurrentUser =
+  (accessToken: string) => async (dispatch: Dispatch<UserAction>) => {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
       withCredentials: true,
-    });
+    };
 
-    dispatch({
-      type: ActionTypes.GET_CURRENT_USER,
-      payload: data,
-    });
-  } catch (error: any) {
-    console.log(error.response.data.message);
-  }
-};
+    try {
+      const { data } = await proshopAPI.get('/auth/profile', config);
+
+      dispatch({
+        type: ActionTypes.GET_CURRENT_USER,
+        payload: data,
+      });
+    } catch (error: any) {
+      console.log(error.response.data.message);
+    }
+  };

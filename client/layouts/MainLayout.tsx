@@ -1,16 +1,19 @@
 //importing components
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { useUserActions } from '../hooks';
+import { useLocalStorage, useUserActions } from '../hooks';
 import { useEffect } from 'react';
 
 //main layout
 const MainLayout: React.FC = ({ children }) => {
   const { getCurrentUser } = useUserActions();
+  const accessToken = useLocalStorage('', 'accessToken');
 
   useEffect(() => {
-    getCurrentUser();
-  }, [getCurrentUser]);
+    if (accessToken.length > 0) {
+      getCurrentUser(accessToken);
+    }
+  }, [accessToken, getCurrentUser]);
 
   return (
     <div className="app__container">
