@@ -64,3 +64,20 @@ export const getCurrentUser =
       console.log(error.response.data.message);
     }
   };
+
+export const logout = () => async (dispatch: Dispatch<UserAction>) => {
+  try {
+    const { data } = await proshopAPI.post(
+      '/auth/logout',
+      {},
+      { withCredentials: true }
+    );
+
+    dispatch({
+      type: ActionTypes.USER_LOGOUT,
+      payload: data,
+    });
+  } catch (error: any) {
+    console.log(error.response.data.message);
+  }
+};

@@ -5,7 +5,8 @@ export type UserAction =
   | UserLoginStart
   | UserLoginError
   | UserLoginSuccess
-  | GetCurrentUser;
+  | GetCurrentUser
+  | UserLogout;
 
 export interface UserLoginStart {
   type: ActionTypes.USER_LOGIN_START;
@@ -24,4 +25,9 @@ export interface UserLoginError {
 export interface GetCurrentUser {
   type: ActionTypes.GET_CURRENT_USER;
   payload: UserInterface;
+}
+
+export interface UserLogout {
+  type: ActionTypes.USER_LOGOUT;
+  payload: null;
 }
