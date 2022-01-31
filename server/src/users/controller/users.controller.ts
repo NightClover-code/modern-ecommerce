@@ -46,11 +46,26 @@ export class UsersController {
   }
 
   @Post('register')
-  async register(@Body() { name, email, password }: RegisterDto) {
+  async register(
+    @Body() { name, email, password }: RegisterDto,
+    @Session() session: any
+  ) {
     const user = await this.authService.register(name, email, password);
 
-    await this.authService.login(user.name, user._id);
+    const { _id, isAdmin } = user;
 
-    return user;
+    const { accessToken } = await this.authService.login(name, user._id);
+
+    const loggedUser = {
+      name: user.name,
+      _id,
+      isAdmin,
+      email: user.email,
+      accessToken,
+    };
+
+    session.user = loggedUser;
+
+    return loggedUser;
   }
 }
