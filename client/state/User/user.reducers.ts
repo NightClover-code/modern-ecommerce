@@ -17,9 +17,10 @@ export const userLoginReducer = (
 
     case ActionTypes.USER_LOGOUT:
       return { ...state, data: action.payload };
-
     case ActionTypes.GET_CURRENT_USER:
       return { ...state, data: action.payload };
+    case ActionTypes.CLEAN_USER_ERRORS:
+      return { ...state, error: null };
     default:
       return state;
   }
@@ -36,6 +37,9 @@ export const userRegisterReducer = (
       return { loading: false, data: action.payload, error: null };
     case ActionTypes.USER_REGISTER_ERROR:
       return { ...state, loading: false, error: action.payload };
+
+    case ActionTypes.CLEAN_USER_ERRORS:
+      return { ...state, error: null };
     default:
       return state;
   }

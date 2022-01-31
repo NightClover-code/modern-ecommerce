@@ -127,3 +127,10 @@ export const register =
       });
     }
   };
+
+export const cleanErrors = () => async (dispatch: Dispatch<UserAction>) => {
+  dispatch({
+    type: ActionTypes.CLEAN_USER_ERRORS,
+    payload: null,
+  });
+};

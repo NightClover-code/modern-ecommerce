@@ -9,7 +9,8 @@ export type UserAction =
   | UserLogout
   | UserRegisterStart
   | UserRegisterSuccess
-  | UserRegisterError;
+  | UserRegisterError
+  | CleanUserErrors;
 
 export interface UserLoginStart {
   type: ActionTypes.USER_LOGIN_START;
@@ -46,5 +47,10 @@ export interface GetCurrentUser {
 
 export interface UserLogout {
   type: ActionTypes.USER_LOGOUT;
+  payload: null;
+}
+
+export interface CleanUserErrors {
+  type: ActionTypes.CLEAN_USER_ERRORS;
   payload: null;
 }
