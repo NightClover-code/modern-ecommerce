@@ -11,7 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
 
   const { login } = useUserActions();
-  const { loading, error, data } = useTypedSelector(state => state.user);
+  const { loading, error } = useTypedSelector(state => state.userLogin);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

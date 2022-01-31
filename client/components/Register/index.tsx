@@ -1,29 +1,47 @@
 import Link from 'next/link';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useState, useEffect } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useTypedSelector, useUserActions } from '../../hooks';
+import { UserCredentials } from '../../interfaces';
 import FormContainer from '../FormContainer';
 import Loader from '../Loader';
 import Message from '../Message';
 
 const Register = () => {
   const initialCredentials = {
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
+    name: null,
+    email: null,
+    password: null,
+    confirmPassword: null,
   };
 
-  const [credentials, setCredentials] = useState(initialCredentials);
-  const [message, setMessage] = useState(null);
-
   const { register } = useUserActions();
-  const { loading, error, data } = useTypedSelector(state => state.user);
+  const { loading, error } = useTypedSelector(state => state.userRegister);
+
+  const [credentials, setCredentials] =
+    useState<UserCredentials>(initialCredentials);
+  const [message, setMessage] = useState<string | null | string[]>(error);
+
+  useEffect(() => {
+    setMessage(error);
+  }, [error]);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { name, email, password } = credentials;
+    const { name, email, password, confirmPassword } = credentials!;
+
+    if (!name || !email || !password || !confirmPassword) {
+      setMessage('All fields are required.');
+
+      return null;
+    }
+
+    if (password && password !== confirmPassword) {
+      setMessage('Passwords do not match');
+
+      return null;
+    }
 
     register(name, email, password);
   };
@@ -32,8 +50,11 @@ const Register = () => {
     <FormContainer>
       <h1>Sign Up</h1>
 
-      {message && <Message variant="danger">{message}</Message>}
-      {error && <Message variant="danger">{error}</Message>}
+      {message && (
+        <Message variant="danger">
+          {Array.isArray(message) ? message[0] : message}
+        </Message>
+      )}
       {loading && <Loader />}
 
       <Form onSubmit={onSubmitHandler}>
@@ -42,7 +63,7 @@ const Register = () => {
           <Form.Control
             type="name"
             placeholder="Enter name"
-            value={credentials.name}
+            value={credentials.name!}
             onChange={e =>
               setCredentials({ ...credentials, name: e.target.value })
             }
@@ -54,7 +75,7 @@ const Register = () => {
           <Form.Control
             type="email"
             placeholder="Enter email"
-            value={credentials.email}
+            value={credentials.email!}
             onChange={e =>
               setCredentials({ ...credentials, email: e.target.value })
             }
@@ -66,7 +87,7 @@ const Register = () => {
           <Form.Control
             type="password"
             placeholder="Enter password"
-            value={credentials.password}
+            value={credentials.password!}
             onChange={e =>
               setCredentials({ ...credentials, password: e.target.value })
             }
@@ -78,7 +99,7 @@ const Register = () => {
           <Form.Control
             type="password"
             placeholder="Confirm password"
-            value={credentials.confirmPassword}
+            value={credentials.confirmPassword!}
             onChange={e =>
               setCredentials({
                 ...credentials,

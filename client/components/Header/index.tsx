@@ -4,7 +4,7 @@ import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
 import { useTypedSelector, useUserActions } from '../../hooks';
 
 const Header = () => {
-  const { data } = useTypedSelector(state => state.user);
+  const { data } = useTypedSelector(state => state.userLogin);
   const { logout } = useUserActions();
 
   return (
