@@ -11,15 +11,20 @@ import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { LocalAuthGuard } from 'src/guards/local-auth.guard';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
+import { ProfileDto } from '../dtos/profile.dto';
 import { RegisterDto } from '../dtos/register.dto';
 import { UserDto } from '../dtos/user.dto';
 import { UserDocument } from '../schemas/user.schema';
 import { AuthService } from '../services/auth.service';
+import { UsersService } from '../services/users.service';
 
 @Serialize(UserDto)
 @Controller('auth')
 export class UsersController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private usersService: UsersService
+  ) {}
 
   @UseGuards(LocalAuthGuard)
   @Post('login')
@@ -71,5 +76,21 @@ export class UsersController {
   }
 
   @Put('profile')
-  updateUser() {}
+  async updateUser(@Body() credentials: ProfileDto, @Session() session: any) {
+    const user = await this.usersService.update(session.user._id, credentials);
+
+    const { name, _id, email, isAdmin } = user;
+
+    const updatedUser = {
+      name,
+      _id,
+      isAdmin,
+      email,
+      accessToken: session.user.accessToken,
+    };
+
+    session.user = updatedUser;
+
+    return updatedUser;
+  }
 }

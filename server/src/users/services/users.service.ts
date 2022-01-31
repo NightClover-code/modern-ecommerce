@@ -1,5 +1,9 @@
 import { InjectModel } from '@nestjs/mongoose';
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { User, UserDocument } from '../schemas/user.schema';
 import { Model } from 'mongoose';
 
@@ -22,7 +26,7 @@ export class UsersService {
   async findOne(email: string) {
     const user = this.userModel.findOne({ email });
 
-    if (!user) throw new NotFoundException('user not found');
+    if (!user) throw new NotFoundException('user not found.');
 
     return user;
   }
@@ -30,7 +34,7 @@ export class UsersService {
   async findById(id: string) {
     const user = this.userModel.findById(id);
 
-    if (!user) throw new NotFoundException('user not found');
+    if (!user) throw new NotFoundException('user not found.');
 
     return user;
   }
@@ -43,5 +47,27 @@ export class UsersService {
 
   async deleteMany() {
     await this.userModel.deleteMany({});
+  }
+
+  async update(id: string, attrs: Partial<UserDocument>) {
+    const user = await this.findById(id);
+
+    if (!user) throw new NotFoundException('user not found.');
+
+    const existingUser = await this.findOne(attrs.email);
+
+    if (existingUser && existingUser.email !== user.email)
+      throw new BadRequestException('Email is already in use.');
+
+    user.name = attrs.name || user.name;
+    user.email = attrs.email || user.email;
+
+    if (attrs.password) {
+      user.password = attrs.password;
+    }
+
+    const updatedUser = await user.save();
+
+    return updatedUser;
   }
 }
