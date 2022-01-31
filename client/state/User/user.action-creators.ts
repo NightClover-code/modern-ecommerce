@@ -81,3 +81,49 @@ export const logout = () => async (dispatch: Dispatch<UserAction>) => {
     console.log(error.response.data.message);
   }
 };
+
+export const register =
+  (name: string, email: string, password: string) =>
+  async (dispatch: Dispatch<UserAction>) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    };
+
+    try {
+      dispatch({
+        type: ActionTypes.USER_REGISTER_START,
+      });
+
+      const { data } = await proshopAPI.post(
+        '/auth/register',
+        {
+          name,
+          email,
+          password,
+        },
+        config
+      );
+
+      dispatch({
+        type: ActionTypes.USER_REGISTER_SUCCESS,
+        payload: data,
+      });
+
+      dispatch({
+        type: ActionTypes.USER_LOGIN_SUCCESS,
+        payload: data,
+      });
+
+      localStorage.setItem('accessToken', data.accessToken);
+
+      Router.push('/');
+    } catch (error: any) {
+      dispatch({
+        type: ActionTypes.USER_REGISTER_ERROR,
+        payload: error.response.data.message,
+      });
+    }
+  };

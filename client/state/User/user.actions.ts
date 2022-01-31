@@ -6,7 +6,10 @@ export type UserAction =
   | UserLoginError
   | UserLoginSuccess
   | GetCurrentUser
-  | UserLogout;
+  | UserLogout
+  | UserRegisterStart
+  | UserRegisterSuccess
+  | UserRegisterError;
 
 export interface UserLoginStart {
   type: ActionTypes.USER_LOGIN_START;
@@ -19,6 +22,20 @@ export interface UserLoginSuccess {
 
 export interface UserLoginError {
   type: ActionTypes.USER_LOGIN_ERROR;
+  payload: string;
+}
+
+export interface UserRegisterStart {
+  type: ActionTypes.USER_REGISTER_START;
+}
+
+export interface UserRegisterSuccess {
+  type: ActionTypes.USER_REGISTER_SUCCESS;
+  payload: UserInterface;
+}
+
+export interface UserRegisterError {
+  type: ActionTypes.USER_REGISTER_ERROR;
   payload: string;
 }
 

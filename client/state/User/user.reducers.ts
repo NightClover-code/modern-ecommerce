@@ -3,7 +3,7 @@ import { UserAction } from './user.actions';
 import { userInitialState } from './user.initial-state';
 import { UserState } from './user.state';
 
-export const userLoginReducer = (
+export const userReducer = (
   state: UserState = userInitialState,
   action: UserAction
 ): UserState => {
@@ -13,6 +13,13 @@ export const userLoginReducer = (
     case ActionTypes.USER_LOGIN_SUCCESS:
       return { loading: false, data: action.payload, error: null };
     case ActionTypes.USER_LOGIN_ERROR:
+      return { ...state, loading: false, error: action.payload };
+
+    case ActionTypes.USER_REGISTER_START:
+      return { ...state, loading: true };
+    case ActionTypes.USER_REGISTER_SUCCESS:
+      return { loading: false, data: action.payload, error: null };
+    case ActionTypes.USER_REGISTER_ERROR:
       return { ...state, loading: false, error: action.payload };
 
     case ActionTypes.USER_LOGOUT:
