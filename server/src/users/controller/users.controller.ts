@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   Post,
+  Put,
   Session,
   UseGuards,
 } from '@nestjs/common';
@@ -68,4 +69,7 @@ export class UsersController {
 
     return loggedUser;
   }
+
+  @Put('profile')
+  updateUser() {}
 }
