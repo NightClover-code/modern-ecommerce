@@ -67,15 +67,11 @@ export const getCurrentUser =
 
 export const logout = () => async (dispatch: Dispatch<UserAction>) => {
   try {
-    const { data } = await proshopAPI.post(
-      '/auth/logout',
-      {},
-      { withCredentials: true }
-    );
+    await proshopAPI.post('/auth/logout', {}, { withCredentials: true });
 
     dispatch({
       type: ActionTypes.USER_LOGOUT,
-      payload: data,
+      payload: null,
     });
   } catch (error: any) {
     console.log(error.response.data.message);

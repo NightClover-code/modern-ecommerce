@@ -9,7 +9,7 @@ export const userLoginReducer = (
 ): UserState => {
   switch (action.type) {
     case ActionTypes.USER_LOGIN_START:
-      return { ...state, loading: true };
+      return { ...state, loading: true, error: null };
     case ActionTypes.USER_LOGIN_SUCCESS:
       return { loading: false, data: action.payload, error: null };
     case ActionTypes.USER_LOGIN_ERROR:
@@ -32,7 +32,7 @@ export const userRegisterReducer = (
 ): UserState => {
   switch (action.type) {
     case ActionTypes.USER_REGISTER_START:
-      return { ...state, loading: true };
+      return { ...state, loading: true, error: null };
     case ActionTypes.USER_REGISTER_SUCCESS:
       return { loading: false, data: action.payload, error: null };
     case ActionTypes.USER_REGISTER_ERROR:

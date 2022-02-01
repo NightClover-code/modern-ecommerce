@@ -12,7 +12,7 @@ export const productsReducer = (
 ): ProductsState => {
   switch (action.type) {
     case ActionTypes.FETCH_PRODUCTS_START:
-      return { ...state, loading: true };
+      return { ...state, loading: true, error: null };
     case ActionTypes.FETCH_PRODUCTS_SUCCESS:
       return { loading: false, data: action.payload, error: null };
     case ActionTypes.FETCH_PRODUCTS_ERROR:
@@ -28,7 +28,7 @@ export const productReducer = (
 ): ProductState => {
   switch (action.type) {
     case ActionTypes.FETCH_PRODUCT_START:
-      return { ...state, loading: true };
+      return { ...state, loading: true, error: null };
     case ActionTypes.FETCH_PRODUCT_SUCCESS:
       return { loading: false, data: action.payload, error: null };
     case ActionTypes.FETCH_PRODUCT_ERROR:

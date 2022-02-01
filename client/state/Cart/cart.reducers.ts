@@ -9,7 +9,7 @@ export const cartReducer = (
 ): CartState => {
   switch (action.type) {
     case ActionTypes.ADD_CART_ITEM_START:
-      return { ...state, loading: true };
+      return { ...state, loading: true, error: null };
     case ActionTypes.ADD_CART_ITEM_SUCCESS:
       const item = action.payload;
 
