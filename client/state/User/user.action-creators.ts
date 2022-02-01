@@ -1,5 +1,6 @@
 import Router from 'next/router';
 import { Dispatch } from 'redux';
+import { UserInterface } from '../../interfaces';
 import { proshopAPI } from '../../lib';
 import { ActionTypes } from './user.action-types';
 import { UserAction } from './user.actions';
@@ -119,6 +120,31 @@ export const register =
     } catch (error: any) {
       dispatch({
         type: ActionTypes.USER_REGISTER_ERROR,
+        payload: error.response.data.message,
+      });
+    }
+  };
+
+export const updateUser =
+  (user: Partial<UserInterface>) => async (dispatch: Dispatch<UserAction>) => {
+    const config = {
+      withCredentials: true,
+    };
+
+    try {
+      dispatch({
+        type: ActionTypes.USER_UPDATE_START,
+      });
+
+      const { data } = await proshopAPI.put('/auth/profile', user, config);
+
+      dispatch({
+        type: ActionTypes.USER_UPDATE_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: ActionTypes.USER_UPDATE_ERROR,
         payload: error.response.data.message,
       });
     }

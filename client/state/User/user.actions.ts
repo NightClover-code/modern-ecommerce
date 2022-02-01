@@ -10,6 +10,9 @@ export type UserAction =
   | UserRegisterStart
   | UserRegisterSuccess
   | UserRegisterError
+  | UserUpdateStart
+  | UserUpdateSuccess
+  | UserUpdateError
   | CleanUserErrors;
 
 export interface UserLoginStart {
@@ -37,6 +40,20 @@ export interface UserRegisterSuccess {
 
 export interface UserRegisterError {
   type: ActionTypes.USER_REGISTER_ERROR;
+  payload: string;
+}
+
+export interface UserUpdateStart {
+  type: ActionTypes.USER_UPDATE_START;
+}
+
+export interface UserUpdateSuccess {
+  type: ActionTypes.USER_UPDATE_SUCCESS;
+  payload: UserInterface;
+}
+
+export interface UserUpdateError {
+  type: ActionTypes.USER_UPDATE_ERROR;
   payload: string;
 }
 

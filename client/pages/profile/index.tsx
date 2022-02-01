@@ -1,6 +1,7 @@
 import { NextPage } from 'next';
 import Profile from '../../components/Profile';
 import SEO from '../../components/SEO';
+import WithAuth from '../../hoc/WithAuth';
 import { seoConfig } from '../../utils';
 
 const LoginPage: NextPage = () => {
@@ -8,7 +9,9 @@ const LoginPage: NextPage = () => {
     <>
       <SEO {...seoConfig} />
       <main className="wrapper py-5">
-        <Profile />
+        <WithAuth>
+          <Profile />
+        </WithAuth>
       </main>
     </>
   );

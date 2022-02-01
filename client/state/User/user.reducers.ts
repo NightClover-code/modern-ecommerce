@@ -44,3 +44,22 @@ export const userRegisterReducer = (
       return state;
   }
 };
+
+export const userUpdateReducer = (
+  state: UserState = userInitialState,
+  action: UserAction
+): UserState => {
+  switch (action.type) {
+    case ActionTypes.USER_UPDATE_START:
+      return { ...state, loading: true, error: null };
+    case ActionTypes.USER_UPDATE_SUCCESS:
+      return { loading: false, data: action.payload, error: null };
+    case ActionTypes.USER_UPDATE_ERROR:
+      return { ...state, loading: false, error: action.payload };
+
+    case ActionTypes.CLEAN_USER_ERRORS:
+      return { ...state, error: null };
+    default:
+      return state;
+  }
+};

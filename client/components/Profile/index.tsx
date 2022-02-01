@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { Button, Col, Form, Row, Table } from 'react-bootstrap';
 import Loader from '../Loader';
-import { useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import Message from '../Message';
 import { useTypedSelector } from '../../hooks';
 import { UserCredentials } from '../../interfaces';
@@ -19,6 +19,24 @@ const Profile = () => {
   const [credentials, setCredentials] =
     useState<UserCredentials>(initialCredentials);
   const [message, setMessage] = useState<string | null | string[]>(error);
+
+  useEffect(() => {
+    setMessage(error);
+  }, [error]);
+
+  const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const { name, email, password, confirmPassword } = credentials!;
+
+    if (password && password !== confirmPassword) {
+      setMessage('Passwords do not match');
+
+      return null;
+    }
+
+    // if ()
+  };
 
   return (
     <Row>
