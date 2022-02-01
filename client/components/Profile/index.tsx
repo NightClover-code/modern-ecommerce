@@ -3,7 +3,7 @@ import { Button, Col, Form, Row, Table } from 'react-bootstrap';
 import Loader from '../Loader';
 import { FormEvent, useEffect, useState } from 'react';
 import Message from '../Message';
-import { useTypedSelector } from '../../hooks';
+import { useTypedSelector, useUserActions } from '../../hooks';
 import { UserCredentials } from '../../interfaces';
 
 const Profile = () => {
@@ -14,7 +14,9 @@ const Profile = () => {
     confirmPassword: null,
   };
 
-  const { loading, error, data } = useTypedSelector(state => state.userLogin);
+  const { data } = useTypedSelector(state => state.userLogin);
+  const { error, loading } = useTypedSelector(state => state.userUpdate);
+  const { updateUser } = useUserActions();
 
   const [credentials, setCredentials] =
     useState<UserCredentials>(initialCredentials);
@@ -27,7 +29,20 @@ const Profile = () => {
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { name, email, password, confirmPassword } = credentials!;
+    const { name, email, password, confirmPassword } = credentials;
+
+    if (data) {
+      // setCredentials({
+      //   name,
+      //   email,
+      // });
+    }
+
+    if (!name && !email && !password) {
+      setMessage('Change at least one property.');
+
+      return null;
+    }
 
     if (password && password !== confirmPassword) {
       setMessage('Passwords do not match');
@@ -35,22 +50,29 @@ const Profile = () => {
       return null;
     }
 
-    // if ()
+    updateUser({
+      name: name!,
+      email: email!,
+      password: password!,
+    });
   };
 
   return (
     <Row>
       <Col md={3}>
         <h2>User Profile</h2>
-        {message && <Message variant="danger">{message}</Message>}
-        {}
+        {message && (
+          <Message variant="danger">
+            {Array.isArray(message) ? message[0] : message}
+          </Message>
+        )}
         {/* {success && <Message variant="success">Profile Updated</Message>} */}
         {loading ? (
           <Loader />
         ) : error ? (
           <Message variant="danger">{error}</Message>
         ) : (
-          <Form>
+          <Form onSubmit={onSubmitHandler}>
             <Form.Group controlId="name">
               <Form.Label>Name</Form.Label>
               <Form.Control
