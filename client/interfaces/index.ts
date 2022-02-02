@@ -34,3 +34,10 @@ export interface UserCredentials {
   password: string;
   confirmPassword: string;
 }
+
+export interface ShippingDetails {
+  address: string;
+  city: string;
+  postalCode: string;
+  country: string;
+}
