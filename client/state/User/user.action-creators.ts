@@ -55,14 +55,21 @@ export const getCurrentUser =
     };
 
     try {
+      dispatch({
+        type: ActionTypes.GET_CURRENT_USER_START,
+      });
+
       const { data } = await proshopAPI.get('/auth/profile', config);
 
       dispatch({
-        type: ActionTypes.GET_CURRENT_USER,
+        type: ActionTypes.GET_CURRENT_USER_SUCCESS,
         payload: data,
       });
     } catch (error: any) {
-      console.log(error.response.data.message);
+      dispatch({
+        type: ActionTypes.GET_CURRENT_USER_ERROR,
+        payload: error.response.data.message,
+      });
     }
   };
 

@@ -5,7 +5,9 @@ export type UserAction =
   | UserLoginStart
   | UserLoginError
   | UserLoginSuccess
-  | GetCurrentUser
+  | GetCurrentUserStart
+  | GetCurrentUserSuccess
+  | GetCurrentUserError
   | UserLogout
   | UserRegisterStart
   | UserRegisterSuccess
@@ -57,9 +59,18 @@ export interface UserUpdateError {
   payload: string;
 }
 
-export interface GetCurrentUser {
-  type: ActionTypes.GET_CURRENT_USER;
+export interface GetCurrentUserStart {
+  type: ActionTypes.GET_CURRENT_USER_START;
+}
+
+export interface GetCurrentUserSuccess {
+  type: ActionTypes.GET_CURRENT_USER_SUCCESS;
   payload: UserInterface;
+}
+
+export interface GetCurrentUserError {
+  type: ActionTypes.GET_CURRENT_USER_ERROR;
+  payload: string;
 }
 
 export interface UserLogout {
