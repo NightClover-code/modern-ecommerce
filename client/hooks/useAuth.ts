@@ -10,7 +10,7 @@ export const useAuth = () => {
     if (!data) {
       router.push('/login');
     }
-  }, [data, router]);
+  }, []);
 
   return data;
 };
