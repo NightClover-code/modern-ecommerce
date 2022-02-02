@@ -8,6 +8,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
+import { AuthGuard } from 'src/guards/auth.guard';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { LocalAuthGuard } from 'src/guards/local-auth.guard';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
@@ -75,6 +76,7 @@ export class UsersController {
     return loggedUser;
   }
 
+  @UseGuards(AuthGuard)
   @Put('profile')
   async updateUser(@Body() credentials: ProfileDto, @Session() session: any) {
     const user = await this.usersService.update(session.user._id, credentials);

@@ -36,6 +36,8 @@ export const userRegisterReducer = (
     case ActionTypes.USER_REGISTER_ERROR:
       return { ...state, loading: false, error: action.payload };
 
+    case ActionTypes.USER_LOGOUT:
+      return { ...state, data: action.payload };
     case ActionTypes.CLEAN_USER_ERRORS:
       return { ...state, error: null };
     default:
@@ -86,6 +88,8 @@ export const userUpdateReducer = (
         success: false,
       };
 
+    case ActionTypes.USER_LOGOUT:
+      return { ...state, data: action.payload };
     case ActionTypes.CLEAN_USER_ERRORS:
       return { ...state, error: null };
     default:

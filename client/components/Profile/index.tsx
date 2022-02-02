@@ -49,7 +49,7 @@ const Profile = () => {
       return null;
     }
 
-    if (password && password !== confirmPassword) {
+    if (password.length > 0 && password !== confirmPassword) {
       setMessage('Passwords do not match');
 
       return null;
@@ -60,7 +60,7 @@ const Profile = () => {
     updateUser({
       name: name.length > 0 ? name : undefined,
       email: email.length > 0 ? email : undefined,
-      password,
+      password: password.length > 0 && password,
     });
   };
 
