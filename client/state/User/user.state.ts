@@ -4,4 +4,5 @@ export interface UserState {
   loading: boolean;
   error: string | null;
   data: UserInterface | null;
+  success?: boolean;
 }

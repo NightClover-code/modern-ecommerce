@@ -51,11 +51,21 @@ export const userUpdateReducer = (
 ): UserState => {
   switch (action.type) {
     case ActionTypes.USER_UPDATE_START:
-      return { ...state, loading: true, error: null };
+      return { ...state, loading: true, error: null, success: false };
     case ActionTypes.USER_UPDATE_SUCCESS:
-      return { loading: false, data: action.payload, error: null };
+      return {
+        loading: false,
+        data: action.payload,
+        error: null,
+        success: true,
+      };
     case ActionTypes.USER_UPDATE_ERROR:
-      return { ...state, loading: false, error: action.payload };
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+        success: false,
+      };
 
     case ActionTypes.CLEAN_USER_ERRORS:
       return { ...state, error: null };

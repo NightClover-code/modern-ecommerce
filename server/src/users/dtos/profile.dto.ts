@@ -19,7 +19,7 @@ export class ProfileDto {
 
   @IsString()
   @MinLength(5, { message: 'Password is too short.' })
-  @MaxLength(20, { message: 'Please is too long.' })
+  @MaxLength(20, { message: 'Password is too long.' })
   @IsOptional()
   password?: string;
 }

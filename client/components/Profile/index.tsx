@@ -15,7 +15,9 @@ const Profile = () => {
   };
 
   const { data } = useTypedSelector(state => state.userLogin);
-  const { error, loading } = useTypedSelector(state => state.userUpdate);
+  const { error, loading, success } = useTypedSelector(
+    state => state.userUpdate
+  );
   const { updateUser } = useUserActions();
 
   const [credentials, setCredentials] =
@@ -26,17 +28,20 @@ const Profile = () => {
     setMessage(error);
   }, [error]);
 
+  useEffect(() => {
+    if (data) {
+      setCredentials({
+        ...credentials,
+        name: data.name,
+        email: data.email,
+      });
+    }
+  }, [data]);
+
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const { name, email, password, confirmPassword } = credentials;
-
-    if (data) {
-      // setCredentials({
-      //   name,
-      //   email,
-      // });
-    }
 
     if (!name && !email && !password) {
       setMessage('Change at least one property.');
@@ -50,9 +55,11 @@ const Profile = () => {
       return null;
     }
 
+    setMessage(null);
+
     updateUser({
-      name: name!,
-      email: email!,
+      name: name?.length! > 0 ? name! : null,
+      email: email?.length! > 0 ? email! : null,
       password: password!,
     });
   };
@@ -66,69 +73,66 @@ const Profile = () => {
             {Array.isArray(message) ? message[0] : message}
           </Message>
         )}
-        {/* {success && <Message variant="success">Profile Updated</Message>} */}
-        {loading ? (
-          <Loader />
-        ) : error ? (
-          <Message variant="danger">{error}</Message>
-        ) : (
-          <Form onSubmit={onSubmitHandler}>
-            <Form.Group controlId="name">
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type="name"
-                placeholder="Enter name"
-                value={credentials.name!}
-                onChange={e =>
-                  setCredentials({ ...credentials, name: e.target.value })
-                }
-              ></Form.Control>
-            </Form.Group>
-
-            <Form.Group controlId="email" className="py-3">
-              <Form.Label>Email Address</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                value={credentials.email!}
-                onChange={e =>
-                  setCredentials({ ...credentials, email: e.target.value })
-                }
-              ></Form.Control>
-            </Form.Group>
-
-            <Form.Group controlId="password">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Enter password"
-                value={credentials.password!}
-                onChange={e =>
-                  setCredentials({ ...credentials, password: e.target.value })
-                }
-              ></Form.Control>
-            </Form.Group>
-
-            <Form.Group controlId="confirmPassword" className="py-3">
-              <Form.Label>Confirm Password</Form.Label>
-              <Form.Control
-                type="password"
-                placeholder="Confirm password"
-                value={credentials.confirmPassword!}
-                onChange={e =>
-                  setCredentials({
-                    ...credentials,
-                    confirmPassword: e.target.value,
-                  })
-                }
-              ></Form.Control>
-            </Form.Group>
-
-            <Button type="submit" variant="primary">
-              Update
-            </Button>
-          </Form>
+        {success && !error && (
+          <Message variant="success">Profile Updated</Message>
         )}
+        {loading && <Loader />}
+        <Form onSubmit={onSubmitHandler}>
+          <Form.Group controlId="name">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              type="name"
+              placeholder="Enter name"
+              value={credentials.name!}
+              onChange={e =>
+                setCredentials({ ...credentials, name: e.target.value })
+              }
+            ></Form.Control>
+          </Form.Group>
+
+          <Form.Group controlId="email" className="py-3">
+            <Form.Label>Email Address</Form.Label>
+            <Form.Control
+              type="email"
+              placeholder="Enter email"
+              value={credentials.email!}
+              onChange={e =>
+                setCredentials({ ...credentials, email: e.target.value })
+              }
+            ></Form.Control>
+          </Form.Group>
+
+          <Form.Group controlId="password">
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Enter password"
+              value={credentials.password!}
+              onChange={e =>
+                setCredentials({ ...credentials, password: e.target.value })
+              }
+            ></Form.Control>
+          </Form.Group>
+
+          <Form.Group controlId="confirmPassword" className="py-3">
+            <Form.Label>Confirm Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Confirm password"
+              value={credentials.confirmPassword!}
+              onChange={e =>
+                setCredentials({
+                  ...credentials,
+                  confirmPassword: e.target.value,
+                })
+              }
+            ></Form.Control>
+          </Form.Group>
+
+          <Button type="submit" variant="primary">
+            Update
+          </Button>
+        </Form>
       </Col>
       {/* <Col md={9}>
         <h2>My Orders</h2>
