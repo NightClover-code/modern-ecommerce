@@ -30,11 +30,11 @@ const Profile = () => {
 
   useEffect(() => {
     if (data) {
-      setCredentials({
+      setCredentials(credentials => ({
         ...credentials,
         name: data.name,
         email: data.email,
-      });
+      }));
     }
   }, [data]);
 
