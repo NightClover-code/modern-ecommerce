@@ -29,11 +29,11 @@ export const userRegisterReducer = (
   action: UserAction
 ): UserState => {
   switch (action.type) {
-    case ActionTypes.GET_CURRENT_USER_START:
+    case ActionTypes.USER_REGISTER_START:
       return { ...state, loading: true, error: null };
-    case ActionTypes.GET_CURRENT_USER_SUCCESS:
+    case ActionTypes.USER_REGISTER_SUCCESS:
       return { loading: false, data: action.payload, error: null };
-    case ActionTypes.GET_CURRENT_USER_ERROR:
+    case ActionTypes.USER_REGISTER_ERROR:
       return { ...state, loading: false, error: action.payload };
 
     case ActionTypes.CLEAN_USER_ERRORS:
@@ -48,13 +48,15 @@ export const userDetailsReducer = (
   action: UserAction
 ): UserState => {
   switch (action.type) {
-    case ActionTypes.USER_REGISTER_START:
+    case ActionTypes.GET_CURRENT_USER_START:
       return { ...state, loading: true, error: null };
-    case ActionTypes.USER_REGISTER_SUCCESS:
+    case ActionTypes.GET_CURRENT_USER_SUCCESS:
       return { loading: false, data: action.payload, error: null };
-    case ActionTypes.USER_REGISTER_ERROR:
+    case ActionTypes.GET_CURRENT_USER_ERROR:
       return { ...state, loading: false, error: action.payload };
 
+    case ActionTypes.USER_LOGOUT:
+      return { ...state, data: action.payload };
     case ActionTypes.CLEAN_USER_ERRORS:
       return { ...state, error: null };
     default:

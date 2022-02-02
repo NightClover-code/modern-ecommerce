@@ -3,12 +3,12 @@ import { useEffect } from 'react';
 import { useTypedSelector } from '.';
 
 export const useAuth = () => {
-  const { data } = useTypedSelector(state => state.userLogin);
+  const { data, loading } = useTypedSelector(state => state.user);
   const router = useRouter();
 
   useEffect(() => {
-    if (!data) {
-      router.push('/login');
+    if (!data && !loading) {
+      // router.push('/login');
     }
   }, []);
 

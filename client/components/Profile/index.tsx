@@ -14,7 +14,7 @@ const Profile = () => {
     confirmPassword: '',
   };
 
-  const { data } = useTypedSelector(state => state.userLogin);
+  const { data } = useTypedSelector(state => state.user);
   const { error, loading, success } = useTypedSelector(
     state => state.userUpdate
   );

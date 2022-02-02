@@ -34,6 +34,11 @@ export const login =
         payload: data,
       });
 
+      dispatch({
+        type: ActionTypes.GET_CURRENT_USER_SUCCESS,
+        payload: data,
+      });
+
       localStorage.setItem('accessToken', data.accessToken);
 
       Router.push('/');
