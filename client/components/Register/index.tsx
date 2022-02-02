@@ -9,10 +9,10 @@ import Message from '../Message';
 
 const Register = () => {
   const initialCredentials = {
-    name: null,
-    email: null,
-    password: null,
-    confirmPassword: null,
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
   };
 
   const { register } = useUserActions();
@@ -29,9 +29,14 @@ const Register = () => {
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { name, email, password, confirmPassword } = credentials!;
+    const { name, email, password, confirmPassword } = credentials;
 
-    if (!name || !email || !password || !confirmPassword) {
+    if (
+      name.length < 1 ||
+      email.length < 1 ||
+      password.length < 1 ||
+      confirmPassword.length < 1
+    ) {
       setMessage('All fields are required.');
 
       return null;
@@ -63,7 +68,7 @@ const Register = () => {
           <Form.Control
             type="name"
             placeholder="Enter name"
-            value={credentials.name!}
+            value={credentials.name}
             onChange={e =>
               setCredentials({ ...credentials, name: e.target.value })
             }
@@ -75,7 +80,7 @@ const Register = () => {
           <Form.Control
             type="email"
             placeholder="Enter email"
-            value={credentials.email!}
+            value={credentials.email}
             onChange={e =>
               setCredentials({ ...credentials, email: e.target.value })
             }
@@ -87,7 +92,7 @@ const Register = () => {
           <Form.Control
             type="password"
             placeholder="Enter password"
-            value={credentials.password!}
+            value={credentials.password}
             onChange={e =>
               setCredentials({ ...credentials, password: e.target.value })
             }
@@ -99,7 +104,7 @@ const Register = () => {
           <Form.Control
             type="password"
             placeholder="Confirm password"
-            value={credentials.confirmPassword!}
+            value={credentials.confirmPassword}
             onChange={e =>
               setCredentials({
                 ...credentials,

@@ -8,10 +8,10 @@ import { UserCredentials } from '../../interfaces';
 
 const Profile = () => {
   const initialCredentials = {
-    name: null,
-    email: null,
-    password: null,
-    confirmPassword: null,
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
   };
 
   const { data } = useTypedSelector(state => state.userLogin);
@@ -43,7 +43,7 @@ const Profile = () => {
 
     const { name, email, password, confirmPassword } = credentials;
 
-    if (!name && !email && !password) {
+    if (name.length < 1 && email.length < 1 && password.length < 1) {
       setMessage('Change at least one property.');
 
       return null;
@@ -58,9 +58,9 @@ const Profile = () => {
     setMessage(null);
 
     updateUser({
-      name: name?.length! > 0 ? name! : null,
-      email: email?.length! > 0 ? email! : null,
-      password: password!,
+      name: name.length > 0 ? name : undefined,
+      email: email.length > 0 ? email : undefined,
+      password,
     });
   };
 
@@ -83,7 +83,7 @@ const Profile = () => {
             <Form.Control
               type="name"
               placeholder="Enter name"
-              value={credentials.name!}
+              value={credentials.name}
               onChange={e =>
                 setCredentials({ ...credentials, name: e.target.value })
               }
@@ -95,7 +95,7 @@ const Profile = () => {
             <Form.Control
               type="email"
               placeholder="Enter email"
-              value={credentials.email!}
+              value={credentials.email}
               onChange={e =>
                 setCredentials({ ...credentials, email: e.target.value })
               }
@@ -107,7 +107,7 @@ const Profile = () => {
             <Form.Control
               type="password"
               placeholder="Enter password"
-              value={credentials.password!}
+              value={credentials.password}
               onChange={e =>
                 setCredentials({ ...credentials, password: e.target.value })
               }
@@ -119,7 +119,7 @@ const Profile = () => {
             <Form.Control
               type="password"
               placeholder="Confirm password"
-              value={credentials.confirmPassword!}
+              value={credentials.confirmPassword}
               onChange={e =>
                 setCredentials({
                   ...credentials,

@@ -29,8 +29,8 @@ export interface UserInterface {
 }
 
 export interface UserCredentials {
-  name: string | null;
-  email: string | null;
-  password: string | null;
-  confirmPassword: string | null;
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
 }
