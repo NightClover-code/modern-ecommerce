@@ -13,20 +13,28 @@ import { v4 as randomID } from 'uuid';
 import Message from '../Message';
 import { useEffect } from 'react';
 import Loader from '../Loader';
+import { useRouter } from 'next/router';
 
 const Cart: React.FC = () => {
+  const router = useRouter();
+
   const {
     loading,
     error,
     data: { cartItems },
   } = useTypedSelector(state => state.cart);
+  const { data } = useTypedSelector(state => state.user);
   const { addToCart, getCartItems, removeFromCart } = useCartActions();
 
   useEffect(() => {
     getCartItems();
   }, [getCartItems]);
 
-  const onCheckoutHandler = () => {};
+  const onCheckoutHandler = () => {
+    const redirect = data ? '/shipping' : '/login';
+
+    router.push(redirect);
+  };
 
   return (
     <Row>

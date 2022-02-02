@@ -159,6 +159,11 @@ export const updateUser =
         type: ActionTypes.USER_UPDATE_SUCCESS,
         payload: data,
       });
+
+      dispatch({
+        type: ActionTypes.GET_CURRENT_USER_SUCCESS,
+        payload: data,
+      });
     } catch (error: any) {
       dispatch({
         type: ActionTypes.USER_UPDATE_ERROR,

@@ -60,7 +60,7 @@ const Profile = () => {
     updateUser({
       name: name.length > 0 ? name : undefined,
       email: email.length > 0 ? email : undefined,
-      password: password.length > 0 && password,
+      password: password.length > 0 ? password : undefined,
     });
   };
 
@@ -68,6 +68,7 @@ const Profile = () => {
     <Row>
       <Col md={3}>
         <h2>User Profile</h2>
+
         {message && (
           <Message variant="danger">
             {Array.isArray(message) ? message[0] : message}
@@ -77,6 +78,7 @@ const Profile = () => {
           <Message variant="success">Profile Updated</Message>
         )}
         {loading && <Loader />}
+
         <Form onSubmit={onSubmitHandler}>
           <Form.Group controlId="name">
             <Form.Label>Name</Form.Label>
