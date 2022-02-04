@@ -22,6 +22,7 @@ export const cartReducer = (
           ...state,
           loading: false,
           data: {
+            ...state.data,
             cartItems: state.data.cartItems.map(x =>
               x.productId === itemExists.productId ? item : x
             ),
@@ -31,7 +32,7 @@ export const cartReducer = (
 
       return {
         loading: false,
-        data: { cartItems: [...state.data.cartItems, item] },
+        data: { ...state.data, cartItems: [...state.data.cartItems, item] },
         error: null,
       };
     case ActionTypes.ADD_CART_ITEM_ERROR:
@@ -41,9 +42,19 @@ export const cartReducer = (
       return {
         ...state,
         data: {
+          ...state.data,
           cartItems: state.data.cartItems.filter(
             x => x.productId !== action.payload
           ),
+        },
+      };
+
+    case ActionTypes.SAVE_CART_SHIPPING_ADDRESS:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          shippingDetails: action.payload,
         },
       };
 
@@ -52,7 +63,7 @@ export const cartReducer = (
     case ActionTypes.GET_CART_ITEMS_SUCCESS:
       return {
         loading: false,
-        data: { cartItems: action.payload },
+        data: { ...state.data, cartItems: action.payload },
         error: null,
       };
     case ActionTypes.GET_CART_ITEMS_ERROR:

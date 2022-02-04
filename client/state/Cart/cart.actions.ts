@@ -1,4 +1,4 @@
-import { CartItemInterface } from '../../interfaces';
+import { CartItemInterface, ShippingDetails } from '../../interfaces';
 import { ActionTypes } from './cart.action-types';
 
 export type CartAction =
@@ -8,7 +8,8 @@ export type CartAction =
   | GetCartItemsStart
   | GetCartItemsSuccess
   | GetCartItemsError
-  | RemoveCartItem;
+  | RemoveCartItem
+  | SaveCartShippingAddress;
 
 export interface AddCartItemStart {
   type: ActionTypes.ADD_CART_ITEM_START;
@@ -41,4 +42,9 @@ export interface GetCartItemsError {
 export interface RemoveCartItem {
   type: ActionTypes.REMOVE_CART_ITEM;
   payload: string;
+}
+
+export interface SaveCartShippingAddress {
+  type: ActionTypes.SAVE_CART_SHIPPING_ADDRESS;
+  payload: ShippingDetails;
 }

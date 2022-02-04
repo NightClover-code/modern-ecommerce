@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { ProductInterface } from '../../interfaces';
+import { ProductInterface, ShippingDetails } from '../../interfaces';
 import { proshopAPI } from '../../lib';
 import { ActionTypes } from './cart.action-types';
 import { CartAction } from './cart.actions';
@@ -54,6 +54,18 @@ export const removeFromCart =
     dispatch({
       type: ActionTypes.REMOVE_CART_ITEM,
       payload: id,
+    });
+    try {
+    } catch (error: any) {
+      console.log(error.response.data.message);
+    }
+  };
+
+export const saveShippingAddress =
+  (data: ShippingDetails) => async (dispatch: Dispatch<CartAction>) => {
+    dispatch({
+      type: ActionTypes.SAVE_CART_SHIPPING_ADDRESS,
+      payload: data,
     });
     try {
     } catch (error: any) {

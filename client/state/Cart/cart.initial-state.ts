@@ -3,5 +3,11 @@ export const cartInitialState = {
   error: null,
   data: {
     cartItems: [],
+    shippingDetails: {
+      address: '',
+      country: '',
+      postalCode: '',
+      city: '',
+    },
   },
 };
