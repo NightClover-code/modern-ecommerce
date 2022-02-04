@@ -3,6 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+import { ShippingDetails } from 'src/interfaces';
 import { ProductDocument } from 'src/products/schemas/product.schema';
 import { Cart } from '../schemas/cart.schema';
 
@@ -54,6 +55,12 @@ export class CartService {
 
       return cartItem;
     }
+  }
+
+  saveShippingDetails(shippingDetails: ShippingDetails) {
+    this.cart.shippingDetails = shippingDetails;
+
+    return this.cart.shippingDetails;
   }
 
   removeCartItem(id: string) {

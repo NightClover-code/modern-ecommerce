@@ -1,6 +1,6 @@
 import { Product } from 'src/products/schemas/product.schema';
 
-export interface ShippingAddress {
+export interface ShippingDetails {
   address: string;
   city: string;
   postalCode: string;
@@ -20,4 +20,13 @@ export interface PaymentResult {
   status: string;
   updateTime: string;
   emailAddress: string;
+}
+
+export interface CartItem {
+  productId: string;
+  name: string;
+  image: string;
+  price: number;
+  countInStock: number;
+  qty: number;
 }
