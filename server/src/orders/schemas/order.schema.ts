@@ -1,6 +1,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose from 'mongoose';
-import { OrderItem, PaymentResult, ShippingAddress } from 'src/interfaces';
+import { OrderItem, PaymentResult, ShippingDetails } from 'src/interfaces';
 import { User } from 'src/users/schemas/user.schema';
 
 export type OrderDocument = Order & mongoose.Document;
@@ -37,7 +37,7 @@ export class Order {
       country: { required: true },
     },
   })
-  shippingAddress: ShippingAddress;
+  shippingDetails: ShippingDetails;
 
   @Prop({ required: true })
   paymentMethod: string;

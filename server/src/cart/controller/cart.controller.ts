@@ -19,13 +19,28 @@ export class CartController {
     @Body() { product, qty, productId }: AddToCartDto,
     @Session() session: any
   ) {
-    this.cartService.cart = session.cart ? session.cart : { cartItems: [] };
+    this.cartService.cart = session.cart
+      ? session.cart
+      : { cartItems: [], shippingDetails: {} };
 
     const cartItem = this.cartService.addCartItem({ qty, product, productId });
 
     session.cart = this.cartService.cart;
 
     return cartItem;
+  }
+
+  @Post('shipping')
+  saveShipping(@Body() body: any, @Session() session: any) {
+    this.cartService.cart = session.cart
+      ? session.cart
+      : { cartItems: [], shippingDetails: {} };
+
+    const shippingDetails = this.cartService.saveShippingDetails(body);
+
+    session.cart = this.cartService.cart;
+
+    return shippingDetails;
   }
 
   @Get()
@@ -35,7 +50,9 @@ export class CartController {
 
   @Delete(':id')
   removeCartItem(@Param('id') id: string, @Session() session: any) {
-    this.cartService.cart = session.cart ? session.cart : { cartItems: [] };
+    this.cartService.cart = session.cart
+      ? session.cart
+      : { cartItems: [], shippingDetails: {} };
 
     const cartItems = this.cartService.removeCartItem(id);
 
