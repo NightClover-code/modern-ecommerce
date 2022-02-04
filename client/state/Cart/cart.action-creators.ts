@@ -62,12 +62,21 @@ export const removeFromCart =
   };
 
 export const saveShippingAddress =
-  (data: ShippingDetails) => async (dispatch: Dispatch<CartAction>) => {
-    dispatch({
-      type: ActionTypes.SAVE_CART_SHIPPING_ADDRESS,
-      payload: data,
-    });
+  (shippingDetails: ShippingDetails) =>
+  async (dispatch: Dispatch<CartAction>) => {
     try {
+      const { data } = await proshopAPI.post(
+        '/cart/shipping',
+        shippingDetails,
+        {
+          withCredentials: true,
+        }
+      );
+
+      dispatch({
+        type: ActionTypes.SAVE_CART_SHIPPING_ADDRESS,
+        payload: data,
+      });
     } catch (error: any) {
       console.log(error.response.data.message);
     }

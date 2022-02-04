@@ -2,22 +2,19 @@ import FormContainer from '../FormContainer';
 import { Form, Button } from 'react-bootstrap';
 import { FormEvent, useState } from 'react';
 import { ShippingDetails } from '../../interfaces';
+import { useCartActions, useTypedSelector } from '../../hooks';
 
 const Shipping = () => {
-  const initialState = {
-    address: '',
-    country: '',
-    postalCode: '',
-    city: '',
-  };
+  const { shippingDetails } = useTypedSelector(state => state.cart.data);
+  const { saveShippingAddress } = useCartActions();
 
-  const [shippingDetails, setShippingDetails] =
-    useState<ShippingDetails>(initialState);
+  const [shippingAddress, setShippingAddress] =
+    useState<ShippingDetails>(shippingDetails);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    // history.push('/payment');
+    saveShippingAddress(shippingAddress);
   };
 
   return (
@@ -31,10 +28,10 @@ const Shipping = () => {
           <Form.Control
             type="text"
             placeholder="Enter address"
-            value={shippingDetails.address}
+            value={shippingAddress.address}
             onChange={e =>
-              setShippingDetails({
-                ...shippingDetails,
+              setShippingAddress({
+                ...shippingAddress,
                 address: e.target.value,
               })
             }
@@ -46,9 +43,9 @@ const Shipping = () => {
           <Form.Control
             type="text"
             placeholder="Enter city"
-            value={shippingDetails.city}
+            value={shippingAddress.city}
             onChange={e =>
-              setShippingDetails({ ...shippingDetails, city: e.target.value })
+              setShippingAddress({ ...shippingAddress, city: e.target.value })
             }
           ></Form.Control>
         </Form.Group>
@@ -58,10 +55,10 @@ const Shipping = () => {
           <Form.Control
             type="text"
             placeholder="Enter postal code"
-            value={shippingDetails.postalCode}
+            value={shippingAddress.postalCode}
             onChange={e =>
-              setShippingDetails({
-                ...shippingDetails,
+              setShippingAddress({
+                ...shippingAddress,
                 postalCode: e.target.value,
               })
             }
@@ -73,10 +70,10 @@ const Shipping = () => {
           <Form.Control
             type="text"
             placeholder="Enter country"
-            value={shippingDetails.country}
+            value={shippingAddress.country}
             onChange={e =>
-              setShippingDetails({
-                ...shippingDetails,
+              setShippingAddress({
+                ...shippingAddress,
                 country: e.target.value,
               })
             }

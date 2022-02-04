@@ -5,6 +5,6 @@ export interface CartState {
   error: string | null;
   data: {
     cartItems: CartItemInterface[];
-    shippingDetails?: ShippingDetails;
+    shippingDetails: ShippingDetails;
   };
 }
