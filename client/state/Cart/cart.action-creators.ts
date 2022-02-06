@@ -77,6 +77,8 @@ export const saveShippingAddress =
         type: ActionTypes.SAVE_CART_SHIPPING_ADDRESS,
         payload: data,
       });
+
+      Router.push('/payment');
     } catch (error: any) {
       console.log(error.response.data.message);
     }

@@ -44,8 +44,8 @@ export class CartController {
   }
 
   @Get()
-  getCartItems(@Session() session: any) {
-    return session.cart ? session.cart.cartItems : null;
+  getCart(@Session() session: any) {
+    return session.cart ? session.cart : null;
   }
 
   @Delete(':id')
