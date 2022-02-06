@@ -2,9 +2,15 @@ import FormContainer from '../FormContainer';
 import CheckoutSteps from '../CheckoutSteps';
 import { Form, Col, Button } from 'react-bootstrap';
 import { useState, FormEvent } from 'react';
+import { useTypedSelector } from '../../hooks';
+import { useRouter } from 'next/router';
 
 const Payment = () => {
-  const [paymentMethod, setPaymentMethod] = useState('');
+  const router = useRouter();
+
+  const [paymentMethod, setPaymentMethod] = useState('PayPal');
+
+  const { shippingDetails } = useTypedSelector(state => state.cart.data);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {};
 

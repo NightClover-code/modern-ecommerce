@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
 import Profile from '../../components/Profile';
 import SEO from '../../components/SEO';
-import WithAuth from '../../hoc/WithAuth';
+import { WithAuth } from '../../hoc';
 import { seoConfig } from '../../utils';
 
 const LoginPage: NextPage = () => {

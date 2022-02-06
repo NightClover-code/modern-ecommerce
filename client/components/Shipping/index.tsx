@@ -4,8 +4,11 @@ import { FormEvent, useState } from 'react';
 import { ShippingDetails } from '../../interfaces';
 import { useCartActions, useTypedSelector } from '../../hooks';
 import CheckoutSteps from '../CheckoutSteps';
+import { useRouter } from 'next/router';
 
 const Shipping = () => {
+  const router = useRouter();
+
   const { shippingDetails } = useTypedSelector(state => state.cart.data);
   const { saveShippingAddress } = useCartActions();
 
@@ -16,6 +19,8 @@ const Shipping = () => {
     e.preventDefault();
 
     saveShippingAddress(shippingAddress);
+
+    router.push('/payment');
   };
 
   return (
