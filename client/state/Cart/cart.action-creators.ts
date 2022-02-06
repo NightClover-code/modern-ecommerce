@@ -84,7 +84,7 @@ export const saveShippingAddress =
     }
   };
 
-export const getCartItems = () => async (dispatch: Dispatch<CartAction>) => {
+export const getCart = () => async (dispatch: Dispatch<CartAction>) => {
   try {
     dispatch({
       type: ActionTypes.GET_CART_START,
