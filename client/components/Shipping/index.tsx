@@ -3,6 +3,7 @@ import { Form, Button } from 'react-bootstrap';
 import { FormEvent, useState } from 'react';
 import { ShippingDetails } from '../../interfaces';
 import { useCartActions, useTypedSelector } from '../../hooks';
+import CheckoutSteps from '../CheckoutSteps';
 
 const Shipping = () => {
   const { shippingDetails } = useTypedSelector(state => state.cart.data);
@@ -19,7 +20,7 @@ const Shipping = () => {
 
   return (
     <FormContainer>
-      {/* <CheckoutSteps step1 step2 /> */}
+      <CheckoutSteps step1 step2 />
       <h1>Shipping</h1>
 
       <Form onSubmit={onSubmitHandler}>
