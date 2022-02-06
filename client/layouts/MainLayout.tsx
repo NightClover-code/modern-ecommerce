@@ -10,6 +10,7 @@ const MainLayout: React.FC = ({ children }) => {
   const router = useRouter();
 
   const { getCurrentUser, cleanErrors } = useUserActions();
+  // const {getCurrentCart} = useCzrt
   const accessToken = useLocalStorage('', 'accessToken');
 
   useEffect(() => {

@@ -1,13 +1,17 @@
-import { CartItemInterface, ShippingDetails } from '../../interfaces';
+import {
+  CartInterface,
+  CartItemInterface,
+  ShippingDetails,
+} from '../../interfaces';
 import { ActionTypes } from './cart.action-types';
 
 export type CartAction =
   | AddCartItemStart
   | AddCartItemSuccess
   | AddCartItemError
-  | GetCartItemsStart
-  | GetCartItemsSuccess
-  | GetCartItemsError
+  | GetCartStart
+  | GetCartSuccess
+  | GetCartError
   | RemoveCartItem
   | SaveCartShippingAddress;
 
@@ -25,17 +29,17 @@ export interface AddCartItemError {
   payload: string;
 }
 
-export interface GetCartItemsStart {
-  type: ActionTypes.GET_CART_ITEMS_START;
+export interface GetCartStart {
+  type: ActionTypes.GET_CART_START;
 }
 
-export interface GetCartItemsSuccess {
-  type: ActionTypes.GET_CART_ITEMS_SUCCESS;
-  payload: CartItemInterface[];
+export interface GetCartSuccess {
+  type: ActionTypes.GET_CART_SUCCESS;
+  payload: CartInterface;
 }
 
-export interface GetCartItemsError {
-  type: ActionTypes.GET_CART_ITEMS_ERROR;
+export interface GetCartError {
+  type: ActionTypes.GET_CART_ERROR;
   payload: string;
 }
 

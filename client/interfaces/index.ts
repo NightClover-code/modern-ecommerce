@@ -20,6 +20,11 @@ export interface CartItemInterface {
   qty: number;
 }
 
+export interface CartInterface {
+  cartItems: CartItemInterface[];
+  shippingDetails: ShippingDetails;
+}
+
 export interface UserInterface {
   _id: string;
   email: string;

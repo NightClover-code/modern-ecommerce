@@ -58,15 +58,15 @@ export const cartReducer = (
         },
       };
 
-    case ActionTypes.GET_CART_ITEMS_START:
+    case ActionTypes.GET_CART_START:
       return { ...state, loading: true };
-    case ActionTypes.GET_CART_ITEMS_SUCCESS:
+    case ActionTypes.GET_CART_SUCCESS:
       return {
         loading: false,
-        data: { ...state.data, cartItems: action.payload },
+        data: action.payload,
         error: null,
       };
-    case ActionTypes.GET_CART_ITEMS_ERROR:
+    case ActionTypes.GET_CART_ERROR:
       return { ...state, loading: false, error: action.payload };
 
     default:

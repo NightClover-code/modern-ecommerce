@@ -87,18 +87,18 @@ export const saveShippingAddress =
 export const getCartItems = () => async (dispatch: Dispatch<CartAction>) => {
   try {
     dispatch({
-      type: ActionTypes.GET_CART_ITEMS_START,
+      type: ActionTypes.GET_CART_START,
     });
 
     const { data } = await proshopAPI.get('/cart', { withCredentials: true });
 
     dispatch({
-      type: ActionTypes.GET_CART_ITEMS_SUCCESS,
+      type: ActionTypes.GET_CART_SUCCESS,
       payload: data,
     });
   } catch (error: any) {
     dispatch({
-      type: ActionTypes.GET_CART_ITEMS_ERROR,
+      type: ActionTypes.GET_CART_ERROR,
       payload: error.response.data.message,
     });
   }

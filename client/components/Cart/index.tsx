@@ -11,7 +11,6 @@ import {
 } from 'react-bootstrap';
 import { v4 as randomID } from 'uuid';
 import Message from '../Message';
-import { useEffect } from 'react';
 import Loader from '../Loader';
 import { useRouter } from 'next/router';
 
@@ -24,11 +23,7 @@ const Cart: React.FC = () => {
     data: { cartItems },
   } = useTypedSelector(state => state.cart);
   const { data } = useTypedSelector(state => state.user);
-  const { addToCart, getCartItems, removeFromCart } = useCartActions();
-
-  useEffect(() => {
-    getCartItems();
-  }, [getCartItems]);
+  const { addToCart, removeFromCart } = useCartActions();
 
   const onCheckoutHandler = () => {
     const redirect = data ? '/shipping' : '/login';

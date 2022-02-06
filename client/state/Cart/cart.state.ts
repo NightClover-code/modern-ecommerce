@@ -1,10 +1,7 @@
-import { CartItemInterface, ShippingDetails } from '../../interfaces';
+import { CartInterface } from '../../interfaces';
 
 export interface CartState {
   loading: boolean;
   error: string | null;
-  data: {
-    cartItems: CartItemInterface[];
-    shippingDetails: ShippingDetails;
-  };
+  data: CartInterface;
 }
