@@ -13,7 +13,8 @@ export type CartAction =
   | GetCartSuccess
   | GetCartError
   | RemoveCartItem
-  | SaveCartShippingAddress;
+  | SaveCartShippingAddress
+  | SaveCartPaymentMethod;
 
 export interface AddCartItemStart {
   type: ActionTypes.ADD_CART_ITEM_START;
@@ -51,4 +52,9 @@ export interface RemoveCartItem {
 export interface SaveCartShippingAddress {
   type: ActionTypes.SAVE_CART_SHIPPING_ADDRESS;
   payload: ShippingDetails;
+}
+
+export interface SaveCartPaymentMethod {
+  type: ActionTypes.SAVE_CART_PAYMENT_METHOD;
+  payload: string;
 }
