@@ -119,6 +119,8 @@ export const savePaymentMethod =
         type: ActionTypes.SAVE_CART_PAYMENT_METHOD,
         payload: data,
       });
+
+      Router.push('/placeorder');
     } catch (error: any) {
       console.log(error.response.data.message);
     }
