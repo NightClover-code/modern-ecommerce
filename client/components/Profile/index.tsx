@@ -1,12 +1,13 @@
-import Link from 'next/link';
-import { Button, Col, Form, Row, Table } from 'react-bootstrap';
+import { Button, Col, Form, Row } from 'react-bootstrap';
 import Loader from '../Loader';
 import { FormEvent, useEffect, useState } from 'react';
 import Message from '../Message';
-import { useTypedSelector, useUserActions } from '../../hooks';
+import { useAuth, useTypedSelector, useUserActions } from '../../hooks';
 import { UserCredentials } from '../../interfaces';
 
 const Profile = () => {
+  useAuth();
+
   const initialCredentials = {
     name: '',
     email: '',

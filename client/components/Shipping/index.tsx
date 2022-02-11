@@ -2,12 +2,14 @@ import FormContainer from '../FormContainer';
 import { Form, Button } from 'react-bootstrap';
 import { FormEvent, useState } from 'react';
 import { ShippingDetails } from '../../interfaces';
-import { useCartActions, useTypedSelector } from '../../hooks';
+import { useAuth, useCartActions, useTypedSelector } from '../../hooks';
 import CheckoutSteps from '../CheckoutSteps';
 import { useRouter } from 'next/router';
 import Message from '../Message';
 
 const Shipping = () => {
+  useAuth();
+
   const router = useRouter();
 
   const {
