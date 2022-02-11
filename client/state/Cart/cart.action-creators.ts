@@ -105,24 +105,21 @@ export const getCart = () => async (dispatch: Dispatch<CartAction>) => {
 };
 
 export const savePaymentMethod =
-  () => async (dispatch: Dispatch<CartAction>) => {
+  (paymentMethod: string) => async (dispatch: Dispatch<CartAction>) => {
     try {
-      dispatch({
-        type: ActionTypes.GET_CART_START,
-      });
+      const { data } = await proshopAPI.post(
+        '/cart/shipping',
+        { paymentMethod },
+        {
+          withCredentials: true,
+        }
+      );
 
-      const { data } = await proshopAPI.get('/cart/payment', {
-        withCredentials: true,
-      });
-
       dispatch({
-        type: ActionTypes.GET_CART_SUCCESS,
+        type: ActionTypes.SAVE_CART_PAYMENT_METHOD,
         payload: data,
       });
     } catch (error: any) {
-      dispatch({
-        type: ActionTypes.GET_CART_ERROR,
-        payload: error.response.data.message,
-      });
+      console.log(error.response.data.message);
     }
   };

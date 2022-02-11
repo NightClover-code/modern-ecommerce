@@ -9,5 +9,6 @@ export const cartInitialState = {
       postalCode: '',
       city: '',
     },
+    paymentMethod: 'PayPal',
   },
 };

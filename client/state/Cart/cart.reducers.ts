@@ -58,6 +58,15 @@ export const cartReducer = (
         },
       };
 
+    case ActionTypes.SAVE_CART_PAYMENT_METHOD:
+      return {
+        ...state,
+        data: {
+          ...state.data,
+          paymentMethod: action.payload,
+        },
+      };
+
     case ActionTypes.GET_CART_START:
       return { ...state, loading: true };
     case ActionTypes.GET_CART_SUCCESS:

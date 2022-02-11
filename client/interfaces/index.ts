@@ -23,6 +23,7 @@ export interface CartItemInterface {
 export interface CartInterface {
   cartItems: CartItemInterface[];
   shippingDetails: ShippingDetails;
+  paymentMethod: string;
 }
 
 export interface UserInterface {
