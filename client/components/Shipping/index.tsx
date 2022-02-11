@@ -5,18 +5,36 @@ import { ShippingDetails } from '../../interfaces';
 import { useCartActions, useTypedSelector } from '../../hooks';
 import CheckoutSteps from '../CheckoutSteps';
 import { useRouter } from 'next/router';
+import Message from '../Message';
 
 const Shipping = () => {
   const router = useRouter();
 
-  const { shippingDetails } = useTypedSelector(state => state.cart.data);
+  const {
+    data: { shippingDetails },
+    error,
+  } = useTypedSelector(state => state.cart);
   const { saveShippingAddress } = useCartActions();
 
   const [shippingAddress, setShippingAddress] =
     useState<ShippingDetails>(shippingDetails);
+  const [message, setMessage] = useState<string | null | string[]>(error);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    const { address, country, city, postalCode } = shippingAddress;
+
+    if (
+      address.length < 1 ||
+      country.length < 1 ||
+      city.length < 1 ||
+      postalCode.length < 1
+    ) {
+      setMessage('All fields are required.');
+
+      return null;
+    }
 
     saveShippingAddress(shippingAddress);
 
@@ -27,6 +45,12 @@ const Shipping = () => {
     <FormContainer>
       <CheckoutSteps step1 step2 />
       <h1>Shipping</h1>
+
+      {message && (
+        <Message variant="danger">
+          {Array.isArray(message) ? message[0] : message}
+        </Message>
+      )}
 
       <Form onSubmit={onSubmitHandler}>
         <Form.Group controlId="address">

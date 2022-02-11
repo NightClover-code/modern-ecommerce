@@ -11,6 +11,7 @@ import { AddToCartDto } from '../dtos/add-to-cart.dto';
 import { SaveShippingDetailsDto } from '../dtos/save-shipping-details.dto';
 import { CartService } from '../services/cart.service';
 import { defaultCart } from '../schemas/cart.schema';
+import { SavePaymentMethodDto } from '../dtos/save-payment-method.dto';
 
 @Controller('cart')
 export class CartController {
@@ -41,6 +42,20 @@ export class CartController {
   @Get()
   getCart(@Session() session: any) {
     return session.cart ? session.cart : defaultCart;
+  }
+
+  @Post('payment')
+  savePaymentMethod(
+    @Body() { paymentMethod }: SavePaymentMethodDto,
+    @Session() session: any
+  ) {
+    this.cartService.cart = session.cart ? session.cart : defaultCart;
+
+    const shippingDetails = this.cartService.savePaymentMethod(paymentMethod);
+
+    session.cart = this.cartService.cart;
+
+    return shippingDetails;
   }
 
   @Delete(':id')

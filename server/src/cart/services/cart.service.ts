@@ -63,6 +63,12 @@ export class CartService {
     return this.cart.shippingDetails;
   }
 
+  savePaymentMethod(paymentMethod: string) {
+    this.cart.paymentMethod = paymentMethod;
+
+    return this.cart.paymentMethod;
+  }
+
   removeCartItem(id: string) {
     const itemExists = this.cart.cartItems.find(x => x.productId === id);
 

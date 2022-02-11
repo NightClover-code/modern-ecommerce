@@ -111,7 +111,9 @@ export const savePaymentMethod =
         type: ActionTypes.GET_CART_START,
       });
 
-      const { data } = await proshopAPI.get('/cart', { withCredentials: true });
+      const { data } = await proshopAPI.get('/cart/payment', {
+        withCredentials: true,
+      });
 
       dispatch({
         type: ActionTypes.GET_CART_SUCCESS,

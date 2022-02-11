@@ -3,6 +3,7 @@ import { CartItem, ShippingDetails } from 'src/interfaces';
 export interface CartInterface {
   cartItems: CartItem[];
   shippingDetails: ShippingDetails;
+  paymentMethod: string;
 }
 
 export const defaultCart = {
@@ -13,6 +14,7 @@ export const defaultCart = {
     postalCode: '',
     country: '',
   },
+  paymentMethod: 'PayPal',
 };
 
 export class Cart {
