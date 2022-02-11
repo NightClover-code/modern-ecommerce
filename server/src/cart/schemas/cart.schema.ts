@@ -5,16 +5,16 @@ export interface CartInterface {
   shippingDetails: ShippingDetails;
 }
 
+export const defaultCart = {
+  cartItems: [],
+  shippingDetails: {
+    address: '',
+    city: '',
+    postalCode: '',
+    country: '',
+  },
+};
+
 export class Cart {
-  constructor(
-    public cart: CartInterface = {
-      cartItems: [],
-      shippingDetails: {
-        address: '',
-        city: '',
-        postalCode: '',
-        country: '',
-      },
-    }
-  ) {}
+  constructor(public cart: CartInterface = defaultCart) {}
 }

@@ -9,11 +9,9 @@ const PaymentPage: NextPage = () => {
     <>
       <SEO {...seoConfig} />
       <main className="wrapper py-5">
-        <WithAuth>
-          <WithShipping>
-            <Payment />
-          </WithShipping>
-        </WithAuth>
+        <WithShipping>
+          <Payment />
+        </WithShipping>
       </main>
     </>
   );

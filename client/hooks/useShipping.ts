@@ -15,7 +15,7 @@ export const useShipping = () => {
     ) {
       router.push('/shipping');
     }
-  }, [router]);
+  }, [router, shippingDetails]);
 
   return shippingDetails;
 };

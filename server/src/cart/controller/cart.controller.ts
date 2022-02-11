@@ -10,16 +10,15 @@ import {
 import { AddToCartDto } from '../dtos/add-to-cart.dto';
 import { SaveShippingDetailsDto } from '../dtos/save-shipping-details.dto';
 import { CartService } from '../services/cart.service';
+import { defaultCart } from '../schemas/cart.schema';
 
 @Controller('cart')
 export class CartController {
-  defaultCart = { cartItems: [], shippingDetails: {} };
-
   constructor(private cartService: CartService) {}
 
   @Post()
   addToCart(@Body() body: AddToCartDto, @Session() session: any) {
-    this.cartService.cart = session.cart ? session.cart : this.defaultCart;
+    this.cartService.cart = session.cart ? session.cart : defaultCart;
 
     const cartItem = this.cartService.addCartItem({ ...body });
 
@@ -30,7 +29,7 @@ export class CartController {
 
   @Post('shipping')
   saveShipping(@Body() body: SaveShippingDetailsDto, @Session() session: any) {
-    this.cartService.cart = session.cart ? session.cart : this.defaultCart;
+    this.cartService.cart = session.cart ? session.cart : defaultCart;
 
     const shippingDetails = this.cartService.saveShippingDetails(body);
 
@@ -41,12 +40,12 @@ export class CartController {
 
   @Get()
   getCart(@Session() session: any) {
-    return session.cart ? session.cart : this.defaultCart;
+    return session.cart ? session.cart : defaultCart;
   }
 
   @Delete(':id')
   removeCartItem(@Param('id') id: string, @Session() session: any) {
-    this.cartService.cart = session.cart ? session.cart : this.defaultCart;
+    this.cartService.cart = session.cart ? session.cart : defaultCart;
 
     const cartItems = this.cartService.removeCartItem(id);
 
