@@ -18,3 +18,12 @@ h2 {
   font-size: 1.4rem;
   padding: 0.5rem 0;
 }
+
+.link__span {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.link__span:hover {
+  text-decoration: underline;
+}

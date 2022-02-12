@@ -53,8 +53,8 @@ const Cart: React.FC = () => {
                       <Image src={item.image} alt={item.name} fluid rounded />
                     </Col>
                     <Col md={3}>
-                      <Link href={`/product/${item.productId}`}>
-                        {item.name}
+                      <Link href={`/product/${item.productId}`} passHref>
+                        <span className="link__span">{item.name}</span>
                       </Link>
                     </Col>
                     <Col md={2}>${item.price}</Col>

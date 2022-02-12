@@ -7,6 +7,8 @@ import Link from 'next/link';
 const PlaceOrder = () => {
   const { data } = useTypedSelector(state => state.cart);
 
+  const onPlaceOrderHandler = () => {};
+
   return (
     <>
       <CheckoutSteps step1 step2 step3 step4 />
@@ -16,7 +18,7 @@ const PlaceOrder = () => {
             <ListGroup.Item>
               <h2>Shipping</h2>
               <p>
-                <strong>Address:</strong>
+                <strong>Address: </strong>
                 {data.shippingDetails.address}, {data.shippingDetails.city}{' '}
                 {data.shippingDetails.postalCode},{' '}
                 {data.shippingDetails.country}
@@ -47,12 +49,13 @@ const PlaceOrder = () => {
                           />
                         </Col>
                         <Col>
-                          {/* <Link href={`/product/${item.product}`}> */}
-                          {/* {item.name} */}
-                          {/* </Link> */}
+                          <Link href={`/product/${item.productId}`} passHref>
+                            <span className="link__span">{item.name}</span>
+                          </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x ${item.price} = ${item.qty * item.price}
+                          {item.qty} x ${item.price} = $
+                          {(item.qty * item.price).toFixed(2)}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -100,7 +103,7 @@ const PlaceOrder = () => {
                   type="button"
                   className="btn-block"
                   // disabled={data.cartItems === 0}
-                  // onClick={placeOrderHandler}
+                  onClick={onPlaceOrderHandler}
                 >
                   Place Order
                 </Button>
