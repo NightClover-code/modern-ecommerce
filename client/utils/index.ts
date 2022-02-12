@@ -9,12 +9,14 @@ export const cartWithPrices = (cart: CartInterface) => {
   );
   const shippingPrice = addDecimals(itemsPrice > 100 ? 0 : 100);
   const taxPrice = addDecimals(parseFloat((0.15 * itemsPrice).toFixed(2)));
+  const totalPrice = addDecimals(itemsPrice + shippingPrice + taxPrice);
 
   return {
     ...cart,
     shippingPrice,
     taxPrice,
     itemsPrice,
+    totalPrice,
   };
 };
 

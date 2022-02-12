@@ -27,6 +27,7 @@ export interface CartInterface {
   taxPrice: number;
   shippingPrice: number;
   itemsPrice: number;
+  totalPrice: number;
 }
 
 export interface UserInterface {

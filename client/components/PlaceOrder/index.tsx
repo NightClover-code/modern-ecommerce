@@ -96,7 +96,7 @@ const PlaceOrder = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  {/* <Col>${data.totalPrice}</Col> */}
+                  <Col>${data.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
