@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import mongoose from 'mongoose';
+import * as mongoose from 'mongoose';
 import { OrderItem, PaymentResult, ShippingDetails } from 'src/interfaces';
 import { User } from 'src/users/schemas/user.schema';
 
@@ -14,10 +14,10 @@ export class Order {
     required: true,
     type: [
       {
-        name: { required: true },
-        qty: { required: true },
-        image: { required: true },
-        price: { required: true },
+        name: { required: true, type: String },
+        qty: { required: true, type: Number },
+        image: { required: true, type: String },
+        price: { required: true, type: Number },
         product: {
           type: mongoose.Schema.Types.ObjectId,
           required: true,
@@ -31,10 +31,10 @@ export class Order {
   @Prop({
     required: true,
     type: {
-      address: { required: true },
-      city: { required: true },
-      postalCode: { required: true },
-      country: { required: true },
+      address: { required: true, type: String },
+      city: { required: true, type: String },
+      postalCode: { required: true, type: String },
+      country: { required: true, type: String },
     },
   })
   shippingDetails: ShippingDetails;
@@ -42,7 +42,15 @@ export class Order {
   @Prop({ required: true })
   paymentMethod: string;
 
-  @Prop({ required: true })
+  @Prop({
+    required: true,
+    type: {
+      id: { required: true, type: String },
+      status: { required: true, type: String },
+      updateTime: { required: true, type: String },
+      emailAddress: { required: true, type: String },
+    },
+  })
   paymentResult: PaymentResult;
 
   @Prop({ required: true, default: 0.0 })
@@ -50,6 +58,9 @@ export class Order {
 
   @Prop({ required: true, default: 0.0 })
   shippingPrice: number;
+
+  @Prop({ required: true, default: 0.0 })
+  itemsPrice: number;
 
   @Prop({ required: true, default: 0.0 })
   totalPrice: number;
