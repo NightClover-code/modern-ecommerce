@@ -1,8 +1,13 @@
 import { Dispatch } from 'redux';
-import { ProductInterface, ShippingDetails } from '../../interfaces';
+import {
+  CartInterface,
+  ProductInterface,
+  ShippingDetails,
+} from '../../interfaces';
 import { proshopAPI } from '../../lib';
 import { ActionTypes } from './cart.action-types';
 import { CartAction } from './cart.actions';
+import { cartWithPrices } from '../../utils';
 import Router from 'next/router';
 
 interface AddToCart {
@@ -95,6 +100,13 @@ export const getCart = () => async (dispatch: Dispatch<CartAction>) => {
     dispatch({
       type: ActionTypes.GET_CART_SUCCESS,
       payload: data,
+    });
+
+    const newCart = cartWithPrices(data);
+
+    dispatch({
+      type: ActionTypes.CALCULATE_PRICES,
+      payload: newCart,
     });
   } catch (error: any) {
     dispatch({

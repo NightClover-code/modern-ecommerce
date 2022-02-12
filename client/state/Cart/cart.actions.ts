@@ -14,7 +14,8 @@ export type CartAction =
   | GetCartError
   | RemoveCartItem
   | SaveCartShippingAddress
-  | SaveCartPaymentMethod;
+  | SaveCartPaymentMethod
+  | CalculatePrices;
 
 export interface AddCartItemStart {
   type: ActionTypes.ADD_CART_ITEM_START;
@@ -57,4 +58,9 @@ export interface SaveCartShippingAddress {
 export interface SaveCartPaymentMethod {
   type: ActionTypes.SAVE_CART_PAYMENT_METHOD;
   payload: string;
+}
+
+export interface CalculatePrices {
+  type: ActionTypes.CALCULATE_PRICES;
+  payload: CartInterface;
 }

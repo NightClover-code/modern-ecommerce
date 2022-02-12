@@ -24,8 +24,8 @@ export interface CartInterface {
   cartItems: CartItemInterface[];
   shippingDetails: ShippingDetails;
   paymentMethod: string;
-  taxPrice?: number;
-  shippingPrice?: number;
+  taxPrice: number;
+  shippingPrice: number;
   itemsPrice: number;
 }
 

@@ -1,11 +1,11 @@
 import CheckoutSteps from '../CheckoutSteps';
 import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
 import Message from '../Message';
-import { useCartActions, useTypedSelector } from '../../hooks';
+import { useTypedSelector } from '../../hooks';
 import Link from 'next/link';
 
 const PlaceOrder = () => {
-  const { data } = useTypedSelector(state => state.cart);
+  const { data, error } = useTypedSelector(state => state.cart);
 
   const onPlaceOrderHandler = () => {};
 
@@ -74,19 +74,23 @@ const PlaceOrder = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  {/* <Col>${data.itemsPrice}</Col> */}
+                  <Col>${data.itemsPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping</Col>
-                  {/* <Col>${data.shippingPrice}</Col> */}
+                  <Col>
+                    {data.shippingPrice !== 0
+                      ? `$${data.shippingPrice}`
+                      : 'Free'}
+                  </Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Tax</Col>
-                  {/* <Col>${data.taxPrice}</Col> */}
+                  <Col>${data.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
@@ -96,13 +100,13 @@ const PlaceOrder = () => {
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
-                {/* {error && <Message variant="danger">{error}</Message>} */}
+                {error && <Message variant="danger">{error}</Message>}
               </ListGroup.Item>
               <ListGroup.Item>
                 <Button
                   type="button"
                   className="btn-block"
-                  // disabled={data.cartItems === 0}
+                  disabled={data.cartItems.length === 0}
                   onClick={onPlaceOrderHandler}
                 >
                   Place Order

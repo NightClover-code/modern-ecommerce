@@ -10,5 +10,8 @@ export const cartInitialState = {
       city: '',
     },
     paymentMethod: 'PayPal',
+    taxPrice: 0,
+    shippingPrice: 0,
+    itemsPrice: 0,
   },
 };

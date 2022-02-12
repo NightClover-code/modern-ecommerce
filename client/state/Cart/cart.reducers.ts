@@ -78,6 +78,9 @@ export const cartReducer = (
     case ActionTypes.GET_CART_ERROR:
       return { ...state, loading: false, error: action.payload };
 
+    case ActionTypes.CALCULATE_PRICES:
+      return { ...state, data: action.payload };
+
     default:
       return state;
   }
