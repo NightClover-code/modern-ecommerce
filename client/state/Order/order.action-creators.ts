@@ -1,25 +1,33 @@
-// import { Dispatch } from 'redux';
-// import { proshopAPI } from '../../lib';
-// import { ActionTypes } from './order.action-types';
-// import { ProductsAction } from './order.actions';
+import { Dispatch } from 'redux';
+import { OrderInterface } from '../../interfaces';
+import { proshopAPI } from '../../lib';
+import { ActionTypes } from './order.action-types';
+import { OrdersAction } from './order.actions';
 
-// export const fetchProduct =
-//   (id: string) => async (dispatch: Dispatch<ProductsAction>) => {
-//     try {
-//       dispatch({
-//         type: ActionTypes.FETCH_PRODUCT_START,
-//       });
+export const createOrder =
+  (order: OrderInterface) => async (dispatch: Dispatch<OrdersAction>) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    };
 
-//       const { data } = await proshopAPI.get(`/products/${id}`);
+    try {
+      dispatch({
+        type: ActionTypes.CREATE_ORDER_START,
+      });
 
-//       dispatch({
-//         type: ActionTypes.FETCH_PRODUCT_SUCCESS,
-//         payload: data,
-//       });
-//     } catch (error: any) {
-//       dispatch({
-//         type: ActionTypes.FETCH_PRODUCT_ERROR,
-//         payload: error.response.data.message,
-//       });
-//     }
-//   };
+      const { data } = await proshopAPI.post('/orders', order, config);
+
+      dispatch({
+        type: ActionTypes.CREATE_ORDER_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: ActionTypes.CREATE_ORDER_ERROR,
+        payload: error.response.data.message,
+      });
+    }
+  };
