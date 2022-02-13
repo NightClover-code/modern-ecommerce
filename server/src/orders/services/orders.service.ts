@@ -28,7 +28,7 @@ export class OrdersService {
 
     const createdOrder = await this.orderModel.create({
       user: userId,
-      orderItem: orderItems,
+      orderItems,
       shippingDetails,
       paymentMethod,
       itemsPrice,

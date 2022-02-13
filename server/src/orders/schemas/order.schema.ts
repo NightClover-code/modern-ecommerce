@@ -43,7 +43,7 @@ export class Order {
   paymentMethod: string;
 
   @Prop({
-    required: true,
+    required: false,
     type: {
       id: { required: true, type: String },
       status: { required: true, type: String },
@@ -65,16 +65,16 @@ export class Order {
   @Prop({ required: true, default: 0.0 })
   totalPrice: number;
 
-  @Prop({ required: true, default: false })
+  @Prop({ default: false })
   isPaid: boolean;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   paidAt: Date;
 
-  @Prop({ required: true, default: false })
+  @Prop({ default: false })
   isDelivered: boolean;
 
-  @Prop({ required: true })
+  @Prop({ required: false })
   deliveredAt: Date;
 }
 
