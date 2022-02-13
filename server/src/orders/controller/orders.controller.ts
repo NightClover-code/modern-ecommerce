@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
   Session,
   UseGuards,
@@ -16,15 +17,22 @@ export class OrdersController {
   @UseGuards(AuthGuard)
   @Post()
   async createOrder(@Body() body: any, @Session() session: any) {
-    const order = await this.ordersService.addOrder(body, session.user._id);
+    const order = await this.ordersService.create(body, session.user._id);
 
     return order;
   }
 
   @Get()
   async getOrders() {
-    const orders = await this.ordersService.getOrders();
+    const orders = await this.ordersService.find();
 
     return orders;
+  }
+
+  @Get(':id')
+  async getOrder(@Param('id') id: string) {
+    const order = await this.ordersService.findById(id);
+
+    return order;
   }
 }

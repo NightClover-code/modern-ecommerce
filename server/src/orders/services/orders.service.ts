@@ -9,7 +9,7 @@ export class OrdersService {
     @InjectModel(Order.name) private orderModel: Model<OrderDocument>
   ) {}
 
-  async addOrder(
+  async create(
     orderAttrs: Partial<OrderDocument>,
     userId: string
   ): Promise<OrderDocument> {
@@ -40,9 +40,15 @@ export class OrdersService {
     return createdOrder;
   }
 
-  async getOrders(): Promise<OrderDocument[]> {
+  async find(): Promise<OrderDocument[]> {
     const orders = await this.orderModel.find();
 
     return orders;
+  }
+
+  async findById(id: string): Promise<OrderDocument> {
+    const order = await this.orderModel.findById(id);
+
+    return order;
   }
 }
