@@ -7,7 +7,8 @@ import Link from 'next/link';
 const PlaceOrder = () => {
   useShipping();
 
-  const { data, error } = useTypedSelector(state => state.cart);
+  const { cart } = useTypedSelector(state => state);
+  const { error } = useTypedSelector(state => state.order);
   const { createOrder } = useOrderActions();
 
   const onPlaceOrderHandler = () => {
@@ -19,7 +20,7 @@ const PlaceOrder = () => {
       shippingPrice,
       taxPrice,
       totalPrice,
-    } = data;
+    } = cart.data;
 
     createOrder({
       paymentMethod,
@@ -42,25 +43,26 @@ const PlaceOrder = () => {
               <h2>Shipping</h2>
               <p>
                 <strong>Address: </strong>
-                {data.shippingDetails.address}, {data.shippingDetails.city}{' '}
-                {data.shippingDetails.postalCode},{' '}
-                {data.shippingDetails.country}
+                {cart.data.shippingDetails.address},{' '}
+                {cart.data.shippingDetails.city}{' '}
+                {cart.data.shippingDetails.postalCode},{' '}
+                {cart.data.shippingDetails.country}
               </p>
             </ListGroup.Item>
 
             <ListGroup.Item>
               <h2>Payment Method</h2>
               <strong>Method: </strong>
-              {data.paymentMethod}
+              {cart.data.paymentMethod}
             </ListGroup.Item>
 
             <ListGroup.Item>
               <h2>Order Items</h2>
-              {data.cartItems.length === 0 ? (
+              {cart.data.cartItems.length === 0 ? (
                 <Message>Your cart is empty</Message>
               ) : (
                 <ListGroup variant="flush">
-                  {data.cartItems.map((item, index) => (
+                  {cart.data.cartItems.map((item, index) => (
                     <ListGroup.Item key={index}>
                       <Row>
                         <Col md={1}>
@@ -97,15 +99,15 @@ const PlaceOrder = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>${data.itemsPrice}</Col>
+                  <Col>${cart.data.itemsPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping</Col>
                   <Col>
-                    {data.shippingPrice !== 0
-                      ? `$${data.shippingPrice}`
+                    {cart.data.shippingPrice !== 0
+                      ? `$${cart.data.shippingPrice}`
                       : 'Free'}
                   </Col>
                 </Row>
@@ -113,13 +115,13 @@ const PlaceOrder = () => {
               <ListGroup.Item>
                 <Row>
                   <Col>Tax</Col>
-                  <Col>${data.taxPrice}</Col>
+                  <Col>${cart.data.taxPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>${data.totalPrice}</Col>
+                  <Col>${cart.data.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
@@ -129,7 +131,7 @@ const PlaceOrder = () => {
                 <Button
                   type="button"
                   className="btn-block"
-                  disabled={data.cartItems.length === 0}
+                  disabled={cart.data.cartItems.length === 0}
                   onClick={onPlaceOrderHandler}
                 >
                   Place Order

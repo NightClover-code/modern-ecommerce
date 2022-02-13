@@ -3,6 +3,7 @@ import { OrderInterface } from '../../interfaces';
 import { proshopAPI } from '../../lib';
 import { ActionTypes } from './order.action-types';
 import { OrderAction } from './order.actions';
+import Router from 'next/router';
 
 export const createOrder =
   (order: OrderInterface) => async (dispatch: Dispatch<OrderAction>) => {
@@ -24,6 +25,8 @@ export const createOrder =
         type: ActionTypes.CREATE_ORDER_SUCCESS,
         payload: data,
       });
+
+      Router.push(`/order/${data._id}`);
     } catch (error: any) {
       dispatch({
         type: ActionTypes.CREATE_ORDER_ERROR,

@@ -11,9 +11,17 @@ export const orderReducer = (
     case ActionTypes.CREATE_ORDER_START:
       return { ...state, loading: true, error: null };
     case ActionTypes.CREATE_ORDER_SUCCESS:
-      return { loading: false, data: action.payload, error: null };
+      return {
+        loading: false,
+        data: action.payload,
+        error: null,
+      };
     case ActionTypes.CREATE_ORDER_ERROR:
-      return { ...state, loading: false, error: action.payload };
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
     default:
       return state;
   }
