@@ -51,3 +51,20 @@ export interface ShippingDetails {
   postalCode: string;
   country: string;
 }
+
+export interface PaymentResult {
+  id: string;
+  status: string;
+  updateTime: string;
+  emailAddress: string;
+}
+
+export interface OrderInterface {
+  orderItems: CartItemInterface[];
+  shippingDetails: ShippingDetails;
+  paymentMethod: string;
+  taxPrice: number;
+  shippingPrice: number;
+  itemsPrice: number;
+  totalPrice: number;
+}
