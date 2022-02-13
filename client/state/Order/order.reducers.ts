@@ -1,11 +1,11 @@
 import { ActionTypes } from './order.action-types';
-import { OrdersAction } from './order.actions';
+import { OrderAction } from './order.actions';
 import { orderInitialState } from './order.initial-state';
 import { OrderState } from './order.state';
 
-export const ordersReducer = (
+export const orderReducer = (
   state: OrderState = orderInitialState,
-  action: OrdersAction
+  action: OrderAction
 ): OrderState => {
   switch (action.type) {
     case ActionTypes.CREATE_ORDER_START:

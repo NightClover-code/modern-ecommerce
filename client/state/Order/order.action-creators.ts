@@ -2,10 +2,10 @@ import { Dispatch } from 'redux';
 import { OrderInterface } from '../../interfaces';
 import { proshopAPI } from '../../lib';
 import { ActionTypes } from './order.action-types';
-import { OrdersAction } from './order.actions';
+import { OrderAction } from './order.actions';
 
 export const createOrder =
-  (order: OrderInterface) => async (dispatch: Dispatch<OrdersAction>) => {
+  (order: OrderInterface) => async (dispatch: Dispatch<OrderAction>) => {
     const config = {
       headers: {
         'Content-Type': 'application/json',

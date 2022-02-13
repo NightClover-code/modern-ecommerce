@@ -1,7 +1,7 @@
 import { OrderInterface } from '../../interfaces';
 import { ActionTypes } from './order.action-types';
 
-export type OrdersAction =
+export type OrderAction =
   | CreateOrderStart
   | CreateOrderSuccess
   | CreateOrderError;
