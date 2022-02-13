@@ -11,6 +11,7 @@ export const cartInitialState = {
     },
     paymentMethod: 'PayPal',
     taxPrice: 0,
+    totalPrice: 0,
     shippingPrice: 0,
     itemsPrice: 0,
   },

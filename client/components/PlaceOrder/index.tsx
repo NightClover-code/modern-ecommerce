@@ -1,13 +1,36 @@
 import CheckoutSteps from '../CheckoutSteps';
 import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
 import Message from '../Message';
-import { useTypedSelector } from '../../hooks';
+import { useOrderActions, useShipping, useTypedSelector } from '../../hooks';
 import Link from 'next/link';
 
 const PlaceOrder = () => {
-  const { data, error } = useTypedSelector(state => state.cart);
+  useShipping();
 
-  const onPlaceOrderHandler = () => {};
+  const { data, error } = useTypedSelector(state => state.cart);
+  const { createOrder } = useOrderActions();
+
+  const onPlaceOrderHandler = () => {
+    const {
+      itemsPrice,
+      cartItems,
+      paymentMethod,
+      shippingDetails,
+      shippingPrice,
+      taxPrice,
+      totalPrice,
+    } = data;
+
+    createOrder({
+      paymentMethod,
+      shippingDetails,
+      shippingPrice,
+      taxPrice,
+      totalPrice,
+      itemsPrice,
+      orderItems: cartItems,
+    });
+  };
 
   return (
     <>
