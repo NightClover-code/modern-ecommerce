@@ -17,22 +17,16 @@ export class OrdersController {
   @UseGuards(AuthGuard)
   @Post()
   async createOrder(@Body() body: any, @Session() session: any) {
-    const order = await this.ordersService.create(body, session.user._id);
-
-    return order;
+    return this.ordersService.create(body, session.user._id);
   }
 
   @Get()
   async getOrders() {
-    const orders = await this.ordersService.find();
-
-    return orders;
+    return this.ordersService.find();
   }
 
   @Get(':id')
   async getOrder(@Param('id') id: string) {
-    const order = await this.ordersService.findById(id);
-
-    return order;
+    return this.ordersService.findById(id);
   }
 }
