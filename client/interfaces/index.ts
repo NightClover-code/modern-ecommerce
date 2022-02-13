@@ -67,4 +67,10 @@ export interface OrderInterface {
   shippingPrice: number;
   itemsPrice: number;
   totalPrice: number;
+  isPaid?: boolean;
+  paidAt?: Date;
+  isDelivered?: boolean;
+  deliveredAt?: Date;
+  paymentResult?: PaymentResult;
+  user?: string;
 }
