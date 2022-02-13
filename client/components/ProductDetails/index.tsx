@@ -1,4 +1,3 @@
-//importing hooks & utils
 import { v4 as randomID } from 'uuid';
 import {
   useCartActions,
@@ -6,8 +5,6 @@ import {
   useTypedSelector,
 } from '../../hooks';
 import { useEffect, useState } from 'react';
-import { NextRouter } from 'next/router';
-//importing components
 import {
   Row,
   Col,

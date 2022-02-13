@@ -9,20 +9,40 @@ export class OrdersService {
     @InjectModel(Order.name) private orderModel: Model<OrderDocument>
   ) {}
 
-  addOrder(order: Partial<OrderDocument>) {
+  async addOrder(
+    orderAttrs: Partial<OrderDocument>,
+    userId: string
+  ): Promise<OrderDocument> {
     const {
       orderItems,
-      // shippingDetails,
+      shippingDetails,
       paymentMethod,
       itemsPrice,
       taxPrice,
       shippingPrice,
       totalPrice,
-    } = order;
+    } = orderAttrs;
 
     if (orderItems && orderItems.length < 1)
       throw new BadRequestException('No order items received.');
 
-    // const order = this.orderModel.create();
+    const createdOrder = await this.orderModel.create({
+      user: userId,
+      orderItem: orderItems,
+      shippingDetails,
+      paymentMethod,
+      itemsPrice,
+      taxPrice,
+      shippingPrice,
+      totalPrice,
+    });
+
+    return createdOrder;
+  }
+
+  async getOrders(): Promise<OrderDocument[]> {
+    const orders = await this.orderModel.find();
+
+    return orders;
   }
 }
