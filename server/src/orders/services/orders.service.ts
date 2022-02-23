@@ -1,4 +1,8 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Order, OrderDocument } from '../schemas/order.schema';
@@ -47,7 +51,11 @@ export class OrdersService {
   }
 
   async findById(id: string): Promise<OrderDocument> {
-    const order = await this.orderModel.findById(id);
+    const order = await this.orderModel
+      .findById(id)
+      .populate('user', 'name email');
+
+    if (!order) throw new NotFoundException('No order with given ID.');
 
     return order;
   }
