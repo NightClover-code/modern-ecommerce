@@ -1,5 +1,5 @@
 import { Dispatch } from 'redux';
-import { OrderInterface } from '../../interfaces';
+import { OrderInterface, PaymentResult } from '../../interfaces';
 import { proshopAPI } from '../../lib';
 import { ActionTypes } from './order.action-types';
 import { OrderAction } from './order.actions';
@@ -58,6 +58,41 @@ export const fetchOrder =
     } catch (error: any) {
       dispatch({
         type: ActionTypes.FETCH_ORDER_ERROR,
+        payload: error.response.data.message,
+      });
+    }
+  };
+
+export const payOrder =
+  (orderId: string, paymentResult: PaymentResult) =>
+  async (dispatch: Dispatch<OrderAction>) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    };
+
+    try {
+      dispatch({
+        type: ActionTypes.PAY_ORDER_START,
+      });
+
+      const { data } = await proshopAPI.put(
+        `/orders/${orderId}/pay`,
+        {
+          paymentResult,
+        },
+        config
+      );
+
+      dispatch({
+        type: ActionTypes.PAY_ORDER_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: ActionTypes.PAY_ORDER_ERROR,
         payload: error.response.data.message,
       });
     }

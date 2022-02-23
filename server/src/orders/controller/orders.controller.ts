@@ -31,10 +31,10 @@ export class OrdersController {
     return this.ordersService.findById(id);
   }
 
-  @Put('pay/:id')
+  @Put(':id/pay')
   async updateOrderPayment(
     @Param('id') id: string,
-    @Body() paymentResult: any
+    @Body() { paymentResult }: any
   ) {
     return this.ordersService.update(id, paymentResult);
   }
