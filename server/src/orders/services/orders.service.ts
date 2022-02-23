@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 import { Order, OrderDocument } from '../schemas/order.schema';
 
 @Injectable()
@@ -51,6 +51,9 @@ export class OrdersService {
   }
 
   async findById(id: string): Promise<OrderDocument> {
+    if (!Types.ObjectId.isValid(id))
+      throw new BadRequestException('Invalid order ID.');
+
     const order = await this.orderModel
       .findById(id)
       .populate('user', 'name email');
@@ -58,5 +61,22 @@ export class OrdersService {
     if (!order) throw new NotFoundException('No order with given ID.');
 
     return order;
+  }
+
+  async update(id: string) {
+    if (!Types.ObjectId.isValid(id))
+      throw new BadRequestException('Invalid order ID.');
+
+    const order = await this.orderModel.findById(id);
+
+    if (!order) throw new NotFoundException('No order with given ID.');
+
+    order.isPaid = true;
+    // order.paidAt = Date.now() ;
+    // order.paymentResult={};
+
+    const updatedOrder = await order.save();
+
+    return updatedOrder;
   }
 }

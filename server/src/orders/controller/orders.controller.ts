@@ -29,4 +29,9 @@ export class OrdersController {
   async getOrder(@Param('id') id: string) {
     return this.ordersService.findById(id);
   }
+
+  @Get('pay/:id')
+  async updateOrderPayment(@Param('id') id: string) {
+    return this.ordersService.update(id);
+  }
 }
