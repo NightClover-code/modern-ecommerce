@@ -1,8 +1,9 @@
 import { Row, Col, ListGroup, Card, Button, Image } from 'react-bootstrap';
 import Link from 'next/link';
-import { useTypedSelector } from '../../hooks';
+import { useOrderActions, useTypedSelector } from '../../hooks';
 import Loader from '../Loader';
 import Message from '../Message';
+import { useEffect } from 'react';
 
 interface OrderProps {
   pageId: string | string[] | undefined;
@@ -10,6 +11,13 @@ interface OrderProps {
 
 const Order: React.FC<OrderProps> = ({ pageId }) => {
   const { loading, data, error } = useTypedSelector(state => state.order);
+  const { fetchOrder } = useOrderActions();
+
+  useEffect(() => {
+    if (!pageId) return;
+
+    fetchOrder(pageId as string);
+  }, [fetchOrder, pageId]);
 
   return loading ? (
     <Loader />
@@ -31,7 +39,7 @@ const Order: React.FC<OrderProps> = ({ pageId }) => {
                 <a href={`mailto:${data.user?.email}`}>{data.user?.email}</a>
               </p>
               <p>
-                <strong>Address:</strong>
+                <strong>Address: </strong>
                 {data.shippingDetails.address}, {data.shippingDetails.city}{' '}
                 {data.shippingDetails.postalCode},{' '}
                 {data.shippingDetails.country}
