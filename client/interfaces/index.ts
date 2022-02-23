@@ -60,6 +60,7 @@ export interface PaymentResult {
 }
 
 export interface OrderInterface {
+  _id: string;
   orderItems: CartItemInterface[];
   shippingDetails: ShippingDetails;
   paymentMethod: string;
