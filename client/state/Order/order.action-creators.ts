@@ -34,3 +34,31 @@ export const createOrder =
       });
     }
   };
+
+export const fetchOrder =
+  (id: string) => async (dispatch: Dispatch<OrderAction>) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    };
+
+    try {
+      dispatch({
+        type: ActionTypes.FETCH_ORDER_START,
+      });
+
+      const { data } = await proshopAPI.get(`/orders/${id}`, config);
+
+      dispatch({
+        type: ActionTypes.FETCH_ORDER_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: ActionTypes.FETCH_ORDER_ERROR,
+        payload: error.response.data.message,
+      });
+    }
+  };
