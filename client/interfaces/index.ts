@@ -72,5 +72,8 @@ export interface OrderInterface {
   isDelivered?: boolean;
   deliveredAt?: Date;
   paymentResult?: PaymentResult;
-  user?: string;
+  user?: {
+    name: string;
+    email: string;
+  };
 }
