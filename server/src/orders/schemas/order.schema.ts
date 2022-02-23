@@ -47,8 +47,8 @@ export class Order {
     type: {
       id: { required: true, type: String },
       status: { required: true, type: String },
-      updateTime: { required: true, type: String },
-      emailAddress: { required: true, type: String },
+      update_time: { required: true, type: String },
+      email_address: { required: true, type: String },
     },
   })
   paymentResult: PaymentResult;
@@ -69,13 +69,13 @@ export class Order {
   isPaid: boolean;
 
   @Prop({ required: false })
-  paidAt: Date;
+  paidAt: string;
 
   @Prop({ default: false })
   isDelivered: boolean;
 
   @Prop({ required: false })
-  deliveredAt: Date;
+  deliveredAt: string;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

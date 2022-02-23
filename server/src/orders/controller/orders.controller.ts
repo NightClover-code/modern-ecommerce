@@ -4,6 +4,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Session,
   UseGuards,
 } from '@nestjs/common';
@@ -30,8 +31,11 @@ export class OrdersController {
     return this.ordersService.findById(id);
   }
 
-  @Get('pay/:id')
-  async updateOrderPayment(@Param('id') id: string) {
-    return this.ordersService.update(id);
+  @Put('pay/:id')
+  async updateOrderPayment(
+    @Param('id') id: string,
+    @Body() paymentResult: any
+  ) {
+    return this.ordersService.update(id, paymentResult);
   }
 }
