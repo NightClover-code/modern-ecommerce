@@ -7,7 +7,10 @@ export type OrderAction =
   | CreateOrderError
   | FetchOrderStart
   | FetchOrderSuccess
-  | FetchOrderError;
+  | FetchOrderError
+  | PayOrderStart
+  | PayOrderSuccess
+  | PayOrderError;
 
 export interface CreateOrderStart {
   type: ActionTypes.CREATE_ORDER_START;
@@ -34,5 +37,19 @@ export interface FetchOrderSuccess {
 
 export interface FetchOrderError {
   type: ActionTypes.FETCH_ORDER_ERROR;
+  payload: string;
+}
+
+export interface PayOrderStart {
+  type: ActionTypes.PAY_ORDER_START;
+}
+
+export interface PayOrderSuccess {
+  type: ActionTypes.PAY_ORDER_SUCCESS;
+  payload: OrderInterface;
+}
+
+export interface PayOrderError {
+  type: ActionTypes.PAY_ORDER_ERROR;
   payload: string;
 }
