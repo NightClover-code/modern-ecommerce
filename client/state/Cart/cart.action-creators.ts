@@ -1,6 +1,5 @@
 import { Dispatch } from 'redux';
 import {
-  CartInterface,
   ProductInterface,
   ShippingDetails,
 } from '../../interfaces';

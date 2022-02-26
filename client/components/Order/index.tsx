@@ -114,7 +114,9 @@ const Order: React.FC<OrderProps> = ({ pageId }) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping</Col>
-                  <Col>${data.shippingPrice}</Col>
+                  <Col>{data.shippingPrice !== 0
+                      ? `$${data.shippingPrice}`
+                      : 'Free'}</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
