@@ -1,4 +1,5 @@
 import { Row, Col, ListGroup, Card, Button, Image } from 'react-bootstrap';
+import { PayPalButton } from 'react-paypal-button-v2';
 import Link from 'next/link';
 import { useOrderActions, useTypedSelector } from '../../hooks';
 import Loader from '../Loader';
@@ -11,13 +12,15 @@ interface OrderProps {
 
 const Order: React.FC<OrderProps> = ({ pageId }) => {
   const { loading, data, error } = useTypedSelector(state => state.order);
-  const { fetchOrder } = useOrderActions();
+  const { fetchOrder, payOrder } = useOrderActions();
 
   useEffect(() => {
     if (!pageId) return;
 
     fetchOrder(pageId as string);
   }, [fetchOrder, pageId]);
+
+  const onPaymentHandler = () => {};
 
   return loading ? (
     <Loader />
@@ -114,9 +117,11 @@ const Order: React.FC<OrderProps> = ({ pageId }) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Shipping</Col>
-                  <Col>{data.shippingPrice !== 0
+                  <Col>
+                    {data.shippingPrice !== 0
                       ? `$${data.shippingPrice}`
-                      : 'Free'}</Col>
+                      : 'Free'}
+                  </Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
@@ -133,15 +138,15 @@ const Order: React.FC<OrderProps> = ({ pageId }) => {
               </ListGroup.Item>
               {!data.isPaid && (
                 <ListGroup.Item>
-                  {/* {loadingPay && <Loader />}
-                  {!sdkReady ? (
+                  {loading && <Loader />}
+                  {/* {!sdkReady ? (
                     <Loader />
-                  ) : (
-                    <PayPalButton
-                      amount={data.totalPrice}
-                      onSuccess={successPaymentHandler}
-                    />
-                  )} */}
+                  ) : ( */}
+                  <PayPalButton
+                    amount={data.totalPrice}
+                    onSuccess={onPaymentHandler}
+                  />
+                  {/* )} */}
                 </ListGroup.Item>
               )}
               {/* {loadingDeliver && <Loader />}
