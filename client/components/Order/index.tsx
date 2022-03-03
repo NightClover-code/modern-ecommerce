@@ -4,21 +4,25 @@ import Link from 'next/link';
 import { useOrderActions, useTypedSelector } from '../../hooks';
 import Loader from '../Loader';
 import Message from '../Message';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 interface OrderProps {
   pageId: string | string[] | undefined;
 }
 
 const Order: React.FC<OrderProps> = ({ pageId }) => {
-  const { loading, data, error } = useTypedSelector(state => state.order);
+  const { loading, data, error, success } = useTypedSelector(
+    state => state.order
+  );
   const { fetchOrder, payOrder } = useOrderActions();
 
   useEffect(() => {
-    if (!pageId) return;
+    if (!data._id || success) {
+      if (!pageId) return;
 
-    fetchOrder(pageId as string);
-  }, [fetchOrder, pageId]);
+      fetchOrder(pageId as string);
+    }
+  }, [fetchOrder, pageId, success, data]);
 
   const onPaymentHandler = () => {};
 
@@ -139,14 +143,14 @@ const Order: React.FC<OrderProps> = ({ pageId }) => {
               {!data.isPaid && (
                 <ListGroup.Item>
                   {loading && <Loader />}
-                  {/* {!sdkReady ? (
-                    <Loader />
-                  ) : ( */}
+
                   <PayPalButton
+                    options={{
+                      clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+                    }}
                     amount={data.totalPrice}
                     onSuccess={onPaymentHandler}
                   />
-                  {/* )} */}
                 </ListGroup.Item>
               )}
               {/* {loadingDeliver && <Loader />}
