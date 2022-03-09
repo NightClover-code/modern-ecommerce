@@ -25,13 +25,18 @@ const Order: React.FC<OrderProps> = ({ pageId }) => {
     }
   }, [fetchOrder, pageId, success, data]);
 
-  const onPaymentHandler = ({id, payer: {email_address}, update_time}, status: any) => {
+  const onPaymentHandler = ({
+    id,
+    payer: { email_address },
+    update_time,
+    status,
+  }: any) => {
     const paymentResult = {
       id,
       email_address,
       update_time,
       status,
-    }
+    };
 
     payOrder(data._id!, paymentResult);
   };
