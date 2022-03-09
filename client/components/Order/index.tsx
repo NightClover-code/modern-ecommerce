@@ -4,7 +4,8 @@ import Link from 'next/link';
 import { useOrderActions, useTypedSelector } from '../../hooks';
 import Loader from '../Loader';
 import Message from '../Message';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { paypalClientId } from '../../utils';
 
 interface OrderProps {
   pageId: string | string[] | undefined;
@@ -24,7 +25,16 @@ const Order: React.FC<OrderProps> = ({ pageId }) => {
     }
   }, [fetchOrder, pageId, success, data]);
 
-  const onPaymentHandler = () => {};
+  const onPaymentHandler = ({id, payer: {email_address}, update_time}, status: any) => {
+    const paymentResult = {
+      id,
+      email_address,
+      update_time,
+      status,
+    }
+
+    payOrder(data._id!, paymentResult);
+  };
 
   return loading ? (
     <Loader />
@@ -146,7 +156,7 @@ const Order: React.FC<OrderProps> = ({ pageId }) => {
 
                   <PayPalButton
                     options={{
-                      clientId: process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID,
+                      clientId: paypalClientId,
                     }}
                     amount={data.totalPrice}
                     onSuccess={onPaymentHandler}

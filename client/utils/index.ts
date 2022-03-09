@@ -25,3 +25,4 @@ export const addDecimals = (n: number) => {
 };
 
 export * from './config';
+export * from './env';
