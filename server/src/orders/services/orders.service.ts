@@ -64,7 +64,10 @@ export class OrdersService {
     return order;
   }
 
-  async update(id: string, paymentResult: PaymentResult) {
+  async update(
+    id: string,
+    paymentResult: PaymentResult
+  ): Promise<OrderDocument> {
     if (!Types.ObjectId.isValid(id))
       throw new BadRequestException('Invalid order ID.');
 

@@ -3,7 +3,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { ShippingDetails } from 'src/interfaces';
+import { CartItem, ShippingDetails } from 'src/interfaces';
 import { ProductDocument } from 'src/products/schemas/product.schema';
 import { Cart } from '../schemas/cart.schema';
 
@@ -17,7 +17,7 @@ interface AddCartItem {
 export class CartService {
   cart = new Cart().cart;
 
-  addCartItem({ qty, productId, product }: AddCartItem) {
+  addCartItem({ qty, productId, product }: AddCartItem): CartItem {
     if (!productId && !product)
       throw new BadRequestException('No id or product provided.');
 
@@ -57,19 +57,19 @@ export class CartService {
     }
   }
 
-  saveShippingDetails(shippingDetails: ShippingDetails) {
+  saveShippingDetails(shippingDetails: ShippingDetails): ShippingDetails {
     this.cart.shippingDetails = shippingDetails;
 
     return this.cart.shippingDetails;
   }
 
-  savePaymentMethod(paymentMethod: string) {
+  savePaymentMethod(paymentMethod: string): string {
     this.cart.paymentMethod = paymentMethod;
 
     return this.cart.paymentMethod;
   }
 
-  removeCartItem(id: string) {
+  removeCartItem(id: string): CartItem[] {
     const itemExists = this.cart.cartItems.find(x => x.productId === id);
 
     if (!itemExists) throw new NotFoundException('No cart item found.');
@@ -77,7 +77,7 @@ export class CartService {
     return this.cart.cartItems.filter(x => x.productId !== id);
   }
 
-  findAllItems() {
+  findAllItems(): CartItem[] {
     return this.cart.cartItems;
   }
 }

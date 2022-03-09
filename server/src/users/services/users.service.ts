@@ -11,19 +11,19 @@ import { Model } from 'mongoose';
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
-  async createMany(users: Partial<UserDocument>[]) {
+  async createMany(users: Partial<UserDocument>[]): Promise<UserDocument[]> {
     const createdUsers = await this.userModel.insertMany(users);
 
     return createdUsers;
   }
 
-  async create(user: Partial<UserDocument>) {
+  async create(user: Partial<UserDocument>): Promise<UserDocument> {
     const createdUser = await this.userModel.create(user);
 
     return createdUser;
   }
 
-  async findOne(email: string) {
+  async findOne(email: string): Promise<UserDocument> {
     const user = this.userModel.findOne({ email });
 
     if (!user) throw new NotFoundException('user not found.');
@@ -31,7 +31,7 @@ export class UsersService {
     return user;
   }
 
-  async findById(id: string) {
+  async findById(id: string): Promise<UserDocument> {
     const user = this.userModel.findById(id);
 
     if (!user) throw new NotFoundException('user not found.');
@@ -39,17 +39,20 @@ export class UsersService {
     return user;
   }
 
-  async findAll() {
+  async findAll(): Promise<UserDocument[]> {
     const users = this.userModel.find({});
 
     return users;
   }
 
-  async deleteMany() {
+  async deleteMany(): Promise<void> {
     await this.userModel.deleteMany({});
   }
 
-  async update(id: string, attrs: Partial<UserDocument>) {
+  async update(
+    id: string,
+    attrs: Partial<UserDocument>
+  ): Promise<UserDocument> {
     const user = await this.findById(id);
 
     if (!user) throw new NotFoundException('user not found.');
