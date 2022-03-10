@@ -83,4 +83,10 @@ export class OrdersService {
 
     return updatedOrder;
   }
+
+  async findUserOrders(userId: string) {
+    const orders = await this.orderModel.find({ user: userId });
+
+    return orders;
+  }
 }

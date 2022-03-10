@@ -21,16 +21,25 @@ export class OrdersController {
     return this.ordersService.create(body, session.user._id);
   }
 
+  @UseGuards(AuthGuard)
   @Get()
   async getOrders() {
     return this.ordersService.find();
   }
 
+  @UseGuards(AuthGuard)
+  @Get('myorders')
+  async getUserOrders(@Session() session: any) {
+    return this.ordersService.findUserOrders(session.user._id);
+  }
+
+  @UseGuards(AuthGuard)
   @Get(':id')
   async getOrder(@Param('id') id: string) {
     return this.ordersService.findById(id);
   }
 
+  @UseGuards(AuthGuard)
   @Put(':id/pay')
   async updateOrderPayment(
     @Param('id') id: string,

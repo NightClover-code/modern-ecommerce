@@ -137,8 +137,9 @@ const Profile = () => {
           </Button>
         </Form>
       </Col>
-      {/* <Col md={9}>
+      <Col md={9}>
         <h2>My Orders</h2>
+        {/* 
         {loadingOrders ? (
           <Loader />
         ) : errorOrders ? (
@@ -188,8 +189,8 @@ const Profile = () => {
                     </Table>
                     
         )}
+                  */}
       </Col>
-      */}
     </Row>
   );
 };
