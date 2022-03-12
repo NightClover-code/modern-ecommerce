@@ -172,6 +172,30 @@ export const updateUser =
     }
   };
 
+export const fetchUsers = () => async (dispatch: Dispatch<UserAction>) => {
+  const config = {
+    withCredentials: true,
+  };
+
+  try {
+    dispatch({
+      type: ActionTypes.FETCH_USERS_START,
+    });
+
+    const { data } = await proshopAPI.get('/users', config);
+
+    dispatch({
+      type: ActionTypes.FETCH_USERS_SUCCESS,
+      payload: data,
+    });
+  } catch (error: any) {
+    dispatch({
+      type: ActionTypes.FETCH_USERS_ERROR,
+      payload: error.response.data.message,
+    });
+  }
+};
+
 export const cleanErrors = () => async (dispatch: Dispatch<UserAction>) => {
   dispatch({
     type: ActionTypes.CLEAN_USER_ERRORS,
