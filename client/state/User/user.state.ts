@@ -6,3 +6,9 @@ export interface UserState {
   data: UserInterface | null;
   success?: boolean;
 }
+
+export interface UsersState {
+  loading: boolean;
+  error: string | null;
+  data: UserInterface[];
+}

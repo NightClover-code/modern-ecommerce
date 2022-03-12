@@ -1,7 +1,7 @@
 import { ActionTypes } from './user.action-types';
 import { UserAction } from './user.actions';
-import { userInitialState } from './user.initial-state';
-import { UserState } from './user.state';
+import { userInitialState, usersInitialState } from './user.initial-state';
+import { UsersState, UserState } from './user.state';
 
 export const userLoginReducer = (
   state: UserState = userInitialState,
@@ -92,6 +92,22 @@ export const userUpdateReducer = (
       return { ...state, data: action.payload };
     case ActionTypes.CLEAN_USER_ERRORS:
       return { ...state, error: null };
+    default:
+      return state;
+  }
+};
+
+export const usersReducer = (
+  state: UsersState = usersInitialState,
+  action: UserAction
+): UsersState => {
+  switch (action.type) {
+    case ActionTypes.FETCH_USERS_START:
+      return { ...state, loading: true, error: null };
+    case ActionTypes.FETCH_USERS_SUCCESS:
+      return { loading: false, data: action.payload, error: null };
+    case ActionTypes.FETCH_USERS_ERROR:
+      return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }
