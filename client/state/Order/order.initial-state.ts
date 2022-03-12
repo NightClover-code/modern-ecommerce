@@ -1,4 +1,4 @@
-import { OrderState } from './order.state';
+import { OrdersState, OrderState } from './order.state';
 
 const order = {
   orderItems: [],
@@ -19,4 +19,10 @@ export const orderInitialState: OrderState = {
   loading: false,
   error: null,
   data: order,
+};
+
+export const ordersInitialState: OrdersState = {
+  loading: false,
+  error: null,
+  data: [],
 };

@@ -1,6 +1,6 @@
 import { combineReducers } from 'redux';
 import { cartReducer } from './Cart/cart.reducers';
-import { orderReducer } from './Order/order.reducers';
+import { orderReducer, ordersReducer } from './Order/order.reducers';
 import { productReducer, productsReducer } from './Products/products.reducers';
 import {
   userDetailsReducer,
@@ -18,6 +18,7 @@ export const reducers = combineReducers({
   userRegister: userRegisterReducer,
   userUpdate: userUpdateReducer,
   order: orderReducer,
+  userOrders: ordersReducer,
 });
 
 export type RootState = ReturnType<typeof reducers>;

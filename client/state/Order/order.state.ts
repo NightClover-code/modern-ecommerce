@@ -6,3 +6,9 @@ export interface OrderState {
   data: OrderInterface;
   success?: boolean;
 }
+
+export interface OrdersState {
+  loading: boolean;
+  error: string | null;
+  data: OrderInterface[];
+}
