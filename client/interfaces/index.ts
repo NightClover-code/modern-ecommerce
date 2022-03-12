@@ -72,6 +72,7 @@ export interface OrderInterface {
   paidAt?: string;
   isDelivered?: boolean;
   deliveredAt?: string;
+  createdAt?: string;
   paymentResult?: PaymentResult;
   user?: {
     name: string;

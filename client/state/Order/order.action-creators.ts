@@ -97,3 +97,31 @@ export const payOrder =
       });
     }
   };
+
+export const fetchUserOrders =
+  () => async (dispatch: Dispatch<OrderAction>) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    };
+
+    try {
+      dispatch({
+        type: ActionTypes.FETCH_USER_ORDERS_START,
+      });
+
+      const { data } = await proshopAPI.get(`/orders/myorders`, config);
+
+      dispatch({
+        type: ActionTypes.FETCH_USER_ORDERS_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: ActionTypes.FETCH_USER_ORDERS_ERROR,
+        payload: error.response.data.message,
+      });
+    }
+  };

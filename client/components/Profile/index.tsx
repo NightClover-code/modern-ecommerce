@@ -2,7 +2,12 @@ import { Button, Col, Form, Row, Table } from 'react-bootstrap';
 import Loader from '../Loader';
 import { FormEvent, useEffect, useState } from 'react';
 import Message from '../Message';
-import { useAuth, useTypedSelector, useUserActions } from '../../hooks';
+import {
+  useAuth,
+  useOrderActions,
+  useTypedSelector,
+  useUserActions,
+} from '../../hooks';
 import { UserCredentials } from '../../interfaces';
 import Link from 'next/link';
 
@@ -23,6 +28,7 @@ const Profile = () => {
   const userOrders = useTypedSelector(state => state.userOrders);
 
   const { updateUser } = useUserActions();
+  const { fetchUserOrders } = useOrderActions();
 
   const [credentials, setCredentials] =
     useState<UserCredentials>(initialCredentials);
@@ -34,13 +40,15 @@ const Profile = () => {
 
   useEffect(() => {
     if (userData) {
+      fetchUserOrders();
+
       setCredentials(credentials => ({
         ...credentials,
         name: userData.name,
         email: userData.email,
       }));
     }
-  }, [userData]);
+  }, [userData, fetchUserOrders]);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -163,7 +171,7 @@ const Profile = () => {
               {userOrders.data.map(order => (
                 <tr key={order._id}>
                   <td>{order._id}</td>
-                  {/* <td>{order.createdAt.substring(0, 10)}</td> */}
+                  <td>{order.createdAt?.substring(0, 10)}</td>
                   <td>{order.totalPrice}</td>
                   <td>
                     {order.isPaid ? (
