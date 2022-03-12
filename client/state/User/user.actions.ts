@@ -15,7 +15,10 @@ export type UserAction =
   | UserUpdateStart
   | UserUpdateSuccess
   | UserUpdateError
-  | CleanUserErrors;
+  | CleanUserErrors
+  | FetchUsersStart
+  | FetchUsersSuccess
+  | FetchUsersError;
 
 export interface UserLoginStart {
   type: ActionTypes.USER_LOGIN_START;
@@ -81,4 +84,18 @@ export interface UserLogout {
 export interface CleanUserErrors {
   type: ActionTypes.CLEAN_USER_ERRORS;
   payload: null;
+}
+
+export interface FetchUsersStart {
+  type: ActionTypes.FETCH_USERS_START;
+}
+
+export interface FetchUsersSuccess {
+  type: ActionTypes.FETCH_USERS_SUCCESS;
+  payload: UserInterface[];
+}
+
+export interface FetchUsersError {
+  type: ActionTypes.FETCH_USERS_ERROR;
+  payload: string;
 }
