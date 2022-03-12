@@ -1,7 +1,12 @@
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { Button, Table } from 'react-bootstrap';
-import { useAdmin, useTypedSelector, useUserActions } from '../../hooks';
+import {
+  useAdmin,
+  useAuth,
+  useTypedSelector,
+  useUserActions,
+} from '../../hooks';
 import Loader from '../Loader';
 import Message from '../Message';
 
@@ -9,11 +14,12 @@ const UsersList = () => {
   useAdmin();
 
   const { loading, error, data } = useTypedSelector(state => state.users);
+  const user = useTypedSelector(state => state.user);
   const { fetchUsers } = useUserActions();
 
   useEffect(() => {
     fetchUsers();
-  }, [fetchUsers]);
+  }, [fetchUsers, user.data]);
 
   return (
     <>
