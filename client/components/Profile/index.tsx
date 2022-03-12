@@ -1,9 +1,10 @@
-import { Button, Col, Form, Row } from 'react-bootstrap';
+import { Button, Col, Form, Row, Table } from 'react-bootstrap';
 import Loader from '../Loader';
 import { FormEvent, useEffect, useState } from 'react';
 import Message from '../Message';
 import { useAuth, useTypedSelector, useUserActions } from '../../hooks';
 import { UserCredentials } from '../../interfaces';
+import Link from 'next/link';
 
 const Profile = () => {
   useAuth();
@@ -15,10 +16,12 @@ const Profile = () => {
     confirmPassword: '',
   };
 
-  const { data } = useTypedSelector(state => state.user);
+  const userData = useTypedSelector(state => state.user.data);
   const { error, loading, success } = useTypedSelector(
     state => state.userUpdate
   );
+  const userOrders = useTypedSelector(state => state.userOrders);
+
   const { updateUser } = useUserActions();
 
   const [credentials, setCredentials] =
@@ -30,14 +33,14 @@ const Profile = () => {
   }, [error]);
 
   useEffect(() => {
-    if (data) {
+    if (userData) {
       setCredentials(credentials => ({
         ...credentials,
-        name: data.name,
-        email: data.email,
+        name: userData.name,
+        email: userData.email,
       }));
     }
-  }, [data]);
+  }, [userData]);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -139,11 +142,11 @@ const Profile = () => {
       </Col>
       <Col md={9}>
         <h2>My Orders</h2>
-        {/* 
-        {loadingOrders ? (
+
+        {userOrders.loading ? (
           <Loader />
-        ) : errorOrders ? (
-          <Message variant="danger">{errorOrders}</Message>
+        ) : userOrders.error ? (
+          <Message variant="danger">{userOrders.error}</Message>
         ) : (
           <Table striped bordered hover responsive className="table-sm">
             <thead>
@@ -156,22 +159,22 @@ const Profile = () => {
                 <th></th>
               </tr>
             </thead>
-            {/* <tbody>
-              {orders.map(order => (
+            <tbody>
+              {userOrders.data.map(order => (
                 <tr key={order._id}>
                   <td>{order._id}</td>
-                  <td>{order.createdAt.substring(0, 10)}</td>
+                  {/* <td>{order.createdAt.substring(0, 10)}</td> */}
                   <td>{order.totalPrice}</td>
                   <td>
                     {order.isPaid ? (
-                      order.paidAt.substring(0, 10)
+                      order.paidAt?.substring(0, 10)
                     ) : (
                       <i className="fas fa-times" style={{ color: 'red' }}></i>
                     )}
                   </td>
                   <td>
                     {order.isDelivered ? (
-                      order.deliveredAt.substring(0, 10)
+                      order.deliveredAt?.substring(0, 10)
                     ) : (
                       <i className="fas fa-times" style={{ color: 'red' }}></i>
                     )}
@@ -185,11 +188,9 @@ const Profile = () => {
                   </td>
                 </tr>
               ))}
-            </tbody> 
-                    </Table>
-                    
+            </tbody>
+          </Table>
         )}
-                  */}
       </Col>
     </Row>
   );
