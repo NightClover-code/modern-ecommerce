@@ -1,6 +1,11 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { useCartActions, useLocalStorage, useUserActions } from '../hooks';
+import {
+  useCartActions,
+  useLocalStorage,
+  useTypedSelector,
+  useUserActions,
+} from '../hooks';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
@@ -9,6 +14,7 @@ const MainLayout: React.FC = ({ children }) => {
   const accessToken = useLocalStorage('', 'accessToken');
 
   const { getCurrentUser, cleanErrors } = useUserActions();
+  const { data } = useTypedSelector(state => state.user);
   const { getCart } = useCartActions();
 
   useEffect(() => {
@@ -16,10 +22,10 @@ const MainLayout: React.FC = ({ children }) => {
   }, [getCart]);
 
   useEffect(() => {
-    if (accessToken.length > 0) {
+    if (accessToken.length > 0 && !data) {
       getCurrentUser(accessToken);
     }
-  }, [accessToken, getCurrentUser]);
+  }, [accessToken, getCurrentUser, data]);
 
   useEffect(() => {
     if (router.asPath !== '/login' && router.asPath !== '/register') {

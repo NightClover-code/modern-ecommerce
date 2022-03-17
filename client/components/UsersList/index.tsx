@@ -40,22 +40,22 @@ const UsersList = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map(user => (
-              <tr key={user._id}>
-                <td>{user._id}</td>
-                <td>{user.name}</td>
+            {data.map(_user => (
+              <tr key={_user._id}>
+                <td>{_user._id}</td>
+                <td>{_user.name}</td>
                 <td>
-                  <a href={`mailto:${user.email}`}>{user.email}</a>
+                  <a href={`mailto:${_user.email}`}>{_user.email}</a>
                 </td>
                 <td>
-                  {user.isAdmin ? (
+                  {_user.isAdmin ? (
                     <i className="fas fa-check" style={{ color: 'green' }}></i>
                   ) : (
                     <i className="fas fa-times" style={{ color: 'red' }}></i>
                   )}
                 </td>
                 <td>
-                  <Link href={`/admin/user/${user._id}/edit`} passHref>
+                  <Link href={`/admin/edit/${_user._id}`} passHref>
                     <Button variant="light" className="btn-sm">
                       <i className="fas fa-edit"></i>
                     </Button>
@@ -63,7 +63,7 @@ const UsersList = () => {
                   <Button
                     variant="danger"
                     className="btn-sm"
-                    // onClick={() => deleteHandler(user._id)}
+                    // onClick={() => deleteHandler(_user._id)}
                   >
                     <i className="fas fa-trash"></i>
                   </Button>
