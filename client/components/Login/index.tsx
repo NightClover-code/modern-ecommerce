@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { Button, Col, Form, Row } from 'react-bootstrap';
 import { useTypedSelector, useUserActions } from '../../hooks';
 import FormContainer from '../FormContainer';
@@ -10,8 +10,12 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const { login } = useUserActions();
+  const { login, cleanErrors } = useUserActions();
   const { loading, error } = useTypedSelector(state => state.userLogin);
+
+  useEffect(() => {
+    cleanErrors();
+  }, [cleanErrors]);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

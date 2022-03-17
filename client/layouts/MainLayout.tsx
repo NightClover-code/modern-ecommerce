@@ -7,13 +7,11 @@ import {
   useUserActions,
 } from '../hooks';
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
 
 const MainLayout: React.FC = ({ children }) => {
-  const router = useRouter();
   const accessToken = useLocalStorage('', 'accessToken');
 
-  const { getCurrentUser, cleanErrors } = useUserActions();
+  const { getCurrentUser } = useUserActions();
   const { data } = useTypedSelector(state => state.user);
   const { getCart } = useCartActions();
 
@@ -26,12 +24,6 @@ const MainLayout: React.FC = ({ children }) => {
       getCurrentUser(accessToken);
     }
   }, [accessToken, getCurrentUser, data]);
-
-  useEffect(() => {
-    if (router.asPath !== '/login' && router.asPath !== '/register') {
-      cleanErrors();
-    }
-  }, [router, cleanErrors]);
 
   return (
     <div className="app__container">
