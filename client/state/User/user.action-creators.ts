@@ -193,6 +193,8 @@ export const fetchUsers = () => async (dispatch: Dispatch<UserAction>) => {
       type: ActionTypes.FETCH_USERS_ERROR,
       payload: error.response.data.message,
     });
+
+    Router.push('/');
   }
 };
 

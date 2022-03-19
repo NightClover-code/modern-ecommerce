@@ -1,12 +1,7 @@
 import Link from 'next/link';
 import { useEffect } from 'react';
 import { Button, Table } from 'react-bootstrap';
-import {
-  useAdmin,
-  useAuth,
-  useTypedSelector,
-  useUserActions,
-} from '../../hooks';
+import { useAdmin, useTypedSelector, useUserActions } from '../../hooks';
 import Loader from '../Loader';
 import Message from '../Message';
 
