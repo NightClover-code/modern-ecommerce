@@ -1,4 +1,4 @@
-import { Controller, Get, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Get, Param, UseGuards } from '@nestjs/common';
 import { AdminGuard } from 'src/guards/admin.guard';
 import { Serialize } from 'src/interceptors/serialize.interceptor';
 import { UserDto } from '../dtos/user.dto';
@@ -15,5 +15,11 @@ export class UsersController {
     const users = await this.usersService.findAll();
 
     return users;
+  }
+
+  @UseGuards(AdminGuard)
+  @Delete(':id')
+  async deleteUser(@Param('id') id: string) {
+    await this.usersService.deleteOne(id);
   }
 }

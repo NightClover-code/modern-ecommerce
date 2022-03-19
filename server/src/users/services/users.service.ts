@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { User, UserDocument } from '../schemas/user.schema';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 @Injectable()
 export class UsersService {
@@ -32,6 +32,9 @@ export class UsersService {
   }
 
   async findById(id: string): Promise<UserDocument> {
+    if (!Types.ObjectId.isValid(id))
+      throw new BadRequestException('Invalid user ID.');
+
     const user = this.userModel.findById(id);
 
     if (!user) throw new NotFoundException('user not found.');
@@ -45,6 +48,17 @@ export class UsersService {
     return users;
   }
 
+  async deleteOne(id: string): Promise<void> {
+    if (!Types.ObjectId.isValid(id))
+      throw new BadRequestException('Invalid user ID.');
+
+    const user = this.userModel.findById(id);
+
+    if (!user) throw new NotFoundException('user not found.');
+
+    await user.deleteOne();
+  }
+
   async deleteMany(): Promise<void> {
     await this.userModel.deleteMany({});
   }
@@ -53,6 +67,9 @@ export class UsersService {
     id: string,
     attrs: Partial<UserDocument>
   ): Promise<UserDocument> {
+    if (!Types.ObjectId.isValid(id))
+      throw new BadRequestException('Invalid user ID.');
+
     const user = await this.findById(id);
 
     if (!user) throw new NotFoundException('user not found.');
