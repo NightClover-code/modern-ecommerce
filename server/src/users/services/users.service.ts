@@ -52,15 +52,11 @@ export class UsersService {
     if (!Types.ObjectId.isValid(id))
       throw new BadRequestException('Invalid user ID.');
 
-    const user = this.userModel.findById(id);
+    const user = await this.userModel.findById(id);
 
     if (!user) throw new NotFoundException('user not found.');
 
     await user.deleteOne();
-  }
-
-  async deleteMany(): Promise<void> {
-    await this.userModel.deleteMany({});
   }
 
   async update(
@@ -70,7 +66,7 @@ export class UsersService {
     if (!Types.ObjectId.isValid(id))
       throw new BadRequestException('Invalid user ID.');
 
-    const user = await this.findById(id);
+    const user = await this.userModel.findById(id);
 
     if (!user) throw new NotFoundException('user not found.');
 
