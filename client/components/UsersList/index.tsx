@@ -8,13 +8,15 @@ import Message from '../Message';
 const UsersList = () => {
   useAdmin();
 
-  const { loading, error, data } = useTypedSelector(state => state.users);
+  const { loading, error, data, success } = useTypedSelector(
+    state => state.users
+  );
   const user = useTypedSelector(state => state.user);
-  const { fetchUsers } = useUserActions();
+  const { fetchUsers, deleteUser } = useUserActions();
 
   useEffect(() => {
     fetchUsers();
-  }, [fetchUsers, user.data]);
+  }, [fetchUsers, user.data, success]);
 
   return (
     <>
@@ -58,7 +60,7 @@ const UsersList = () => {
                   <Button
                     variant="danger"
                     className="btn-sm"
-                    // onClick={() => deleteHandler(_user._id)}
+                    onClick={() => deleteUser(_user._id)}
                   >
                     <i className="fas fa-trash"></i>
                   </Button>

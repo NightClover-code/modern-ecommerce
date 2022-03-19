@@ -110,11 +110,16 @@ export const usersReducer = (
       return { ...state, loading: false, error: action.payload };
 
     case ActionTypes.DELETE_USER_START:
-      return { ...state, loading: true, error: null };
+      return { ...state, loading: true, error: null, success: false };
     case ActionTypes.DELETE_USER_SUCCESS:
-      return { loading: false, data: action.payload, error: null };
+      return { ...state, loading: false, error: null, success: true };
     case ActionTypes.DELETE_USER_ERROR:
-      return { ...state, loading: false, error: action.payload };
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+        success: false,
+      };
 
     default:
       return state;

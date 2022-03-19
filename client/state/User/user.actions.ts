@@ -109,7 +109,7 @@ export interface DeleteUserStart {
 
 export interface DeleteUserSuccess {
   type: ActionTypes.DELETE_USER_SUCCESS;
-  payload: UserInterface[];
+  payload: null;
 }
 
 export interface DeleteUserError {

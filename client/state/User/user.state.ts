@@ -11,4 +11,5 @@ export interface UsersState {
   loading: boolean;
   error: string | null;
   data: UserInterface[];
+  success?: boolean;
 }
