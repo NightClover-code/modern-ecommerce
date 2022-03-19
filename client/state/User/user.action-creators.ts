@@ -198,6 +198,31 @@ export const fetchUsers = () => async (dispatch: Dispatch<UserAction>) => {
   }
 };
 
+export const deleteUser =
+  (id: string) => async (dispatch: Dispatch<UserAction>) => {
+    const config = {
+      withCredentials: true,
+    };
+
+    try {
+      dispatch({
+        type: ActionTypes.DELETE_USER_START,
+      });
+
+      const { data } = await proshopAPI.delete(`/users/${id}`, config);
+
+      dispatch({
+        type: ActionTypes.DELETE_USER_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: ActionTypes.DELETE_USER_ERROR,
+        payload: error.response.data.message,
+      });
+    }
+  };
+
 export const cleanErrors = () => async (dispatch: Dispatch<UserAction>) => {
   dispatch({
     type: ActionTypes.CLEAN_USER_ERRORS,
