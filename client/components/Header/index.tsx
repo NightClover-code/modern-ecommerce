@@ -39,7 +39,7 @@ const Header = () => {
                 </Link>
               )}
 
-              {data && data.isAdmin ? (
+              {data && data.isAdmin && (
                 <NavDropdown title="Admin" id="username">
                   <Link href="/admin/users" passHref>
                     <NavDropdown.Item>Users</NavDropdown.Item>
@@ -51,8 +51,6 @@ const Header = () => {
                     <NavDropdown.Item>Orders</NavDropdown.Item>
                   </Link>
                 </NavDropdown>
-              ) : (
-                ''
               )}
             </Nav>
           </Navbar.Collapse>

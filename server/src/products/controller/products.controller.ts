@@ -10,7 +10,7 @@ export class ProductsController {
     return this.productsService.findMany();
   }
 
-  @Get('/:id')
+  @Get(':id')
   getProduct(@Param('id') id: string) {
     return this.productsService.findById(id);
   }
