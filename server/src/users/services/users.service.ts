@@ -56,7 +56,7 @@ export class UsersService {
 
     if (!user) throw new NotFoundException('user not found.');
 
-    await user.deleteOne();
+    await user.remove();
   }
 
   async update(
