@@ -91,7 +91,7 @@ export const userUpdateReducer = (
     case ActionTypes.USER_LOGOUT:
       return { ...state, data: action.payload };
     case ActionTypes.CLEAN_USER_ERRORS:
-      return { ...state, error: null };
+      return { ...state, error: null, success: false };
     default:
       return state;
   }

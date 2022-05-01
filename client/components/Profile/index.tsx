@@ -27,7 +27,7 @@ const Profile = () => {
   );
   const userOrders = useTypedSelector(state => state.userOrders);
 
-  const { updateUser } = useUserActions();
+  const { updateUser, cleanErrors } = useUserActions();
   const { fetchUserOrders } = useOrderActions();
 
   const [credentials, setCredentials] =
@@ -37,6 +37,10 @@ const Profile = () => {
   useEffect(() => {
     setMessage(error);
   }, [error]);
+
+  useEffect(() => {
+    cleanErrors();
+  }, [cleanErrors]);
 
   useEffect(() => {
     if (userData) {

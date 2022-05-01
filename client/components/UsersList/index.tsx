@@ -60,7 +60,15 @@ const UsersList = () => {
                   <Button
                     variant="danger"
                     className="btn-sm"
-                    onClick={() => deleteUser(_user._id)}
+                    onClick={() => {
+                      if (
+                        window.confirm(
+                          'Are you sure you want to delete this user?'
+                        )
+                      ) {
+                        deleteUser(_user._id);
+                      }
+                    }}
                   >
                     <i className="fas fa-trash"></i>
                   </Button>
