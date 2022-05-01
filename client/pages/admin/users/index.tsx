@@ -1,7 +1,7 @@
 import { NextPage } from 'next';
-import SEO from '../../components/SEO';
-import UsersList from '../../components/UsersList';
-import { seoConfig } from '../../utils';
+import SEO from '../../../components/SEO';
+import UsersList from '../../../components/UsersList';
+import { seoConfig } from '../../../utils';
 
 const UsersPage: NextPage = () => {
   return (
