@@ -42,8 +42,6 @@ export class UsersController {
     @Param('id') id: string,
     @Body() credentials: AdminProfileDto
   ) {
-    const user = await this.usersService.adminUpdate(id, credentials);
-
-    return user;
+    return this.usersService.adminUpdate(id, credentials);
   }
 }
