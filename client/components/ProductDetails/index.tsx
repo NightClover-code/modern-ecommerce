@@ -17,6 +17,7 @@ import {
 import Rating from '../Rating';
 import Loader from '../Loader';
 import Message from '../Message';
+import Link from 'next/link';
 
 interface ProductDetailsProps {
   pageId: string | string[] | undefined;
@@ -41,6 +42,10 @@ const ProductDetails: React.FC<ProductDetailsProps> = ({ pageId }) => {
 
   return (
     <>
+      <Link href="/" passHref>
+        <div className="btn btn-light my-3">Go Back</div>
+      </Link>
+
       {loading ? (
         <Loader />
       ) : error ? (

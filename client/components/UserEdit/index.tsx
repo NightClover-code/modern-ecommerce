@@ -1,42 +1,62 @@
 import Link from 'next/link';
+import { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
+import { useTypedSelector } from '../../hooks';
+import { UserEditCredentials } from '../../interfaces';
 import FormContainer from '../FormContainer';
+import Loader from '../Loader';
+import Message from '../Message';
 
-const UserEditScreen = () => {
+const UserEdit = () => {
+  const initialCredentials = {
+    name: '',
+    email: '',
+    isAdmin: false,
+  };
+
+  const { loading, error, data } = useTypedSelector(state => state.user);
+
+  const [credentials, setCredentials] =
+    useState<UserEditCredentials>(initialCredentials);
+
   return (
     <>
-      <div className="btn btn-light my-3">
-        <Link href="/admin/users">Go Back</Link>
-      </div>
+      <Link href="/admin/users" passHref>
+        <div className="btn btn-light my-3">Go back</div>
+      </Link>
       <FormContainer>
         <h1>Edit User</h1>
 
-        {/* {loadingUpdate && <Loader />} */}
-        {/* {errorUpdate && <Message variant="danger">{errorUpdate}</Message>} */}
+        {loading && <Loader />}
+        {error && <Message variant="danger">{}</Message>}
 
         {loading ? (
           <Loader />
         ) : error ? (
           <Message variant="danger">{error}</Message>
         ) : (
-          <Form onSubmit={submitHandler}>
+          <Form>
             <Form.Group controlId="name">
               <Form.Label>Name</Form.Label>
               <Form.Control
                 type="name"
                 placeholder="Enter name"
-                value={name}
-                onChange={e => setName(e.target.value)}
+                value={credentials.name}
+                onChange={e =>
+                  setCredentials({ ...credentials, name: e.target.value })
+                }
               ></Form.Control>
             </Form.Group>
 
-            <Form.Group controlId="email">
+            <Form.Group controlId="email" className="py-3">
               <Form.Label>Email Address</Form.Label>
               <Form.Control
                 type="email"
                 placeholder="Enter email"
-                value={email}
-                onChange={e => setEmail(e.target.value)}
+                value={credentials.email}
+                onChange={e =>
+                  setCredentials({ ...credentials, email: e.target.value })
+                }
               ></Form.Control>
             </Form.Group>
 
@@ -44,12 +64,14 @@ const UserEditScreen = () => {
               <Form.Check
                 type="checkbox"
                 label="Is Admin"
-                checked={isAdmin}
-                onChange={e => setIsAdmin(e.target.checked)}
+                checked={credentials.isAdmin}
+                onChange={e =>
+                  setCredentials({ ...credentials, isAdmin: e.target.checked })
+                }
               ></Form.Check>
             </Form.Group>
 
-            <Button type="submit" variant="primary">
+            <Button type="submit" variant="primary" className="mt-3">
               Update
             </Button>
           </Form>
@@ -59,4 +81,4 @@ const UserEditScreen = () => {
   );
 };
 
-export default UserEditScreen;
+export default UserEdit;

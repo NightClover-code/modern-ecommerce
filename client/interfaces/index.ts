@@ -45,6 +45,12 @@ export interface UserCredentials {
   confirmPassword: string;
 }
 
+export interface UserEditCredentials {
+  name: string;
+  email: string;
+  isAdmin: boolean;
+}
+
 export interface ShippingDetails {
   address: string;
   city: string;

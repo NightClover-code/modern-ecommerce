@@ -15,9 +15,6 @@ const ProductPage: NextPage = () => {
     <>
       <SEO {...seoConfig} />
       <main className="wrapper py-4">
-        <Link href="/" passHref>
-          <div className="btn btn-light my-3">Go Back</div>
-        </Link>
         <ProductDetails pageId={id} />
       </main>
     </>
