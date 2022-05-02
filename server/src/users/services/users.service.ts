@@ -100,7 +100,7 @@ export class UsersService {
 
     user.name = attrs.name || user.name;
     user.email = attrs.email || user.email;
-    user.isAdmin = attrs.isAdmin;
+    user.isAdmin = attrs.isAdmin !== undefined && attrs.isAdmin;
 
     const updatedUser = await user.save();
 

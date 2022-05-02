@@ -44,15 +44,6 @@ export class UsersController {
   ) {
     const user = await this.usersService.adminUpdate(id, credentials);
 
-    const { name, _id, email, isAdmin } = user;
-
-    const updatedUser = {
-      name,
-      _id,
-      isAdmin,
-      email,
-    };
-
-    return updatedUser;
+    return user;
   }
 }
