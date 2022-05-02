@@ -24,9 +24,9 @@ export class UsersService {
   }
 
   async findOne(email: string): Promise<UserDocument> {
-    const user = this.userModel.findOne({ email });
+    const user = await this.userModel.findOne({ email });
 
-    if (!user) throw new NotFoundException('user not found.');
+    if (!user) throw new NotFoundException('Invalid email.');
 
     return user;
   }
@@ -35,9 +35,9 @@ export class UsersService {
     if (!Types.ObjectId.isValid(id))
       throw new BadRequestException('Invalid user ID.');
 
-    const user = this.userModel.findById(id);
+    const user = await this.userModel.findById(id);
 
-    if (!user) throw new NotFoundException('user not found.');
+    if (!user) throw new NotFoundException('User not found.');
 
     return user;
   }
@@ -54,7 +54,7 @@ export class UsersService {
 
     const user = await this.userModel.findById(id);
 
-    if (!user) throw new NotFoundException('user not found.');
+    if (!user) throw new NotFoundException('User not found.');
 
     await user.remove();
   }
@@ -68,7 +68,7 @@ export class UsersService {
 
     const user = await this.userModel.findById(id);
 
-    if (!user) throw new NotFoundException('user not found.');
+    if (!user) throw new NotFoundException('User not found.');
 
     const existingUser = await this.findOne(attrs.email);
 
