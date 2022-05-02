@@ -84,4 +84,26 @@ export class UsersService {
 
     return updatedUser;
   }
+
+  async adminUpdate(id: string, attrs: Partial<UserDocument>) {
+    if (!Types.ObjectId.isValid(id))
+      throw new BadRequestException('Invalid user ID.');
+
+    const user = await this.userModel.findById(id);
+
+    if (!user) throw new NotFoundException('User not found.');
+
+    const existingUser = await this.findOne(attrs.email);
+
+    if (existingUser && existingUser.email !== user.email)
+      throw new BadRequestException('Email is already in use.');
+
+    user.name = attrs.name || user.name;
+    user.email = attrs.email || user.email;
+    user.isAdmin = attrs.isAdmin;
+
+    const updatedUser = await user.save();
+
+    return updatedUser;
+  }
 }
