@@ -1,6 +1,6 @@
 import Router from 'next/router';
 import { Dispatch } from 'redux';
-import { UserCredentials } from '../../interfaces';
+import { UserCredentials, UserEditCredentials } from '../../interfaces';
 import { proshopAPI } from '../../lib';
 import { ActionTypes } from './user.action-types';
 import { UserAction } from './user.actions';
@@ -210,6 +210,32 @@ export const deleteUser =
       });
 
       const { data } = await proshopAPI.delete(`/users/${id}`, config);
+
+      dispatch({
+        type: ActionTypes.DELETE_USER_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: ActionTypes.DELETE_USER_ERROR,
+        payload: error.response.data.message,
+      });
+    }
+  };
+
+export const adminUpdateUser =
+  (id: string, userCredentials: UserEditCredentials) =>
+  async (dispatch: Dispatch<UserAction>) => {
+    const config = {
+      withCredentials: true,
+    };
+
+    try {
+      dispatch({
+        type: ActionTypes.DELETE_USER_START,
+      });
+
+      const { data } = await proshopAPI.put(`/users/${id}`, config);
 
       dispatch({
         type: ActionTypes.DELETE_USER_SUCCESS,
