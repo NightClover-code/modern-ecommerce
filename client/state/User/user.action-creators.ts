@@ -223,6 +223,31 @@ export const deleteUser =
     }
   };
 
+export const fetchUser =
+  (id: string) => async (dispatch: Dispatch<UserAction>) => {
+    const config = {
+      withCredentials: true,
+    };
+
+    try {
+      dispatch({
+        type: ActionTypes.FETCH_USERS_START,
+      });
+
+      const { data } = await proshopAPI.get(`/users/${id}`, config);
+
+      dispatch({
+        type: ActionTypes.FETCH_USERS_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: ActionTypes.FETCH_USER_ERROR,
+        payload: error.response.data.message,
+      });
+    }
+  };
+
 export const adminUpdateUser =
   (id: string, userCredentials: UserEditCredentials) =>
   async (dispatch: Dispatch<UserAction>) => {

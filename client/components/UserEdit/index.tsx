@@ -1,23 +1,38 @@
 import Link from 'next/link';
-import { useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import { useTypedSelector } from '../../hooks';
+import { useAdmin, useTypedSelector, useUserActions } from '../../hooks';
 import { UserEditCredentials } from '../../interfaces';
 import FormContainer from '../FormContainer';
 import Loader from '../Loader';
 import Message from '../Message';
 
-const UserEdit = () => {
+interface UserEditProps {
+  pageId: string | string[] | undefined;
+}
+
+const UserEdit: React.FC<UserEditProps> = ({ pageId }) => {
+  useAdmin();
+
   const initialCredentials = {
     name: '',
     email: '',
     isAdmin: false,
   };
 
-  const { loading, error, data } = useTypedSelector(state => state.user);
+  const { loading, error } = useTypedSelector(state => state.user);
+  const { fetchUser } = useUserActions();
 
   const [credentials, setCredentials] =
     useState<UserEditCredentials>(initialCredentials);
+
+  useEffect(() => {
+    fetchUser(pageId as string);
+  }, [fetchUser, pageId]);
+
+  const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  };
 
   return (
     <>
@@ -26,9 +41,6 @@ const UserEdit = () => {
       </Link>
       <FormContainer>
         <h1>Edit User</h1>
-
-        {loading && <Loader />}
-        {error && <Message variant="danger">{}</Message>}
 
         {loading ? (
           <Loader />

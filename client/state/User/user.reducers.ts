@@ -66,6 +66,22 @@ export const userDetailsReducer = (
   }
 };
 
+export const userEditReducer = (
+  state: UserState = userInitialState,
+  action: UserAction
+): UserState => {
+  switch (action.type) {
+    case ActionTypes.FETCH_USER_START:
+      return { ...state, loading: true, error: null };
+    case ActionTypes.FETCH_USER_SUCCESS:
+      return { loading: false, data: action.payload, error: null };
+    case ActionTypes.FETCH_USER_ERROR:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
 export const userUpdateReducer = (
   state: UserState = userInitialState,
   action: UserAction

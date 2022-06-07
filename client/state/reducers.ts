@@ -4,6 +4,7 @@ import { orderReducer, ordersReducer } from './Order/order.reducers';
 import { productReducer, productsReducer } from './Products/products.reducers';
 import {
   userDetailsReducer,
+  userEditReducer,
   userLoginReducer,
   userRegisterReducer,
   usersReducer,
@@ -18,6 +19,7 @@ export const reducers = combineReducers({
   userLogin: userLoginReducer,
   userRegister: userRegisterReducer,
   userUpdate: userUpdateReducer,
+  userEdit: userEditReducer,
   order: orderReducer,
   userOrders: ordersReducer,
   users: usersReducer,

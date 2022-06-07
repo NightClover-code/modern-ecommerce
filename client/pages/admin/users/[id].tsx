@@ -1,14 +1,18 @@
 import { NextPage } from 'next';
+import { useRouter } from 'next/router';
 import SEO from '../../../components/SEO';
 import UserEdit from '../../../components/UserEdit';
 import { seoConfig } from '../../../utils';
 
 const UserEditPage: NextPage = () => {
+  const router = useRouter();
+  const { id } = router.query;
+
   return (
     <>
       <SEO {...seoConfig} />
       <main className="wrapper py-5">
-        <UserEdit />
+        <UserEdit pageId={id} />
       </main>
     </>
   );

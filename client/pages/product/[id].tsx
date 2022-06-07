@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 import { NextPage } from 'next';
 import { seoConfig } from '../../utils';
 //importing components
-import Link from 'next/link';
 import ProductDetails from '../../components/ProductDetails';
 import SEO from '../../components/SEO';
 
