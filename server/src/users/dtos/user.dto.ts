@@ -1,11 +1,13 @@
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
+import { ObjectId } from 'mongoose';
 
 export class UserDto {
   @Expose()
   email: string;
 
   @Expose()
-  _id: string;
+  @Transform(({ key, obj }) => obj[key])
+  _id: ObjectId;
 
   @Expose()
   name: string;
