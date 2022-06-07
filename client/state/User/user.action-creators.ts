@@ -231,13 +231,13 @@ export const fetchUser =
 
     try {
       dispatch({
-        type: ActionTypes.FETCH_USERS_START,
+        type: ActionTypes.FETCH_USER_START,
       });
 
       const { data } = await proshopAPI.get(`/users/${id}`, config);
 
       dispatch({
-        type: ActionTypes.FETCH_USERS_SUCCESS,
+        type: ActionTypes.FETCH_USER_SUCCESS,
         payload: data,
       });
     } catch (error: any) {

@@ -20,8 +20,11 @@ const UserEdit: React.FC<UserEditProps> = ({ pageId }) => {
     isAdmin: false,
   };
 
-  const { loading, error } = useTypedSelector(state => state.user);
+  const { loading, error: errorUser } = useTypedSelector(state => state.user);
+  const { data, error: errorEdit } = useTypedSelector(state => state.userEdit);
   const { fetchUser } = useUserActions();
+
+  const error = errorEdit || errorUser;
 
   const [credentials, setCredentials] =
     useState<UserEditCredentials>(initialCredentials);
