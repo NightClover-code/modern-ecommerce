@@ -1,5 +1,5 @@
 import axios from 'axios';
 
 export const proshopAPI = axios.create({
-  baseURL: 'https://modern-commerce.herokuapp.com',
+  baseURL: process.env.SERVER_API_URL || 'http://localhost:4000',
 });
