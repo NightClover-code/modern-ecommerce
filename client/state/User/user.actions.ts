@@ -26,8 +26,11 @@ export type UserAction =
   | FetchUserStart
   | FetchUserSuccess
   | FetchUserError
-  | FetchUserReset
-  | UserReset;
+  | UserReset
+  | AdminUpdateUserStart
+  | AdminUpdateUserSuccess
+  | AdminUpdateUserError
+  | AdminUpdateUserReset;
 
 export interface UserLoginStart {
   type: ActionTypes.USER_LOGIN_START;
@@ -75,6 +78,24 @@ export interface UserUpdateReset {
   type: ActionTypes.USER_UPDATE_RESET;
 }
 
+export interface AdminUpdateUserStart {
+  type: ActionTypes.ADMIN_UPDATE_USER_START;
+}
+
+export interface AdminUpdateUserSuccess {
+  type: ActionTypes.ADMIN_UPDATE_USER_SUCCESS;
+  payload: UserInterface;
+}
+
+export interface AdminUpdateUserError {
+  type: ActionTypes.ADMIN_UPDATE_USER_ERROR;
+  payload: string;
+}
+
+export interface AdminUpdateUserReset {
+  type: ActionTypes.ADMIN_UPDATE_USER_RESET;
+}
+
 export interface GetCurrentUserStart {
   type: ActionTypes.GET_CURRENT_USER_START;
 }
@@ -119,10 +140,6 @@ export interface FetchUserStart {
 export interface FetchUserSuccess {
   type: ActionTypes.FETCH_USER_SUCCESS;
   payload: UserInterface;
-}
-
-export interface FetchUserReset {
-  type: ActionTypes.FETCH_USER_RESET;
 }
 
 export interface FetchUserError {

@@ -255,18 +255,28 @@ export const adminUpdateUser =
 
     try {
       dispatch({
-        type: ActionTypes.DELETE_USER_START,
+        type: ActionTypes.ADMIN_UPDATE_USER_START,
       });
 
-      const { data } = await proshopAPI.put(`/users/${id}`, config);
+      const { data } = await proshopAPI.put(
+        `/users/${id}`,
+        userCredentials,
+        config
+      );
 
       dispatch({
-        type: ActionTypes.DELETE_USER_SUCCESS,
+        type: ActionTypes.ADMIN_UPDATE_USER_SUCCESS,
         payload: data,
       });
+
+      dispatch({
+        type: ActionTypes.ADMIN_UPDATE_USER_RESET,
+      });
+
+      Router.push('/admin/users');
     } catch (error: any) {
       dispatch({
-        type: ActionTypes.DELETE_USER_ERROR,
+        type: ActionTypes.ADMIN_UPDATE_USER_ERROR,
         payload: error.response.data.message,
       });
     }

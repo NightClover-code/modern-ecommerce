@@ -15,8 +15,12 @@ export const useReset = () => {
       updateUserReset();
     }
 
-    // if (router.asPath !== '/register' || '/login') {
-    //   userReset();
-    // }
+    if (router.asPath !== '/register' || '/login') {
+      userReset();
+    }
+
+    if (!router.asPath.includes('/admin/users/edit')) {
+      userReset();
+    }
   }, [router, fetchUsersReset, updateUserReset, userReset]);
 };
