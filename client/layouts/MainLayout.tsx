@@ -15,18 +15,20 @@ const MainLayout: React.FC = ({ children }) => {
   const accessToken = useLocalStorage('', 'accessToken');
 
   const { getCurrentUser } = useUserActions();
-  const { data } = useTypedSelector(state => state.user);
+  const { data: cartData } = useTypedSelector(state => state.cart);
   const { getCart } = useCartActions();
 
   useEffect(() => {
-    getCart();
-  }, [getCart]);
+    if (cartData.cartItems.length < 1) {
+      getCart();
+    }
+  }, [getCart, cartData]);
 
   useEffect(() => {
-    if (accessToken.length > 0 && !data) {
+    if (accessToken.length > 0) {
       getCurrentUser(accessToken);
     }
-  }, [accessToken, getCurrentUser, data]);
+  }, [accessToken, getCurrentUser]);
 
   return (
     <div className="app__container">

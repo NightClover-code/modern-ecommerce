@@ -14,8 +14,10 @@ const Products: React.FC = () => {
   const { loading, error, data } = useTypedSelector(state => state.products);
 
   useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts]);
+    if (data.length < 1) {
+      fetchProducts();
+    }
+  }, [fetchProducts, data]);
 
   return (
     <>

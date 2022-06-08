@@ -2,10 +2,10 @@ import FormContainer from '../FormContainer';
 import CheckoutSteps from '../CheckoutSteps';
 import { Form, Col, Button } from 'react-bootstrap';
 import { useState, FormEvent } from 'react';
-import { useCartActions, useShipping } from '../../hooks';
+import { useAuth, useCartActions } from '../../hooks';
 
 const Payment = () => {
-  useShipping();
+  useAuth();
 
   const [paymentMethod, setPaymentMethod] = useState('PayPal');
   const { savePaymentMethod } = useCartActions();
