@@ -3,12 +3,15 @@ import Footer from '../components/Footer';
 import {
   useCartActions,
   useLocalStorage,
+  useReset,
   useTypedSelector,
   useUserActions,
 } from '../hooks';
 import { useEffect } from 'react';
 
 const MainLayout: React.FC = ({ children }) => {
+  useReset();
+
   const accessToken = useLocalStorage('', 'accessToken');
 
   const { getCurrentUser } = useUserActions();

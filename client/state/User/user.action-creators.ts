@@ -193,8 +193,6 @@ export const fetchUsers = () => async (dispatch: Dispatch<UserAction>) => {
       type: ActionTypes.FETCH_USERS_ERROR,
       payload: error.response.data.message,
     });
-
-    Router.push('/');
   }
 };
 
@@ -278,5 +276,17 @@ export const cleanErrors = () => async (dispatch: Dispatch<UserAction>) => {
   dispatch({
     type: ActionTypes.CLEAN_USER_ERRORS,
     payload: null,
+  });
+};
+
+export const fetchUsersReset = () => async (dispatch: Dispatch<UserAction>) => {
+  dispatch({
+    type: ActionTypes.FETCH_USERS_RESET,
+  });
+};
+
+export const updateUserReset = () => async (dispatch: Dispatch<UserAction>) => {
+  dispatch({
+    type: ActionTypes.USER_UPDATE_RESET,
   });
 };

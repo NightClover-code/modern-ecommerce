@@ -33,6 +33,16 @@ const UserEdit: React.FC<UserEditProps> = ({ pageId }) => {
     fetchUser(pageId as string);
   }, [fetchUser, pageId]);
 
+  useEffect(() => {
+    if (data) {
+      setCredentials({
+        name: data.name,
+        email: data.email,
+        isAdmin: data.isAdmin,
+      });
+    }
+  }, [data]);
+
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
   };
