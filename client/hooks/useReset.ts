@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { useUserActions } from './useActions';
+import { useProductsActions, useUserActions } from './useActions';
 
 export const useReset = () => {
   const router = useRouter();
   const { fetchUsersReset, updateUserReset, userReset } = useUserActions();
+  const { fetchProductReset } = useProductsActions();
 
   useEffect(() => {
     if (router.asPath !== '/admin/users') {
@@ -22,5 +23,9 @@ export const useReset = () => {
     if (!router.asPath.includes('/admin/users/edit')) {
       userReset();
     }
-  }, [router, fetchUsersReset, updateUserReset, userReset]);
+
+    if (!router.asPath.includes('/product/')) {
+      fetchProductReset();
+    }
+  }, [router, fetchUsersReset, updateUserReset, userReset, fetchProductReset]);
 };

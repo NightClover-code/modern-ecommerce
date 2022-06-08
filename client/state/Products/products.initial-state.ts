@@ -1,6 +1,6 @@
 import { ProductsState, ProductState } from './products.state';
 
-const product = {
+export const initialProduct = {
   _id: '',
   name: '',
   image: '',
@@ -22,5 +22,5 @@ export const productsInitialState: ProductsState = {
 export const productInitialState: ProductState = {
   loading: false,
   error: null,
-  data: product,
+  data: initialProduct,
 };

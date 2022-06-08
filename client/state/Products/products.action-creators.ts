@@ -44,3 +44,10 @@ export const fetchProduct =
       });
     }
   };
+
+export const fetchProductReset =
+  () => async (dispatch: Dispatch<ProductsAction>) => {
+    dispatch({
+      type: ActionTypes.FETCH_PRODUCT_RESET,
+    });
+  };

@@ -28,8 +28,6 @@ const UserEdit: React.FC<UserEditProps> = ({ pageId }) => {
   } = useTypedSelector(state => state.userEdit);
   const { fetchUser, adminUpdateUser } = useUserActions();
 
-  const error = errorEdit || errorUser;
-
   const [credentials, setCredentials] =
     useState<UserEditCredentials>(initialCredentials);
 
@@ -62,48 +60,54 @@ const UserEdit: React.FC<UserEditProps> = ({ pageId }) => {
         <h1>Edit User</h1>
 
         {loading && <Loader />}
-        {error && <Message variant="danger">{error}</Message>}
+        {errorEdit && !errorUser && (
+          <Message variant="danger">{errorEdit}</Message>
+        )}
 
-        <Form onSubmit={onSubmitHandler}>
-          <Form.Group controlId="name">
-            <Form.Label>Name</Form.Label>
-            <Form.Control
-              type="name"
-              placeholder="Enter name"
-              value={credentials.name}
-              onChange={e =>
-                setCredentials({ ...credentials, name: e.target.value })
-              }
-            ></Form.Control>
-          </Form.Group>
+        {errorUser ? (
+          <Message variant="danger">{errorUser}</Message>
+        ) : (
+          <Form onSubmit={onSubmitHandler}>
+            <Form.Group controlId="name">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="name"
+                placeholder="Enter name"
+                value={credentials.name}
+                onChange={e =>
+                  setCredentials({ ...credentials, name: e.target.value })
+                }
+              ></Form.Control>
+            </Form.Group>
 
-          <Form.Group controlId="email" className="py-3">
-            <Form.Label>Email Address</Form.Label>
-            <Form.Control
-              type="email"
-              placeholder="Enter email"
-              value={credentials.email}
-              onChange={e =>
-                setCredentials({ ...credentials, email: e.target.value })
-              }
-            ></Form.Control>
-          </Form.Group>
+            <Form.Group controlId="email" className="py-3">
+              <Form.Label>Email Address</Form.Label>
+              <Form.Control
+                type="email"
+                placeholder="Enter email"
+                value={credentials.email}
+                onChange={e =>
+                  setCredentials({ ...credentials, email: e.target.value })
+                }
+              ></Form.Control>
+            </Form.Group>
 
-          <Form.Group controlId="isadmin">
-            <Form.Check
-              type="checkbox"
-              label="Is Admin"
-              checked={credentials.isAdmin}
-              onChange={e =>
-                setCredentials({ ...credentials, isAdmin: e.target.checked })
-              }
-            ></Form.Check>
-          </Form.Group>
+            <Form.Group controlId="isadmin">
+              <Form.Check
+                type="checkbox"
+                label="Is Admin"
+                checked={credentials.isAdmin}
+                onChange={e =>
+                  setCredentials({ ...credentials, isAdmin: e.target.checked })
+                }
+              ></Form.Check>
+            </Form.Group>
 
-          <Button type="submit" variant="primary" className="mt-3">
-            Update
-          </Button>
-        </Form>
+            <Button type="submit" variant="primary" className="mt-3">
+              Update
+            </Button>
+          </Form>
+        )}
       </FormContainer>
     </>
   );

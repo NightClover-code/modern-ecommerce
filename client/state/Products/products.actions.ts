@@ -7,7 +7,8 @@ export type ProductsAction =
   | FetchProductsSuccess
   | FetchProductStart
   | FetchProductError
-  | FetchProductSuccess;
+  | FetchProductSuccess
+  | FetchProductReset;
 
 export interface FetchProductsStart {
   type: ActionTypes.FETCH_PRODUCTS_START;
@@ -35,4 +36,8 @@ export interface FetchProductSuccess {
 export interface FetchProductError {
   type: ActionTypes.FETCH_PRODUCT_ERROR;
   payload: string;
+}
+
+export interface FetchProductReset {
+  type: ActionTypes.FETCH_PRODUCT_RESET;
 }

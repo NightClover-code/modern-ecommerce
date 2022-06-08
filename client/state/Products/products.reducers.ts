@@ -1,6 +1,7 @@
 import { ActionTypes } from './products.action-types';
 import { ProductsAction } from './products.actions';
 import {
+  initialProduct,
   productInitialState,
   productsInitialState,
 } from './products.initial-state';
@@ -33,6 +34,9 @@ export const productReducer = (
       return { loading: false, data: action.payload, error: null };
     case ActionTypes.FETCH_PRODUCT_ERROR:
       return { ...state, loading: false, error: action.payload };
+
+    case ActionTypes.FETCH_PRODUCT_RESET:
+      return { data: initialProduct, loading: false, error: null };
     default:
       return state;
   }
