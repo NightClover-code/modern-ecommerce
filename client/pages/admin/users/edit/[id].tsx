@@ -1,8 +1,8 @@
 import { NextPage } from 'next';
 import { useRouter } from 'next/router';
-import SEO from '../../../components/SEO';
-import UserEdit from '../../../components/UserEdit';
-import { seoConfig } from '../../../utils';
+import SEO from '../../../../components/SEO';
+import UserEdit from '../../../../components/UserEdit';
+import { seoConfig } from '../../../../utils';
 
 const UserEditPage: NextPage = () => {
   const router = useRouter();

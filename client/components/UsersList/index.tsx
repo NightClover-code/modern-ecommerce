@@ -52,7 +52,7 @@ const UsersList = () => {
                   )}
                 </td>
                 <td>
-                  <Link href={`/admin/users/${_user._id}`} passHref>
+                  <Link href={`/admin/users/edit/${_user._id}`} passHref>
                     <Button variant="light" className="btn-sm">
                       <i className="fas fa-edit"></i>
                     </Button>

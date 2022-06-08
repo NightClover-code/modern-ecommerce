@@ -17,8 +17,8 @@ export const userLoginReducer = (
 
     case ActionTypes.USER_LOGOUT:
       return { ...state, data: action.payload };
-    case ActionTypes.CLEAN_USER_ERRORS:
-      return { ...state, error: null };
+    case ActionTypes.USER_RESET:
+      return { loading: false, data: null, error: null };
     default:
       return state;
   }
@@ -38,8 +38,8 @@ export const userRegisterReducer = (
 
     case ActionTypes.USER_LOGOUT:
       return { ...state, data: action.payload };
-    case ActionTypes.CLEAN_USER_ERRORS:
-      return { ...state, error: null };
+    case ActionTypes.USER_RESET:
+      return { loading: false, data: null, error: null };
     default:
       return state;
   }
@@ -59,8 +59,6 @@ export const userDetailsReducer = (
 
     case ActionTypes.USER_LOGOUT:
       return { ...state, data: action.payload };
-    case ActionTypes.CLEAN_USER_ERRORS:
-      return { ...state, error: null };
     default:
       return state;
   }
@@ -77,6 +75,18 @@ export const userEditReducer = (
       return { loading: false, data: action.payload, error: null };
     case ActionTypes.FETCH_USER_ERROR:
       return { ...state, loading: false, error: action.payload };
+
+    case ActionTypes.ADMIN_UPDATE_USER_START:
+      return { ...state, loading: true, error: null };
+    case ActionTypes.ADMIN_UPDATE_USER_SUCCESS:
+      return { loading: false, data: action.payload, error: null };
+    case ActionTypes.ADMIN_UPDATE_USER_ERROR:
+      return { ...state, loading: false, error: action.payload };
+
+    case ActionTypes.USER_RESET:
+      return { data: null, loading: false, error: null };
+    case ActionTypes.ADMIN_UPDATE_USER_RESET:
+      return { loading: false, data: null, error: null };
     default:
       return state;
   }
@@ -106,8 +116,8 @@ export const userUpdateReducer = (
 
     case ActionTypes.USER_LOGOUT:
       return { ...state, data: action.payload };
-    case ActionTypes.CLEAN_USER_ERRORS:
-      return { ...state, error: null, success: false };
+    case ActionTypes.USER_UPDATE_RESET:
+      return { loading: false, data: null, error: null, success: false };
     default:
       return state;
   }
@@ -137,6 +147,8 @@ export const usersReducer = (
         success: false,
       };
 
+    case ActionTypes.FETCH_USERS_RESET:
+      return { ...state, data: [], error: null };
     default:
       return state;
   }

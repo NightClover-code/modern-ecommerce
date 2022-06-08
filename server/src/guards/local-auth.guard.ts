@@ -4,6 +4,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { isString } from 'class-validator';
 
 @Injectable()
 export class LocalAuthGuard extends AuthGuard('local') {
@@ -12,7 +13,12 @@ export class LocalAuthGuard extends AuthGuard('local') {
 
     const { email, password } = request.body;
 
-    if (email.length === 0 || password.length === 0) {
+    if (
+      email.length === 0 ||
+      password.length === 0 ||
+      !isString(password) ||
+      !isString(email)
+    ) {
       throw new BadRequestException('Please enter a valid email and password.');
     }
 

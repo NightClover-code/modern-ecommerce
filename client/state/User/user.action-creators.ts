@@ -193,8 +193,6 @@ export const fetchUsers = () => async (dispatch: Dispatch<UserAction>) => {
       type: ActionTypes.FETCH_USERS_ERROR,
       payload: error.response.data.message,
     });
-
-    Router.push('/');
   }
 };
 
@@ -257,26 +255,47 @@ export const adminUpdateUser =
 
     try {
       dispatch({
-        type: ActionTypes.DELETE_USER_START,
+        type: ActionTypes.ADMIN_UPDATE_USER_START,
       });
 
-      const { data } = await proshopAPI.put(`/users/${id}`, config);
+      const { data } = await proshopAPI.put(
+        `/users/${id}`,
+        userCredentials,
+        config
+      );
 
       dispatch({
-        type: ActionTypes.DELETE_USER_SUCCESS,
+        type: ActionTypes.ADMIN_UPDATE_USER_SUCCESS,
         payload: data,
       });
+
+      dispatch({
+        type: ActionTypes.ADMIN_UPDATE_USER_RESET,
+      });
+
+      Router.push('/admin/users');
     } catch (error: any) {
       dispatch({
-        type: ActionTypes.DELETE_USER_ERROR,
+        type: ActionTypes.ADMIN_UPDATE_USER_ERROR,
         payload: error.response.data.message,
       });
     }
   };
 
-export const cleanErrors = () => async (dispatch: Dispatch<UserAction>) => {
+export const userReset = () => async (dispatch: Dispatch<UserAction>) => {
   dispatch({
-    type: ActionTypes.CLEAN_USER_ERRORS,
-    payload: null,
+    type: ActionTypes.USER_RESET,
+  });
+};
+
+export const fetchUsersReset = () => async (dispatch: Dispatch<UserAction>) => {
+  dispatch({
+    type: ActionTypes.FETCH_USERS_RESET,
+  });
+};
+
+export const updateUserReset = () => async (dispatch: Dispatch<UserAction>) => {
+  dispatch({
+    type: ActionTypes.USER_UPDATE_RESET,
   });
 };
