@@ -272,10 +272,9 @@ export const adminUpdateUser =
     }
   };
 
-export const cleanErrors = () => async (dispatch: Dispatch<UserAction>) => {
+export const userReset = () => async (dispatch: Dispatch<UserAction>) => {
   dispatch({
-    type: ActionTypes.CLEAN_USER_ERRORS,
-    payload: null,
+    type: ActionTypes.USER_RESET,
   });
 };
 

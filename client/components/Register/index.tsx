@@ -15,7 +15,7 @@ const Register = () => {
     confirmPassword: '',
   };
 
-  const { register, cleanErrors } = useUserActions();
+  const { register } = useUserActions();
   const { loading, error } = useTypedSelector(state => state.userRegister);
 
   const [credentials, setCredentials] =
@@ -25,10 +25,6 @@ const Register = () => {
   useEffect(() => {
     setMessage(error);
   }, [error]);
-
-  useEffect(() => {
-    cleanErrors();
-  }, [cleanErrors]);
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

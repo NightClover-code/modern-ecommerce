@@ -4,7 +4,7 @@ import { useUserActions } from './useActions';
 
 export const useReset = () => {
   const router = useRouter();
-  const { fetchUsersReset, updateUserReset } = useUserActions();
+  const { fetchUsersReset, updateUserReset, userReset } = useUserActions();
 
   useEffect(() => {
     if (router.asPath !== '/admin/users') {
@@ -14,5 +14,9 @@ export const useReset = () => {
     if (router.asPath !== '/profile') {
       updateUserReset();
     }
-  }, [router, fetchUsersReset, updateUserReset]);
+
+    // if (router.asPath !== '/register' || '/login') {
+    //   userReset();
+    // }
+  }, [router, fetchUsersReset, updateUserReset, userReset]);
 };
