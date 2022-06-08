@@ -4,7 +4,6 @@ import {
   useCartActions,
   useLocalStorage,
   useReset,
-  useTypedSelector,
   useUserActions,
 } from '../hooks';
 import { useEffect } from 'react';
@@ -15,14 +14,11 @@ const MainLayout: React.FC = ({ children }) => {
   const accessToken = useLocalStorage('', 'accessToken');
 
   const { getCurrentUser } = useUserActions();
-  const { data: cartData } = useTypedSelector(state => state.cart);
   const { getCart } = useCartActions();
 
   useEffect(() => {
-    if (cartData.cartItems.length < 1) {
-      getCart();
-    }
-  }, [getCart, cartData]);
+    getCart();
+  }, [getCart]);
 
   useEffect(() => {
     if (accessToken.length > 0) {
