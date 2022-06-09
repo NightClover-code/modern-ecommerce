@@ -27,15 +27,13 @@ export const sessionConfig = (MongoDBStore: any): SessionOptions => ({
   secret: process.env.SESSION_KEY,
   resave: false,
   saveUninitialized: false,
+  cookie: {
+    sameSite: 'none',
+    secure: true,
+    maxAge: 3 * 24 * 60 * 60 * 1000,
+  },
   store: new MongoDBStore({
     uri: process.env.MONGODB_URL,
     collection: 'sessions',
   }),
-  cookie: {
-    sameSite: 'none',
-    secure: true,
-    domain: 'modern-ecommerce-pi.vercel.app',
-    httpOnly: true,
-    maxAge: 3 * 24 * 60 * 60 * 1000,
-  },
 });
