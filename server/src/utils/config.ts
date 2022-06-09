@@ -1,6 +1,7 @@
 import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
 import { ConfigService } from '@nestjs/config';
 import { MongooseModuleOptions } from '@nestjs/mongoose';
+import { CookieOptions } from 'express';
 import { SessionOptions } from 'express-session';
 
 export const connectDB = (
@@ -23,6 +24,14 @@ export const corsConfig = (): CorsOptions => ({
   credentials: true,
 });
 
+const cookieOptions = {
+  sameSite: 'none',
+  secure: true,
+  domain: 'modern-ecommerce-pi.vercel.app',
+  httpOnly: true,
+  maxAge: 3 * 24 * 60 * 60 * 1000,
+};
+
 export const sessionConfig = (MongoDBStore: any): SessionOptions => ({
   secret: process.env.SESSION_KEY,
   resave: false,
@@ -31,8 +40,10 @@ export const sessionConfig = (MongoDBStore: any): SessionOptions => ({
     uri: process.env.MONGODB_URL,
     collection: 'sessions',
   }),
-  cookie: {
-    //recycling cookies every 3d
-    maxAge: 3 * 24 * 60 * 60 * 1000,
-  },
+  cookie: process.env.NODE_ENV
+    ? (cookieOptions as CookieOptions)
+    : {
+        //recycling cookies every 3d
+        maxAge: 3 * 24 * 60 * 60 * 1000,
+      },
 });
