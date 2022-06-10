@@ -20,8 +20,6 @@ export class AppController {
     })
   )
   uploadFile(@UploadedFile() { filename, originalname }: Express.Multer.File) {
-    const response = { filename, originalname };
-
-    return response;
+    return `/uploads/${originalname}`;
   }
 }

@@ -1,8 +1,9 @@
 import Link from 'next/link';
-import { FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { useAdmin, useProductsActions, useTypedSelector } from '../../hooks';
 import { ProductInterface } from '../../interfaces';
+import { proshopAPI } from '../../lib';
 import FormContainer from '../FormContainer';
 import Loader from '../Loader';
 import Message from '../Message';
@@ -29,6 +30,8 @@ const ProductsEdit: React.FC<ProductsEditProps> = ({ pageId }) => {
 
   const { fetchProduct, updateProduct } = useProductsActions();
 
+  const [uploading, setUploading] = useState<boolean>(false);
+
   const [productDetails, setDetails] =
     useState<Partial<ProductInterface>>(initialProduct);
 
@@ -54,6 +57,29 @@ const ProductsEdit: React.FC<ProductsEditProps> = ({ pageId }) => {
     e.preventDefault();
 
     updateProduct(pageId as string, productDetails);
+  };
+
+  const uploadFileHandler = async (e: ChangeEvent<any>) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('image', file);
+    setUploading(true);
+
+    try {
+      const config = {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      };
+
+      const { data } = await proshopAPI.post('/upload', formData, config);
+
+      setDetails({ ...productDetails, image: data });
+      setUploading(false);
+    } catch (error) {
+      console.error(error);
+      setUploading(false);
+    }
   };
 
   return (
@@ -103,17 +129,15 @@ const ProductsEdit: React.FC<ProductsEditProps> = ({ pageId }) => {
                 type="text"
                 placeholder="Enter image url"
                 value={productDetails.image}
-                onChange={e =>
-                  setDetails({ ...productDetails, image: e.target.value })
-                }
               ></Form.Control>
-              {/* <Form.File
-                id="image-file"
-                label="Choose File"
-                custom
-                // onChange={uploadFileHandler}
-              ></Form.File> */}
-              {/* {uploading && <Loader />} */}
+              <Form.Group
+                controlId="formFile"
+                className="mt-3"
+                onChange={uploadFileHandler}
+              >
+                <Form.Control type="file" />
+              </Form.Group>
+              {uploading && <Loader />}
             </Form.Group>
 
             <Form.Group controlId="brand" className="py-2">
