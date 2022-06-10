@@ -28,6 +28,7 @@ export const sessionConfig = (MongoDBStore: any): SessionOptions => ({
   resave: false,
   saveUninitialized: false,
   cookie: {
+    domain: 'modern-commerce-frontend.herokuapp.com',
     sameSite: 'none',
     secure: true,
     maxAge: 3 * 24 * 60 * 60 * 1000,
