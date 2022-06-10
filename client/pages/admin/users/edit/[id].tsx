@@ -4,7 +4,7 @@ import SEO from '../../../../components/SEO';
 import UserEdit from '../../../../components/UserEdit';
 import { seoConfig } from '../../../../utils';
 
-const UserEditPage: NextPage = () => {
+const AdminUserEditPage: NextPage = () => {
   const router = useRouter();
   const { id } = router.query;
 
@@ -17,4 +17,4 @@ const UserEditPage: NextPage = () => {
     </>
   );
 };
-export default UserEditPage;
+export default AdminUserEditPage;
