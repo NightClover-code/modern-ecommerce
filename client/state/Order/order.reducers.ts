@@ -107,3 +107,30 @@ export const ordersReducer = (
       return state;
   }
 };
+
+export const orderDeliverReducer = (
+  state: OrderState = orderInitialState,
+  action: OrderAction
+): OrderState => {
+  switch (action.type) {
+    case ActionTypes.DELIVER_ORDER_START:
+      return { ...state, loading: true, error: null, success: false };
+    case ActionTypes.DELIVER_ORDER_SUCCESS:
+      return {
+        loading: false,
+        data: action.payload,
+        error: null,
+        success: true,
+      };
+    case ActionTypes.DELIVER_ORDER_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+        success: false,
+      };
+
+    default:
+      return state;
+  }
+};

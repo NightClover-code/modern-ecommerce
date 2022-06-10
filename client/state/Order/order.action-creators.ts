@@ -152,3 +152,36 @@ export const fetchUserOrders =
       });
     }
   };
+
+export const deliverOrder =
+  (orderId: string) =>
+  async (dispatch: Dispatch<OrderAction>) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true,
+    };
+
+    try {
+      dispatch({
+        type: ActionTypes.DELIVER_ORDER_START,
+      });
+
+      const { data } = await proshopAPI.put(
+        `/orders/${orderId}/deliver`,
+        {},
+        config
+      );
+
+      dispatch({
+        type: ActionTypes.DELIVER_ORDER_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: ActionTypes.DELIVER_ORDER_ERROR,
+        payload: error.response.data.message,
+      });
+    }
+  };
