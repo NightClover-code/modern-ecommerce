@@ -23,7 +23,7 @@ export class ProductsService {
 
   async findById(id: string): Promise<ProductDocument> {
     if (!Types.ObjectId.isValid(id))
-      throw new BadRequestException('Invalid product id.');
+      throw new BadRequestException('Invalid product ID.');
 
     const product = await this.productModel.findById(id);
 
@@ -36,6 +36,17 @@ export class ProductsService {
     const createdProducts = await this.productModel.insertMany(products);
 
     return createdProducts;
+  }
+
+  async deleteOne(id: string): Promise<void> {
+    if (!Types.ObjectId.isValid(id))
+      throw new BadRequestException('Invalid product ID.');
+
+    const product = await this.productModel.findById(id);
+
+    if (!product) throw new NotFoundException('No product with given ID.');
+
+    await product.remove();
   }
 
   async deleteMany(): Promise<void> {
