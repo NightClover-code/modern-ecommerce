@@ -1,3 +1,4 @@
+import Router from 'next/router';
 import { Dispatch } from 'redux';
 import { proshopAPI } from '../../lib';
 import { ActionTypes } from './products.action-types';
@@ -72,6 +73,33 @@ export const deleteProduct =
     } catch (error: any) {
       dispatch({
         type: ActionTypes.DELETE_PRODUCT_ERROR,
+        payload: error.response.data.message,
+      });
+    }
+  };
+
+export const createProduct =
+  () => async (dispatch: Dispatch<ProductsAction>) => {
+    const config = {
+      withCredentials: true,
+    };
+
+    try {
+      dispatch({
+        type: ActionTypes.CREATE_PRODUCT_START,
+      });
+
+      const { data } = await proshopAPI.post(`/products`, {}, config);
+
+      dispatch({
+        type: ActionTypes.CREATE_PRODUCT_SUCCESS,
+        payload: data,
+      });
+
+      Router.push(`/admin/products/edit/${data._id}`);
+    } catch (error: any) {
+      dispatch({
+        type: ActionTypes.CREATE_PRODUCT_ERROR,
         payload: error.response.data.message,
       });
     }

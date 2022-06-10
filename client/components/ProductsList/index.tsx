@@ -8,14 +8,17 @@ import Message from '../Message';
 const ProductsList = () => {
   useAdmin();
 
-  const { loading, error, data } = useTypedSelector(state => state.products);
+  const { fetchProducts, deleteProduct, createProduct } = useProductsActions();
+
   const user = useTypedSelector(state => state.user);
-  const { fetchProducts, deleteProduct } = useProductsActions();
-  const { success } = useTypedSelector(state => state.productDelete);
+  const { loading, error, data } = useTypedSelector(state => state.products);
+  const { success: successDelete } = useTypedSelector(
+    state => state.productDelete
+  );
 
   useEffect(() => {
     fetchProducts();
-  }, [fetchProducts, success]);
+  }, [fetchProducts, successDelete]);
 
   return (
     <>
@@ -24,9 +27,9 @@ const ProductsList = () => {
           <h1>Products</h1>
         </Col>
         <Col className="text-right">
-          {/* <Button className="my-3" onClick={createProductHandler}>
+          <Button className="my-3" onClick={() => createProduct()}>
             <i className="fas fa-plus"></i> Create Product
-          </Button> */}
+          </Button>
         </Col>
       </Row>
 

@@ -11,7 +11,10 @@ export type ProductsAction =
   | FetchProductReset
   | DeleteProductStart
   | DeleteProductError
-  | DeleteProductSuccess;
+  | DeleteProductSuccess
+  | CreateProductStart
+  | CreateProductError
+  | CreateProductSuccess;
 
 export interface FetchProductsStart {
   type: ActionTypes.FETCH_PRODUCTS_START;
@@ -56,5 +59,19 @@ export interface DeleteProductSuccess {
 
 export interface DeleteProductError {
   type: ActionTypes.DELETE_PRODUCT_ERROR;
+  payload: string;
+}
+
+export interface CreateProductStart {
+  type: ActionTypes.CREATE_PRODUCT_START;
+}
+
+export interface CreateProductSuccess {
+  type: ActionTypes.CREATE_PRODUCT_SUCCESS;
+  payload: ProductInterface;
+}
+
+export interface CreateProductError {
+  type: ActionTypes.CREATE_PRODUCT_ERROR;
   payload: string;
 }
