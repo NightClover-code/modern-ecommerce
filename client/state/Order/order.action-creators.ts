@@ -26,7 +26,7 @@ export const createOrder =
         payload: data,
       });
 
-      Router.push(`/order/${data._id}`);
+      Router.push(`/orders/${data._id}`);
     } catch (error: any) {
       dispatch({
         type: ActionTypes.CREATE_ORDER_ERROR,

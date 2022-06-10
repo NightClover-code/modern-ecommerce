@@ -46,6 +46,12 @@ export class OrdersController {
     @Param('id') id: string,
     @Body() { paymentResult }: any
   ) {
-    return this.ordersService.update(id, paymentResult);
+    return this.ordersService.updatePaid(id, paymentResult);
+  }
+
+  @UseGuards(AdminGuard)
+  @Put(':id/deliver')
+  async updateOrderDelivery(@Param('id') id: string) {
+    return this.ordersService.updateDelivered(id);
   }
 }

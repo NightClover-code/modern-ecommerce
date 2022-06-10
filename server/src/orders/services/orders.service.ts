@@ -64,7 +64,7 @@ export class OrdersService {
     return order;
   }
 
-  async update(
+  async updatePaid(
     id: string,
     paymentResult: PaymentResult
   ): Promise<OrderDocument> {
@@ -78,6 +78,22 @@ export class OrdersService {
     order.isPaid = true;
     order.paidAt = Date();
     order.paymentResult = paymentResult;
+
+    const updatedOrder = await order.save();
+
+    return updatedOrder;
+  }
+
+  async updateDelivered(id: string): Promise<OrderDocument> {
+    if (!Types.ObjectId.isValid(id))
+      throw new BadRequestException('Invalid order ID.');
+
+    const order = await this.orderModel.findById(id);
+
+    if (!order) throw new NotFoundException('No order with given ID.');
+
+    order.isDelivered = true;
+    order.deliveredAt = Date();
 
     const updatedOrder = await order.save();
 

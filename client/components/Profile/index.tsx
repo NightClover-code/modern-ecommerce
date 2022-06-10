@@ -188,7 +188,7 @@ const Profile = () => {
                     )}
                   </td>
                   <td>
-                    <Link href={`/order/${order._id}`} passHref>
+                    <Link href={`/orders/${order._id}`} passHref>
                       <Button className="btn-sm" variant="light">
                         Details
                       </Button>
