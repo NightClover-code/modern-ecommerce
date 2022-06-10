@@ -5,7 +5,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "heroku-postbuild": "next build"
   },
   "dependencies": {
     "@paypal/paypal-js": "^5.0.2",
