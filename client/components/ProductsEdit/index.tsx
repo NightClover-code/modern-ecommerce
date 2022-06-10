@@ -125,16 +125,7 @@ const ProductsEdit: React.FC<ProductsEditProps> = ({ pageId }) => {
 
             <Form.Group controlId="image" className="py-2">
               <Form.Label>Image</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter image url"
-                value={productDetails.image}
-              ></Form.Control>
-              <Form.Group
-                controlId="formFile"
-                className="mt-3"
-                onChange={uploadFileHandler}
-              >
+              <Form.Group controlId="formFile" onChange={uploadFileHandler}>
                 <Form.Control type="file" />
               </Form.Group>
               {uploading && <Loader />}

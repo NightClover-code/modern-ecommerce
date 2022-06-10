@@ -45,7 +45,7 @@ export class OrdersService {
     return createdOrder;
   }
 
-  async find(): Promise<OrderDocument[]> {
+  async findAll(): Promise<OrderDocument[]> {
     const orders = await this.orderModel.find();
 
     return orders;

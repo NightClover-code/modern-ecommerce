@@ -8,6 +8,7 @@ import {
   Session,
   UseGuards,
 } from '@nestjs/common';
+import { AdminGuard } from 'src/guards/admin.guard';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { OrdersService } from '../services/orders.service';
 
@@ -21,10 +22,10 @@ export class OrdersController {
     return this.ordersService.create(body, session.user._id);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AdminGuard)
   @Get()
   async getOrders() {
-    return this.ordersService.find();
+    return this.ordersService.findAll();
   }
 
   @UseGuards(AuthGuard)
