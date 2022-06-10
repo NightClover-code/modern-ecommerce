@@ -60,7 +60,7 @@ export const orderReducer = (
   }
 };
 
-export const ordersReducer = (
+export const userOrdersReducer = (
   state: OrdersState = ordersInitialState,
   action: OrderAction
 ): OrdersState => {
@@ -74,6 +74,30 @@ export const ordersReducer = (
         error: null,
       };
     case ActionTypes.FETCH_USER_ORDERS_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+    default:
+      return state;
+  }
+};
+
+export const ordersReducer = (
+  state: OrdersState = ordersInitialState,
+  action: OrderAction
+): OrdersState => {
+  switch (action.type) {
+    case ActionTypes.FETCH_ORDERS_START:
+      return { ...state, loading: true, error: null };
+    case ActionTypes.FETCH_ORDERS_SUCCESS:
+      return {
+        loading: false,
+        data: action.payload,
+        error: null,
+      };
+    case ActionTypes.FETCH_ORDERS_ERROR:
       return {
         ...state,
         loading: false,

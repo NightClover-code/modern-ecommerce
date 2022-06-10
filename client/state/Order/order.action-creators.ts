@@ -63,6 +63,33 @@ export const fetchOrder =
     }
   };
 
+export const fetchOrders = () => async (dispatch: Dispatch<OrderAction>) => {
+  const config = {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    withCredentials: true,
+  };
+
+  try {
+    dispatch({
+      type: ActionTypes.FETCH_ORDERS_START,
+    });
+
+    const { data } = await proshopAPI.get('/orders', config);
+
+    dispatch({
+      type: ActionTypes.FETCH_ORDERS_SUCCESS,
+      payload: data,
+    });
+  } catch (error: any) {
+    dispatch({
+      type: ActionTypes.FETCH_ORDERS_ERROR,
+      payload: error.response.data.message,
+    });
+  }
+};
+
 export const payOrder =
   (orderId: string, paymentResult: PaymentResult) =>
   async (dispatch: Dispatch<OrderAction>) => {
