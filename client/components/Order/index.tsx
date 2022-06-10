@@ -15,7 +15,11 @@ const Order: React.FC<OrderProps> = ({ pageId }) => {
   const { loading, data, error, success } = useTypedSelector(
     state => state.order
   );
-  const { fetchOrder, payOrder } = useOrderActions();
+  const { loading: loadingDeliver } = useTypedSelector(
+    state => state.orderDeliver
+  );
+  const user = useTypedSelector(state => state.user);
+  const { fetchOrder, payOrder, deliverOrder } = useOrderActions();
 
   useEffect(() => {
     if (!data._id || success) {
@@ -168,21 +172,22 @@ const Order: React.FC<OrderProps> = ({ pageId }) => {
                   />
                 </ListGroup.Item>
               )}
-              {/* {loadingDeliver && <Loader />}
-              {userInfo &&
-                userInfo.isAdmin &&
+              {loadingDeliver && <Loader />}
+
+              {user.data &&
+                user.data.isAdmin &&
                 data.isPaid &&
                 !data.isDelivered && (
                   <ListGroup.Item>
                     <Button
                       type="button"
                       className="btn btn-block"
-                      onClick={deliverHandler}
+                      onClick={() => deliverOrder(data._id!)}
                     >
                       Mark As Delivered
                     </Button>
                   </ListGroup.Item>
-                )}*/}
+                )}
             </ListGroup>
           </Card>
         </Col>
