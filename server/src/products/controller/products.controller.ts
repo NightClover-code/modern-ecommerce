@@ -1,4 +1,13 @@
-import { Controller, Delete, Get, Param, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { AdminGuard } from 'src/guards/admin.guard';
 import { ProductsService } from '../services/products.service';
 
@@ -20,5 +29,17 @@ export class ProductsController {
   @Delete(':id')
   deleteUser(@Param('id') id: string) {
     return this.productsService.deleteOne(id);
+  }
+
+  @UseGuards(AdminGuard)
+  @Post()
+  createProduct() {
+    return this.productsService.createSample();
+  }
+
+  @UseGuards(AdminGuard)
+  @Put(':id')
+  updateProduct(@Param('id') id: string, @Body() product: any) {
+    return this.productsService.update(id, product);
   }
 }

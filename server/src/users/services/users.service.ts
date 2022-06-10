@@ -107,4 +107,8 @@ export class UsersService {
 
     return updatedUser;
   }
+
+  async deleteMany(): Promise<void> {
+    await this.userModel.deleteMany({});
+  }
 }
