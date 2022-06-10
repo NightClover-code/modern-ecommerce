@@ -83,3 +83,26 @@ export const productCreateReducer = (
       return state;
   }
 };
+
+export const productEditReducer = (
+  state: ProductState = productInitialState,
+  action: ProductsAction
+): ProductState => {
+  switch (action.type) {
+    case ActionTypes.UPDATE_PRODUCT_START:
+      return { ...state, loading: true, error: null };
+    case ActionTypes.UPDATE_PRODUCT_SUCCESS:
+      return { data: action.payload, loading: false, error: null };
+    case ActionTypes.UPDATE_PRODUCT_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+      };
+
+    case ActionTypes.UPDATE_PRODUCT_RESET:
+      return { data: initialProduct, loading: false, error: null };
+    default:
+      return state;
+  }
+};

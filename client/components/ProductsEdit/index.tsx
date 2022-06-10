@@ -32,7 +32,7 @@ const ProductsEdit: React.FC<ProductsEditProps> = ({ pageId }) => {
 
   const { data, loading, error } = useTypedSelector(state => state.product);
 
-  const { fetchProduct } = useProductsActions();
+  const { fetchProduct, updateProduct } = useProductsActions();
 
   const [productDetails, setDetails] =
     useState<Partial<ProductInterface>>(initialProduct);
@@ -57,7 +57,8 @@ const ProductsEdit: React.FC<ProductsEditProps> = ({ pageId }) => {
 
   const onSubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //TODO update product
+
+    updateProduct(pageId as string, productDetails);
   };
 
   return (

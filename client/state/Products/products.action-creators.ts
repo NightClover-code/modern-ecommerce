@@ -1,5 +1,6 @@
 import Router from 'next/router';
 import { Dispatch } from 'redux';
+import { ProductInterface } from '../../interfaces';
 import { proshopAPI } from '../../lib';
 import { ActionTypes } from './products.action-types';
 import { ProductsAction } from './products.actions';
@@ -100,6 +101,39 @@ export const createProduct =
     } catch (error: any) {
       dispatch({
         type: ActionTypes.CREATE_PRODUCT_ERROR,
+        payload: error.response.data.message,
+      });
+    }
+  };
+
+export const updateProduct =
+  (id: string, product: Partial<ProductInterface>) =>
+  async (dispatch: Dispatch<ProductsAction>) => {
+    const config = {
+      withCredentials: true,
+    };
+
+    try {
+      dispatch({
+        type: ActionTypes.UPDATE_PRODUCT_START,
+      });
+
+      const { data } = await proshopAPI.put(`/products/${id}`, product, config);
+
+      dispatch({
+        type: ActionTypes.UPDATE_PRODUCT_SUCCESS,
+        payload: data,
+      });
+
+      dispatch({
+        type: ActionTypes.UPDATE_PRODUCT_RESET,
+        payload: data,
+      });
+
+      Router.push('/admin/products');
+    } catch (error: any) {
+      dispatch({
+        type: ActionTypes.UPDATE_PRODUCT_ERROR,
         payload: error.response.data.message,
       });
     }
