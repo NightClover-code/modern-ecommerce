@@ -207,11 +207,11 @@ export const deleteUser =
         type: ActionTypes.DELETE_USER_START,
       });
 
-      const { data } = await proshopAPI.delete(`/users/${id}`, config);
+      await proshopAPI.delete(`/users/${id}`, config);
 
       dispatch({
         type: ActionTypes.DELETE_USER_SUCCESS,
-        payload: data,
+        payload: null,
       });
     } catch (error: any) {
       dispatch({

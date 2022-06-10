@@ -51,3 +51,28 @@ export const fetchProductReset =
       type: ActionTypes.FETCH_PRODUCT_RESET,
     });
   };
+
+export const deleteProduct =
+  (id: string) => async (dispatch: Dispatch<ProductsAction>) => {
+    const config = {
+      withCredentials: true,
+    };
+
+    try {
+      dispatch({
+        type: ActionTypes.DELETE_PRODUCT_START,
+      });
+
+      await proshopAPI.delete(`/products/${id}`, config);
+
+      dispatch({
+        type: ActionTypes.DELETE_PRODUCT_SUCCESS,
+        payload: null,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: ActionTypes.DELETE_PRODUCT_ERROR,
+        payload: error.response.data.message,
+      });
+    }
+  };

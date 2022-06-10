@@ -41,3 +41,24 @@ export const productReducer = (
       return state;
   }
 };
+
+export const productDeleteReducer = (
+  state: ProductState = productInitialState,
+  action: ProductsAction
+): ProductState => {
+  switch (action.type) {
+    case ActionTypes.DELETE_PRODUCT_START:
+      return { ...state, loading: true, error: null, success: false };
+    case ActionTypes.DELETE_PRODUCT_SUCCESS:
+      return { ...state, loading: false, error: null, success: true };
+    case ActionTypes.DELETE_PRODUCT_ERROR:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload,
+        success: false,
+      };
+    default:
+      return state;
+  }
+};

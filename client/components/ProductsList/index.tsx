@@ -10,11 +10,12 @@ const ProductsList = () => {
 
   const { loading, error, data } = useTypedSelector(state => state.products);
   const user = useTypedSelector(state => state.user);
-  const { fetchProducts } = useProductsActions();
+  const { fetchProducts, deleteProduct } = useProductsActions();
+  const { success } = useTypedSelector(state => state.productDelete);
 
   useEffect(() => {
     fetchProducts();
-  }, [fetchProducts]);
+  }, [fetchProducts, success]);
 
   return (
     <>
@@ -28,12 +29,6 @@ const ProductsList = () => {
           </Button> */}
         </Col>
       </Row>
-
-      {/* {loadingDelete && <Loader />}
-      {errorDelete & <Message variant="danger">{errorDelete}</Message>}
-
-      {loadingCreate && <Loader />}
-      {errorCreate && <Message variant="danger">{errorCreate}</Message>} */}
 
       {loading ? (
         <Loader />
@@ -53,15 +48,18 @@ const ProductsList = () => {
               </tr>
             </thead>
             <tbody>
-              {data.map(product => (
-                <tr key={product._id}>
-                  <td>{product._id}</td>
-                  <td>{product.name}</td>
-                  <td>${product.price}</td>
-                  <td>{product.category}</td>
-                  <td>{product.brand}</td>
+              {data.map(_product => (
+                <tr key={_product._id}>
+                  <td>{_product._id}</td>
+                  <td>{_product.name}</td>
+                  <td>${_product.price}</td>
+                  <td>{_product.category}</td>
+                  <td>{_product.brand}</td>
                   <td>
-                    <Link href={`/admin/products/edit/${product._id}`} passHref>
+                    <Link
+                      href={`/admin/products/edit/${_product._id}`}
+                      passHref
+                    >
                       <Button variant="light" className="btn-sm">
                         <i className="fas fa-edit"></i>
                       </Button>
@@ -72,10 +70,10 @@ const ProductsList = () => {
                       onClick={() => {
                         if (
                           window.confirm(
-                            'Are you sure you want to delete this user?'
+                            'Are you sure you want to delete this product?'
                           )
                         ) {
-                          // deleteUser(_user._id);
+                          deleteProduct(_product._id);
                         }
                       }}
                     >
