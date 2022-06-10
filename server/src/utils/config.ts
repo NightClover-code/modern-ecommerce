@@ -27,12 +27,15 @@ export const sessionConfig = (MongoDBStore: any): SessionOptions => ({
   secret: process.env.SESSION_KEY,
   resave: false,
   saveUninitialized: false,
-  cookie: {
-    domain: 'modern-commerce-frontend.herokuapp.com',
-    sameSite: 'none',
-    secure: true,
-    maxAge: 3 * 24 * 60 * 60 * 1000,
-  },
+  cookie:
+    process.env.NODE_ENV === 'production'
+      ? {
+          httpOnly: true,
+          sameSite: 'none',
+          secure: true,
+          maxAge: 3 * 24 * 60 * 60 * 1000,
+        }
+      : { maxAge: 3 * 24 * 60 * 60 * 1000 },
   store: new MongoDBStore({
     uri: process.env.MONGODB_URL,
     collection: 'sessions',
