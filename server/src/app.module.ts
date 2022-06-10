@@ -8,6 +8,7 @@ import { CommandModule } from 'nestjs-command';
 import { CartModule } from 'src/cart/cart.module';
 import { OrderModule } from './orders/order.module';
 // import { SeedsModule } from './seeds/seeds.module';
+import { AppController } from './app.controller';
 
 @Module({
   imports: [
@@ -26,5 +27,6 @@ import { OrderModule } from './orders/order.module';
     OrderModule,
     // SeedsModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule {}

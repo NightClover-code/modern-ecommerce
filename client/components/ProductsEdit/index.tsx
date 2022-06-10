@@ -1,13 +1,8 @@
 import Link from 'next/link';
 import { FormEvent, useEffect, useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
-import {
-  useAdmin,
-  useProductsActions,
-  useTypedSelector,
-  useUserActions,
-} from '../../hooks';
-import { ProductInterface, UserEditCredentials } from '../../interfaces';
+import { useAdmin, useProductsActions, useTypedSelector } from '../../hooks';
+import { ProductInterface } from '../../interfaces';
 import FormContainer from '../FormContainer';
 import Loader from '../Loader';
 import Message from '../Message';
