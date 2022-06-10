@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { User, UserDocument } from '../schemas/user.schema';
 import { Model, Types } from 'mongoose';
-import * as bcrypt from 'bcryptjs';
+import { encryptPassword } from 'src/utils';
 
 @Injectable()
 export class UsersService {
@@ -78,11 +78,7 @@ export class UsersService {
     user.email = attrs.email || user.email;
 
     if (attrs.password) {
-      const salt = await bcrypt.genSalt(10);
-
-      const encryptedPassword = await bcrypt.hash(attrs.password, salt);
-
-      user.password = encryptedPassword;
+      user.password = await encryptPassword(attrs.password);
     }
 
     const updatedUser = await user.save();

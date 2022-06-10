@@ -10,12 +10,8 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  app.set('trust proxy', 1); // trust first proxy
   app.enableCors(corsConfig());
-
-  if (app.get('env') === 'production') {
-    app.set('trust proxy', 1); // trust first proxy
-  }
-
   app.use(session(sessionConfig(MongoDBStore)));
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   await app.listen(process.env.PORT || 4000);

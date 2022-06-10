@@ -6,6 +6,7 @@ import {
 import { UsersService } from './users.service';
 import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
+import { encryptPassword } from 'src/utils';
 
 @Injectable()
 export class AuthService {
@@ -40,9 +41,7 @@ export class AuthService {
 
     if (existingUser) throw new BadRequestException('Email is already in use.');
 
-    const salt = await bcrypt.genSalt(10);
-
-    const encryptedPassword = await bcrypt.hash(password, salt);
+    const encryptedPassword = await encryptPassword(password);
 
     const user = await this.usersService.create({
       email,
