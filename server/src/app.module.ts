@@ -9,6 +9,8 @@ import { CartModule } from 'src/cart/cart.module';
 import { OrderModule } from './orders/order.module';
 // import { SeedsModule } from './seeds/seeds.module';
 import { AppController } from './app.controller';
+import { CloudinaryModule } from './cloudinary/cloudinary.module';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -25,8 +27,10 @@ import { AppController } from './app.controller';
     UsersModule,
     CartModule,
     OrderModule,
+    CloudinaryModule,
     // SeedsModule,
   ],
   controllers: [AppController],
+  providers: [AppService],
 })
 export class AppModule {}
