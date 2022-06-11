@@ -24,8 +24,8 @@ const ProductCarousel = () => {
     <Carousel pause="hover" className="bg-dark">
       {data.map(_product => (
         <Carousel.Item key={_product._id}>
+          <Image src={_product.image} alt={_product.name} fluid />
           <Link href={`/product/${_product._id}`} passHref>
-            <Image src={_product.image} alt={_product.name} fluid />
             <Carousel.Caption className="carousel-caption">
               <h2>
                 {_product.name} (${_product.price})

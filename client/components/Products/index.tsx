@@ -9,6 +9,7 @@ import Item from './Item';
 import Loader from '../Loader';
 import Message from '../Message';
 import Paginate from '../Paginate';
+import ProductCarousel from '../ProductCarousel';
 
 interface ProductsInterface {
   keyword?: query;
@@ -29,6 +30,8 @@ const Products: React.FC<ProductsInterface> = ({ keyword, pageId }) => {
 
   return (
     <>
+      {!keyword && <ProductCarousel />}
+
       <h1>Latest products</h1>
       {loading ? (
         <Loader />
