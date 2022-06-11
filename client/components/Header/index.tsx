@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { Navbar, Container, Nav, NavDropdown } from 'react-bootstrap';
 import { useTypedSelector, useUserActions } from '../../hooks';
+import SearchBox from '../SearchBox';
 
 const Header = () => {
   const { data } = useTypedSelector(state => state.user);
@@ -16,6 +17,7 @@ const Header = () => {
           </Link>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
+            <SearchBox />
             <Nav className="ms-auto">
               <Link href="/cart" passHref>
                 <Nav.Link>

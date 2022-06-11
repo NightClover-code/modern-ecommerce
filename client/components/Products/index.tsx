@@ -9,15 +9,19 @@ import Item from './Item';
 import Loader from '../Loader';
 import Message from '../Message';
 
-const Products: React.FC = () => {
+interface ProductsInterface {
+  keyword?: string | string[] | undefined;
+}
+
+const Products: React.FC<ProductsInterface> = ({ keyword }) => {
   const { fetchProducts } = useProductsActions();
   const { loading, error, data } = useTypedSelector(state => state.products);
 
   useEffect(() => {
     if (data.length < 1) {
-      fetchProducts();
+      fetchProducts(keyword as string);
     }
-  }, [fetchProducts, data]);
+  }, [fetchProducts, data, keyword]);
 
   return (
     <>
