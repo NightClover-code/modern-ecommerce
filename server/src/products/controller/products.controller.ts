@@ -21,8 +21,11 @@ export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
   @Get()
-  getProducts(@Query('keyword') keyword: string) {
-    return this.productsService.findMany(keyword);
+  getProducts(
+    @Query('keyword') keyword: string,
+    @Query('pageId') pageId: string
+  ) {
+    return this.productsService.findMany(keyword, pageId);
   }
 
   @Get(':id')

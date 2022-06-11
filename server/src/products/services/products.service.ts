@@ -15,14 +15,21 @@ export class ProductsService {
     @InjectModel(Product.name) private productModel: Model<ProductDocument>
   ) {}
 
-  async findMany(keyword?: string): Promise<ProductDocument[]> {
+  async findMany(keyword?: string, pageId?: string): Promise<any> {
+    const pageSize = 2;
+    const page = parseInt(pageId) || 1;
+
     const rgex = keyword ? { name: { $regex: keyword, $options: 'i' } } : {};
 
-    const products = await this.productModel.find({ ...rgex });
+    const count = await this.productModel.countDocuments({ ...rgex });
+    const products = await this.productModel
+      .find({ ...rgex })
+      .limit(pageSize)
+      .skip(pageSize * (page - 1));
 
     if (!products.length) throw new NotFoundException('No products found.');
 
-    return products;
+    return { products, page, pages: Math.ceil(count / pageSize) };
   }
 
   async findById(id: string): Promise<ProductDocument> {
