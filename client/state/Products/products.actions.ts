@@ -18,7 +18,11 @@ export type ProductsAction =
   | UpdateProductStart
   | UpdateProductError
   | UpdateProductSuccess
-  | UpdateProductReset;
+  | UpdateProductReset
+  | CreateProductReviewStart
+  | CreateProductReviewError
+  | CreateProductReviewSuccess
+  | CreateProductReviewReset;
 
 export interface FetchProductsStart {
   type: ActionTypes.FETCH_PRODUCTS_START;
@@ -96,4 +100,22 @@ export interface UpdateProductError {
 
 export interface UpdateProductReset {
   type: ActionTypes.UPDATE_PRODUCT_RESET;
+}
+
+export interface CreateProductReviewStart {
+  type: ActionTypes.CREATE_PRODUCT_REVIEW_START;
+}
+
+export interface CreateProductReviewSuccess {
+  type: ActionTypes.CREATE_PRODUCT_REVIEW_SUCCESS;
+  payload: ProductInterface;
+}
+
+export interface CreateProductReviewError {
+  type: ActionTypes.CREATE_PRODUCT_REVIEW_ERROR;
+  payload: string;
+}
+
+export interface CreateProductReviewReset {
+  type: ActionTypes.CREATE_PRODUCT_REVIEW_RESET;
 }

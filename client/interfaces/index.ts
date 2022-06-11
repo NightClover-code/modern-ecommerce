@@ -85,3 +85,8 @@ export interface OrderInterface {
     email: string;
   };
 }
+
+export interface Review {
+  rating: number;
+  comment: string;
+}
