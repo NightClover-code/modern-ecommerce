@@ -35,20 +35,7 @@ export const productReducer = (
     case ActionTypes.FETCH_PRODUCT_ERROR:
       return { ...state, loading: false, error: action.payload };
 
-    case ActionTypes.CREATE_PRODUCT_REVIEW_START:
-      return { ...state, loading: true, error: null };
-    case ActionTypes.CREATE_PRODUCT_REVIEW_SUCCESS:
-      return { data: action.payload, loading: false, error: null };
-    case ActionTypes.CREATE_PRODUCT_REVIEW_ERROR:
-      return {
-        ...state,
-        loading: false,
-        error: action.payload,
-      };
-
     case ActionTypes.FETCH_PRODUCT_RESET:
-      return { data: initialProduct, loading: false, error: null };
-    case ActionTypes.CREATE_PRODUCT_REVIEW_RESET:
       return { data: initialProduct, loading: false, error: null };
     default:
       return state;
@@ -115,6 +102,40 @@ export const productEditReducer = (
 
     case ActionTypes.UPDATE_PRODUCT_RESET:
       return { data: initialProduct, loading: false, error: null };
+    default:
+      return state;
+  }
+};
+
+export const productCreateReviewReducer = (
+  state: ProductState = productInitialState,
+  action: ProductsAction
+): ProductState => {
+  switch (action.type) {
+    case ActionTypes.CREATE_PRODUCT_REVIEW_START:
+      return { ...state, loading: true, error: null, success: false };
+    case ActionTypes.CREATE_PRODUCT_REVIEW_SUCCESS:
+      return {
+        data: action.payload,
+        loading: false,
+        error: null,
+        success: true,
+      };
+    case ActionTypes.CREATE_PRODUCT_REVIEW_ERROR:
+      return {
+        ...state,
+        success: false,
+        loading: false,
+        error: action.payload,
+      };
+
+    case ActionTypes.CREATE_PRODUCT_REVIEW_RESET:
+      return {
+        data: initialProduct,
+        loading: false,
+        error: null,
+        success: false,
+      };
     default:
       return state;
   }

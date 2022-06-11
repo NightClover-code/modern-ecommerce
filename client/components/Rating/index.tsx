@@ -2,7 +2,7 @@ import Star from './Star';
 
 interface RatingProps {
   value: number;
-  text: string;
+  text?: string;
 }
 
 const Rating: React.FC<RatingProps> = ({ value, text }) => {

@@ -9,6 +9,7 @@ export interface ProductInterface {
   countInStock: number;
   rating: number;
   numReviews: number;
+  reviews: Review[];
 }
 
 export interface CartItemInterface {
@@ -87,6 +88,10 @@ export interface OrderInterface {
 }
 
 export interface Review {
+  name?: string;
+  _id?: string;
+  user?: string;
+  createdAt?: string;
   rating: number;
   comment: string;
 }
