@@ -1,4 +1,4 @@
-import { Product } from 'src/products/schemas/product.schema';
+import { Product, ProductDocument } from 'src/products/schemas/product.schema';
 
 export interface ShippingDetails {
   address: string;
@@ -29,4 +29,10 @@ export interface CartItem {
   price: number;
   countInStock: number;
   qty: number;
+}
+
+export interface PaginatedProducts {
+  products: ProductDocument[];
+  pages: number;
+  page: number;
 }

@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
+import { PaginatedProducts } from 'src/interfaces';
 import { UserDocument } from 'src/users/schemas/user.schema';
 import { sampleProduct } from '../../utils/data/product';
 import { Product, ProductDocument } from '../schemas/product.schema';
@@ -15,7 +16,21 @@ export class ProductsService {
     @InjectModel(Product.name) private productModel: Model<ProductDocument>
   ) {}
 
-  async findMany(keyword?: string, pageId?: string): Promise<any> {
+  async findTopRated(): Promise<ProductDocument[]> {
+    const products = await this.productModel
+      .find({})
+      .sort({ rating: -1 })
+      .limit(3);
+
+    if (!products.length) throw new NotFoundException('No products found.');
+
+    return products;
+  }
+
+  async findMany(
+    keyword?: string,
+    pageId?: string
+  ): Promise<PaginatedProducts> {
     const pageSize = 2;
     const page = parseInt(pageId) || 1;
 

@@ -28,6 +28,11 @@ export class ProductsController {
     return this.productsService.findMany(keyword, pageId);
   }
 
+  @Get('topRated')
+  getTopRatedProducts() {
+    return this.productsService.findTopRated();
+  }
+
   @Get(':id')
   getProduct(@Param('id') id: string) {
     return this.productsService.findById(id);
