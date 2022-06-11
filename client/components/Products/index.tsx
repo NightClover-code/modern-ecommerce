@@ -8,6 +8,7 @@ import { Row, Col } from 'react-bootstrap';
 import Item from './Item';
 import Loader from '../Loader';
 import Message from '../Message';
+import Paginate from '../Paginate';
 
 interface ProductsInterface {
   keyword?: query;
@@ -42,7 +43,12 @@ const Products: React.FC<ProductsInterface> = ({ keyword, pageId }) => {
               </Col>
             ))}
           </Row>
-          {/* <Paginate pages={pages} page={page} isAdmin={true} /> */}
+
+          <Paginate
+            pages={pages}
+            page={page}
+            keyword={keyword ? keyword : ''}
+          />
         </>
       )}
     </>

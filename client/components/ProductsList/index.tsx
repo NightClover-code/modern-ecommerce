@@ -4,20 +4,30 @@ import { Row, Col, Button, Table } from 'react-bootstrap';
 import { useAdmin, useProductsActions, useTypedSelector } from '../../hooks';
 import Loader from '../Loader';
 import Message from '../Message';
+import Paginate from '../Paginate';
 
-const ProductsList = () => {
+interface ProductListProps {
+  pageId?: query;
+}
+
+const ProductsList: React.FC<ProductListProps> = ({ pageId }) => {
   useAdmin();
 
   const { fetchProducts, deleteProduct, createProduct } = useProductsActions();
 
-  const { loading, error, data } = useTypedSelector(state => state.products);
+  const {
+    loading,
+    error,
+    data: { products, pages, page },
+  } = useTypedSelector(state => state.products);
+
   const { success: successDelete } = useTypedSelector(
     state => state.productDelete
   );
 
   useEffect(() => {
-    fetchProducts();
-  }, [fetchProducts, successDelete]);
+    fetchProducts('', parseInt(pageId as string));
+  }, [fetchProducts, successDelete, pageId]);
 
   return (
     <>
@@ -54,7 +64,7 @@ const ProductsList = () => {
               </tr>
             </thead>
             <tbody>
-              {data.products.map(_product => (
+              {products.map(_product => (
                 <tr key={_product._id}>
                   <td>{_product._id}</td>
                   <td>{_product.name}</td>
@@ -90,7 +100,8 @@ const ProductsList = () => {
               ))}
             </tbody>
           </Table>
-          {/* <Paginate pages={pages} page={page} isAdmin={true} /> */}
+
+          <Paginate pages={pages} page={page} isAdmin={true} />
         </>
       )}
     </>

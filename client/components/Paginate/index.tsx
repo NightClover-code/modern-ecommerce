@@ -5,7 +5,7 @@ import { v4 } from 'uuid';
 interface PaginateProps {
   pages: number;
   page: number;
-  isAdmin: boolean;
+  isAdmin?: boolean;
   keyword?: query;
 }
 
@@ -25,7 +25,7 @@ const Paginate: React.FC<PaginateProps> = ({
               ? keyword
                 ? `/search/${keyword}/page/${x + 1}`
                 : `/page/${x + 1}`
-              : `/admin/productlist/${x + 1}`
+              : `/admin/products/page/${x + 1}`
           }
           passHref
         >
