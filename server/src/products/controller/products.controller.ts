@@ -9,6 +9,9 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AdminGuard } from 'src/guards/admin.guard';
+import { AuthGuard } from 'src/guards/auth.guard';
+import { ProductDto } from '../dtos/product.dto';
+import { ReviewDto } from '../dtos/review.dto';
 import { ProductsService } from '../services/products.service';
 
 @Controller('products')
@@ -39,7 +42,16 @@ export class ProductsController {
 
   @UseGuards(AdminGuard)
   @Put(':id')
-  updateProduct(@Param('id') id: string, @Body() product: any) {
+  updateProduct(@Param('id') id: string, @Body() product: ProductDto) {
     return this.productsService.update(id, product);
+  }
+
+  @UseGuards(AuthGuard)
+  @Put(':id/review')
+  createReview(
+    @Param('id') id: string,
+    @Body() { rating, comment }: ReviewDto
+  ) {
+    return this.productsService.createReview(id, rating, comment);
   }
 }

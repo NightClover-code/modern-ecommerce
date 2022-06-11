@@ -1,10 +1,18 @@
 import * as mongoose from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { User } from '../../users/schemas/user.schema';
 
 export type ProductDocument = Product & mongoose.Document;
 
 @Schema({ timestamps: true })
 export class Review {
+  @Prop({
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: 'User',
+  })
+  user: User;
+
   @Prop({ required: true })
   name: string;
 

@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Types } from 'mongoose';
-import { sampleProduct } from 'src/utils/data/product';
+import { sampleProduct } from '../../utils/data/product';
 import { Product, ProductDocument } from '../schemas/product.schema';
 
 @Injectable()
@@ -71,6 +71,28 @@ export class ProductsService {
 
     const updatedProduct = await product.save();
 
+    return updatedProduct;
+  }
+
+  async createReview(
+    id: string,
+    rating: number,
+    comment: string
+  ): Promise<ProductDocument> {
+    // const { name, price, description, image, brand, category, countInStock } =
+    //   attrs;
+    // if (!Types.ObjectId.isValid(id))
+    //   throw new BadRequestException('Invalid product ID.');
+    const product = await this.productModel.findById(id);
+    // if (!product) throw new NotFoundException('No product with given ID.');
+    // product.name = name;
+    // product.price = price;
+    // product.description = description;
+    // product.image = image;
+    // product.brand = brand;
+    // product.category = category;
+    // product.countInStock = countInStock;
+    const updatedProduct = await product.save();
     return updatedProduct;
   }
 
