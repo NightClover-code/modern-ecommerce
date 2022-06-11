@@ -15,8 +15,10 @@ export class ProductsService {
     @InjectModel(Product.name) private productModel: Model<ProductDocument>
   ) {}
 
-  async findMany(): Promise<ProductDocument[]> {
-    const products = await this.productModel.find({});
+  async findMany(keyword?: string): Promise<ProductDocument[]> {
+    const rgex = keyword ? { name: { $regex: keyword, $options: 'i' } } : {};
+
+    const products = await this.productModel.find({ ...rgex });
 
     if (!products.length) throw new NotFoundException('No products found.');
 

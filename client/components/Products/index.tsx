@@ -18,10 +18,8 @@ const Products: React.FC<ProductsInterface> = ({ keyword }) => {
   const { loading, error, data } = useTypedSelector(state => state.products);
 
   useEffect(() => {
-    if (data.length < 1) {
-      fetchProducts(keyword as string);
-    }
-  }, [fetchProducts, data, keyword]);
+    fetchProducts(keyword as string);
+  }, [fetchProducts, keyword]);
 
   return (
     <>

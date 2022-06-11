@@ -13,7 +13,7 @@ export const fetchProducts =
         type: ActionTypes.FETCH_PRODUCTS_START,
       });
 
-      const { data } = await proshopAPI(`/products?$keyword={keyword}`);
+      const { data } = await proshopAPI(`/products?keyword=${keyword}`);
 
       dispatch({
         type: ActionTypes.FETCH_PRODUCTS_SUCCESS,

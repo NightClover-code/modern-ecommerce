@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Session,
   UseGuards,
 } from '@nestjs/common';
@@ -20,8 +21,8 @@ export class ProductsController {
   constructor(private productsService: ProductsService) {}
 
   @Get()
-  getProducts() {
-    return this.productsService.findMany();
+  getProducts(@Query('keyword') keyword: string) {
+    return this.productsService.findMany(keyword);
   }
 
   @Get(':id')
