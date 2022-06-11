@@ -10,6 +10,7 @@ export class Review {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: 'User',
+    default: null,
   })
   user: User;
 

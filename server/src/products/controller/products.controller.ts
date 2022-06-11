@@ -6,6 +6,7 @@ import {
   Param,
   Post,
   Put,
+  Session,
   UseGuards,
 } from '@nestjs/common';
 import { AdminGuard } from 'src/guards/admin.guard';
@@ -50,8 +51,9 @@ export class ProductsController {
   @Put(':id/review')
   createReview(
     @Param('id') id: string,
-    @Body() { rating, comment }: ReviewDto
+    @Body() { rating, comment }: ReviewDto,
+    @Session() session: any
   ) {
-    return this.productsService.createReview(id, rating, comment);
+    return this.productsService.createReview(id, session.user, rating, comment);
   }
 }

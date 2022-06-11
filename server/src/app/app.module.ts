@@ -7,7 +7,7 @@ import { UsersModule } from 'src/users/users.module';
 import { CommandModule } from 'nestjs-command';
 import { CartModule } from 'src/cart/cart.module';
 import { OrderModule } from '../orders/order.module';
-// import { SeedsModule } from './seeds/seeds.module';
+// import { SeedsModule } from '../seeds/seeds.module';
 import { AppController } from './controllers/app.controller';
 import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 import { AppService } from './services/app.service';
