@@ -5,6 +5,9 @@ export type ProductsAction =
   | FetchProductsStart
   | FetchProductsError
   | FetchProductsSuccess
+  | FetchTopProductsStart
+  | FetchTopProductsError
+  | FetchTopProductsSuccess
   | FetchProductStart
   | FetchProductError
   | FetchProductSuccess
@@ -35,6 +38,20 @@ export interface FetchProductsSuccess {
 
 export interface FetchProductsError {
   type: ActionTypes.FETCH_PRODUCTS_ERROR;
+  payload: string;
+}
+
+export interface FetchTopProductsStart {
+  type: ActionTypes.FETCH_TOP_PRODUCTS_START;
+}
+
+export interface FetchTopProductsSuccess {
+  type: ActionTypes.FETCH_TOP_PRODUCTS_SUCCESS;
+  payload: ProductInterface[];
+}
+
+export interface FetchTopProductsError {
+  type: ActionTypes.FETCH_TOP_PRODUCTS_ERROR;
   payload: string;
 }
 

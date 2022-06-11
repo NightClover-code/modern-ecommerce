@@ -13,7 +13,7 @@ export const fetchProducts =
         type: ActionTypes.FETCH_PRODUCTS_START,
       });
 
-      const { data } = await proshopAPI(
+      const { data } = await proshopAPI.get(
         `/products?keyword=${keyword}&pageId=${pageId}`
       );
 
@@ -24,6 +24,27 @@ export const fetchProducts =
     } catch (error: any) {
       dispatch({
         type: ActionTypes.FETCH_PRODUCTS_ERROR,
+        payload: error.response.data.message,
+      });
+    }
+  };
+
+export const fetchTopRatedProducts =
+  () => async (dispatch: Dispatch<ProductsAction>) => {
+    try {
+      dispatch({
+        type: ActionTypes.FETCH_TOP_PRODUCTS_START,
+      });
+
+      const { data } = await proshopAPI.get('/products/topRated');
+
+      dispatch({
+        type: ActionTypes.FETCH_TOP_PRODUCTS_SUCCESS,
+        payload: data,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: ActionTypes.FETCH_TOP_PRODUCTS_ERROR,
         payload: error.response.data.message,
       });
     }

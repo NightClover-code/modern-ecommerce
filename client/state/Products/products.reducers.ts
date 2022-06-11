@@ -4,8 +4,13 @@ import {
   initialProduct,
   productInitialState,
   productsInitialState,
+  productsTopRatedInitialState,
 } from './products.initial-state';
-import { ProductsState, ProductState } from './products.state';
+import {
+  ProductsState,
+  ProductState,
+  TopRatedProductsState,
+} from './products.state';
 
 export const productsReducer = (
   state: ProductsState = productsInitialState,
@@ -17,6 +22,22 @@ export const productsReducer = (
     case ActionTypes.FETCH_PRODUCTS_SUCCESS:
       return { loading: false, data: action.payload, error: null };
     case ActionTypes.FETCH_PRODUCTS_ERROR:
+      return { ...state, loading: false, error: action.payload };
+    default:
+      return state;
+  }
+};
+
+export const productsTopRatedReducer = (
+  state: TopRatedProductsState = productsTopRatedInitialState,
+  action: ProductsAction
+): TopRatedProductsState => {
+  switch (action.type) {
+    case ActionTypes.FETCH_TOP_PRODUCTS_START:
+      return { ...state, loading: true, error: null };
+    case ActionTypes.FETCH_TOP_PRODUCTS_SUCCESS:
+      return { loading: false, data: action.payload, error: null };
+    case ActionTypes.FETCH_TOP_PRODUCTS_ERROR:
       return { ...state, loading: false, error: action.payload };
     default:
       return state;

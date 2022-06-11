@@ -12,3 +12,9 @@ export interface ProductState {
   data: ProductInterface;
   success?: boolean;
 }
+
+export interface TopRatedProductsState {
+  loading: boolean;
+  error: string | null;
+  data: ProductInterface[];
+}

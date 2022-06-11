@@ -1,4 +1,8 @@
-import { ProductsState, ProductState } from './products.state';
+import {
+  ProductsState,
+  ProductState,
+  TopRatedProductsState,
+} from './products.state';
 
 export const initialProduct = {
   _id: '',
@@ -22,6 +26,12 @@ export const productsInitialState: ProductsState = {
     page: 1,
     pages: 1,
   },
+};
+
+export const productsTopRatedInitialState: TopRatedProductsState = {
+  loading: false,
+  error: null,
+  data: [],
 };
 
 export const productInitialState: ProductState = {

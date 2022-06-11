@@ -13,6 +13,7 @@ import {
   productEditReducer,
   productReducer,
   productsReducer,
+  productsTopRatedReducer,
 } from './Products/products.reducers';
 import {
   userDetailsReducer,
@@ -25,6 +26,7 @@ import {
 
 export const reducers = combineReducers({
   products: productsReducer,
+  productsTopRated: productsTopRatedReducer,
   product: productReducer,
   productDelete: productDeleteReducer,
   productCreate: productCreateReducer,
