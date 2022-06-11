@@ -13,7 +13,7 @@ const Header = () => {
       <Navbar bg="dark" variant="dark" expand="lg" collapseOnSelect>
         <Container>
           <Link href="/" passHref>
-            <Navbar.Brand>ProShop</Navbar.Brand>
+            <Navbar.Brand>ElecShop</Navbar.Brand>
           </Link>
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">

@@ -1,12 +1,12 @@
 import { NextPage } from 'next';
 import PlaceOrder from '../../components/PlaceOrder';
 import SEO from '../../components/SEO';
-import { seoConfig } from '../../utils';
+import { homeConfig } from '../../utils';
 
 const OrderPage: NextPage = () => {
   return (
     <>
-      <SEO {...seoConfig} />
+      <SEO {...homeConfig} />
       <main className="wrapper py-5">
         <PlaceOrder />
       </main>

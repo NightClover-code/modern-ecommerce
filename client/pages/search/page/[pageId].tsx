@@ -1,5 +1,5 @@
 //importing types & utils
-import { seoConfig } from '../../../utils';
+import { homeConfig } from '../../../utils';
 import { NextPage } from 'next';
 //importing components
 import SEO from '../../../components/SEO';
@@ -12,7 +12,7 @@ const HomePage: NextPage = () => {
 
   return (
     <>
-      <SEO {...seoConfig} />
+      <SEO {...homeConfig} />
       <main className="wrapper py-5">
         <Products pageId={pageId} keyword={keyword} />
       </main>

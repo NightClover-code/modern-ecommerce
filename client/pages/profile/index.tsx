@@ -1,12 +1,12 @@
 import { NextPage } from 'next';
 import Profile from '../../components/Profile';
 import SEO from '../../components/SEO';
-import { seoConfig } from '../../utils';
+import { homeConfig } from '../../utils';
 
 const LoginPage: NextPage = () => {
   return (
     <>
-      <SEO {...seoConfig} />
+      <SEO {...homeConfig} />
       <main className="wrapper py-5">
         <Profile />
       </main>

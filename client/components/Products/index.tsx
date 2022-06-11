@@ -4,12 +4,13 @@ import { v4 as randomID } from 'uuid';
 import { useEffect } from 'react';
 import { useProductsActions, useTypedSelector } from '../../hooks';
 //importing components
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Button } from 'react-bootstrap';
 import Item from './Item';
 import Loader from '../Loader';
 import Message from '../Message';
 import Paginate from '../Paginate';
 import ProductCarousel from '../ProductCarousel';
+import Link from 'next/link';
 
 interface ProductsInterface {
   keyword?: query;
@@ -30,7 +31,13 @@ const Products: React.FC<ProductsInterface> = ({ keyword, pageId }) => {
 
   return (
     <>
-      {!keyword && <ProductCarousel />}
+      {!keyword ? (
+        <ProductCarousel />
+      ) : (
+        <Link href="/" passHref>
+          <Button className="btn btn-light">Go back</Button>
+        </Link>
+      )}
 
       <h1>Latest products</h1>
       {loading ? (
