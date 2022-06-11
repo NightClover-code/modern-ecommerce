@@ -17,7 +17,11 @@ export const initialProduct = {
 export const productsInitialState: ProductsState = {
   loading: false,
   error: null,
-  data: [],
+  data: {
+    products: [],
+    page: 1,
+    pages: 1,
+  },
 };
 
 export const productInitialState: ProductState = {

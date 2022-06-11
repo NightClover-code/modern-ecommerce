@@ -6,7 +6,7 @@ import { ActionTypes } from './products.action-types';
 import { ProductsAction } from './products.actions';
 
 export const fetchProducts =
-  (keyword: string = '', pageId: string = '') =>
+  (keyword: string = '', pageId: number = 1) =>
   async (dispatch: Dispatch<ProductsAction>) => {
     try {
       dispatch({

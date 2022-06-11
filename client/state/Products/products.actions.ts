@@ -30,7 +30,7 @@ export interface FetchProductsStart {
 
 export interface FetchProductsSuccess {
   type: ActionTypes.FETCH_PRODUCTS_SUCCESS;
-  payload: PaginatedProducts[];
+  payload: PaginatedProducts;
 }
 
 export interface FetchProductsError {

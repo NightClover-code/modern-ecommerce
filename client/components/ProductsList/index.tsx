@@ -10,7 +10,6 @@ const ProductsList = () => {
 
   const { fetchProducts, deleteProduct, createProduct } = useProductsActions();
 
-  const user = useTypedSelector(state => state.user);
   const { loading, error, data } = useTypedSelector(state => state.products);
   const { success: successDelete } = useTypedSelector(
     state => state.productDelete
@@ -55,7 +54,7 @@ const ProductsList = () => {
               </tr>
             </thead>
             <tbody>
-              {data.map(_product => (
+              {data.products.map(_product => (
                 <tr key={_product._id}>
                   <td>{_product._id}</td>
                   <td>{_product.name}</td>

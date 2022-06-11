@@ -3,7 +3,7 @@ import { PaginatedProducts, ProductInterface } from '../../interfaces';
 export interface ProductsState {
   loading: boolean;
   error: string | null;
-  data: PaginatedProducts[];
+  data: PaginatedProducts;
 }
 
 export interface ProductState {
