@@ -6,14 +6,16 @@ import { ActionTypes } from './products.action-types';
 import { ProductsAction } from './products.actions';
 
 export const fetchProducts =
-  (keyword: string = '') =>
+  (keyword: string = '', pageId: string = '') =>
   async (dispatch: Dispatch<ProductsAction>) => {
     try {
       dispatch({
         type: ActionTypes.FETCH_PRODUCTS_START,
       });
 
-      const { data } = await proshopAPI(`/products?keyword=${keyword}`);
+      const { data } = await proshopAPI(
+        `/products?keyword=${keyword}&pageId=${pageId}`
+      );
 
       dispatch({
         type: ActionTypes.FETCH_PRODUCTS_SUCCESS,

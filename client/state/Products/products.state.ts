@@ -1,9 +1,9 @@
-import { ProductInterface } from '../../interfaces';
+import { PaginatedProducts, ProductInterface } from '../../interfaces';
 
 export interface ProductsState {
   loading: boolean;
   error: string | null;
-  data: ProductInterface[];
+  data: PaginatedProducts[];
 }
 
 export interface ProductState {

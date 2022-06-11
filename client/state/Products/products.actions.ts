@@ -1,4 +1,4 @@
-import { ProductInterface } from '../../interfaces';
+import { PaginatedProducts, ProductInterface } from '../../interfaces';
 import { ActionTypes } from './products.action-types';
 
 export type ProductsAction =
@@ -30,7 +30,7 @@ export interface FetchProductsStart {
 
 export interface FetchProductsSuccess {
   type: ActionTypes.FETCH_PRODUCTS_SUCCESS;
-  payload: ProductInterface[];
+  payload: PaginatedProducts[];
 }
 
 export interface FetchProductsError {

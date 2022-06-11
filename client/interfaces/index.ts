@@ -95,3 +95,9 @@ export interface Review {
   rating: number;
   comment: string;
 }
+
+export interface PaginatedProducts {
+  products: ProductInterface[];
+  pages: number;
+  page: number;
+}
