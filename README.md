@@ -62,7 +62,6 @@ yarn install
 ```
 
 Add Environment Variables - Client
-_add the following environment variables to .env file. (some env var include example values)_
 
 <details>
   <summary>Click to expand!</summary>
@@ -70,8 +69,7 @@ _add the following environment variables to .env file. (some env var include exa
   - `NEXT_PUBLIC_PAYPAL_CLIENT_ID`
 </details>
 
-Add Environment Variables - Client
-_add the following environment variables to .env file. (some env var include example values)_
+Add Environment Variables - Server
 
 <details>
   <summary>Click to expand!</summary>
