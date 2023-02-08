@@ -1,6 +1,6 @@
 # Elecshop - eCommerce app w/ Next.js, Nest.js and MongoDB
 
-![Elecshop preview image](./public/design/preview.png)
+![Elecshop preview image](./client/public/design/preview.png)
 
 ## The Challenge ⚡️
 
