@@ -103,7 +103,7 @@ yarn dev
  
  
 ## Inspiration & credits ☄️
- - [@bradtraversy](https://www.youtube.com/@TraversyMedia) - project idea
+ - [@bradtraversy](https://www.youtube.com/@TraversyMedia) - Project Idea
  - [@satnaing](https://github.com/satnaing) - README format
 
 ## Author
