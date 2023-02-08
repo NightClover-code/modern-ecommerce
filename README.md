@@ -104,7 +104,7 @@ yarn dev
  
 ## Inspiration & credits ☄️
  - [@bradtraversy](https://www.youtube.com/@TraversyMedia) - project idea
- - [@satnaing](https://github.com/satnaing) - readme format
+ - [@satnaing](https://github.com/satnaing) - README format
 
 ## Author
 - [@achrafdev](https://achrafdev.com)
