@@ -117,7 +117,7 @@ const ProductsEdit: React.FC<ProductsEditProps> = ({ pageId }) => {
                 onChange={e =>
                   setDetails({
                     ...productDetails,
-                    price: parseInt(e.target.value),
+                    price: parseFloat(e.target.value),
                   })
                 }
               ></Form.Control>

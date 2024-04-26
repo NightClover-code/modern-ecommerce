@@ -31,7 +31,7 @@ export class ProductsService {
     keyword?: string,
     pageId?: string
   ): Promise<PaginatedProducts> {
-    const pageSize = 2;
+    const pageSize = 4;
     const page = parseInt(pageId) || 1;
 
     const rgex = keyword ? { name: { $regex: keyword, $options: 'i' } } : {};
