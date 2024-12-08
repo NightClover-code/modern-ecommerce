@@ -1,73 +1,118 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# NestJS Authentication API
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A robust authentication system built with NestJS, featuring JWT-based authentication with access and refresh tokens.
 
-  <p align="center">A progressive<a href="http://nodejs.org" target="_blank"> Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Features
 
-## Description
+- 🔐 JWT Authentication
+- 🔄 Refresh Token Rotation
+- 👤 User Management
+- 🛡️ Role-based Access Control (Admin/User)
+- 📚 Swagger API Documentation
+- 🔒 Secure Password Hashing with Argon2
+- 🌍 CORS Enabled
+- 🛡️ Helmet Security
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Prerequisites
 
-## Installation
+- Node.js (v16 or higher)
+- MongoDB
+- pnpm (preferred)
+
+## Getting Started
+
+1. Navigate to the server directory:
 
 ```bash
-$ npm install
+cd server
 ```
 
-## Running the app
+2. Create a `.env` file in the `server` directory:
+
+```
+ALLOWED_ORIGINS=* (if you want to allow all origins)
+PORT=4000 (or any available port)
+JWT_SECRET= (any secret key)
+JWT_ACCESS_SECRET= (any secret key)
+JWT_REFRESH_SECRET= (any secret key)
+CLOUDINARY_CLOUD_NAME= (your cloudinary cloud name)
+CLOUDINARY_API_SECRET= (your cloudinary api secret)
+MONGODB_URI= (your mongodb uri)
+MONGO_USERNAME= (your mongodb username - optional)
+MONGO_PASSWORD= (your mongodb password - optional)
+```
+
+3. Install dependencies
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+pnpm install
 ```
 
-## Test
+4. Start MongoDB (if running locally with docker compose)
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+pnpm start:mongo
 ```
 
-## Support
+5. Start the NestJS server
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+pnpm start:dev
+```
 
-## Stay in touch
+## API Documentation
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+Once the application is running, visit `http://localhost:4000/api` to access the Swagger documentation.
+
+### Authentication Endpoints
+
+- POST `/v1/auth/register` - Register a new user
+- POST `/v1/auth/login` - Login with credentials
+- POST `/v1/auth/refresh` - Refresh access token
+- POST `/v1/auth/logout` - Logout user
+- GET `/v1/auth/profile` - Get user profile
+- more endpoints...
+
+## Token System
+
+The API uses a dual-token system:
+
+- Access Token: Short-lived (15 minutes)
+- Refresh Token: Long-lived (7 days)
+
+When the access token expires, use the refresh token to obtain a new pair of tokens.
+
+### Project Structure
+
+src/
+├── guards/ # Authentication guards
+├── strategies/ # Passport strategies (JWT, Local)
+├── users/ # Resources (User, Order, Product, etc.)
+│ ├── controller/ # Route controllers
+│ ├── dtos/ # Data transfer objects
+│ ├── schemas/ # MongoDB schemas
+│ └── services/ # Business logic
+└── utils/ # Helper functions
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+### Coding Standards
+
+- Follow the existing code style
+- Write meaningful commit messages
+- Add tests for new features
+- Update documentation as needed
 
 ## License
 
-Nest is [MIT licensed](LICENSE).
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Support
+
+For support, email [hello@achrafdev.com](mailto:hello@achrafdev.com) or open an issue in the repository.

@@ -22,7 +22,7 @@ import { UsersController } from './controller/users.controller';
     JwtModule.register({
       global: true,
       secret: process.env.JWT_ACCESS_SECRET,
-      signOptions: { expiresIn: '1m' },
+      signOptions: { expiresIn: '15m' },
     }),
   ],
   controllers: [AuthController, UsersController],
