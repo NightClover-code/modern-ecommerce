@@ -84,6 +84,7 @@ When the access token expires, use the refresh token to obtain a new pair of tok
 
 ### Project Structure
 
+```bash
 src/
 ├── guards/ # Authentication guards
 ├── strategies/ # Passport strategies (JWT, Local)
@@ -93,6 +94,7 @@ src/
 │ ├── schemas/ # MongoDB schemas
 │ └── services/ # Business logic
 └── utils/ # Helper functions
+```
 
 ## Contributing
 
