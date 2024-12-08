@@ -4,15 +4,17 @@
   "private": true,
   "packageManager": "pnpm@8.15.4",
   "workspaces": [
-    "client",
-    "server"
+    "client-old",
+    "server",
+    "web"
   ],
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
     "start": "turbo run start",
     "start:server": "turbo run dev --filter=@elecshop/server",
-    "start:client": "turbo run dev --filter=@elecshop/client",
+    "start:client-old": "turbo run dev --filter=@elecshop/client-old",
+    "start:web": "turbo run dev --filter=@elecshop/web",
     "lint": "turbo run lint",
     "clean": "turbo run clean && rm -rf node_modules",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
