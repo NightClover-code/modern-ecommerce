@@ -1,8 +1,9 @@
 import * as mongoose from 'mongoose';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { User } from '../../users/schemas/user.schema';
+import { HydratedDocument } from 'mongoose';
 
-export type ProductDocument = Product & mongoose.Document;
+export type ProductDocument = HydratedDocument<Product>;
 
 @Schema({ timestamps: true })
 export class Review {
@@ -12,49 +13,49 @@ export class Review {
     ref: 'User',
     default: null,
   })
-  user: User;
+  user!: User;
 
   @Prop({ required: true })
-  name: string;
+  name!: string;
 
   @Prop({ required: true })
-  rating: number;
+  rating!: number;
 
   @Prop({ required: true })
-  comment: string;
+  comment!: string;
 }
 
 @Schema({ timestamps: true })
 export class Product {
   @Prop({ required: true })
-  name: string;
+  name!: string;
 
   @Prop({ required: true })
-  brand: string;
+  brand!: string;
 
   @Prop({ required: true })
-  category: string;
+  category!: string;
 
   @Prop({ require: true })
-  image: string;
+  image!: string;
 
   @Prop({ required: true })
-  description: string;
+  description!: string;
 
   @Prop({ required: true })
-  reviews: Review[];
+  reviews!: Review[];
 
   @Prop({ required: true, default: 0 })
-  rating: number;
+  rating!: number;
 
   @Prop({ required: true, default: 0 })
-  numReviews: number;
+  numReviews!: number;
 
   @Prop({ required: true, default: 0 })
-  price: number;
+  price!: number;
 
   @Prop({ required: true, default: 0 })
-  countInStock: number;
+  countInStock!: number;
 }
 
 export const ProductSchema = SchemaFactory.createForClass(Product);

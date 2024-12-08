@@ -10,13 +10,11 @@ import { Order, OrderDocument } from '../schemas/order.schema';
 
 @Injectable()
 export class OrdersService {
-  constructor(
-    @InjectModel(Order.name) private orderModel: Model<OrderDocument>
-  ) {}
+  constructor(@InjectModel(Order.name) private orderModel: Model<Order>) {}
 
   async create(
-    orderAttrs: Partial<OrderDocument>,
-    userId: string
+    orderAttrs: Partial<Order>,
+    userId: string,
   ): Promise<OrderDocument> {
     const {
       orderItems,
@@ -66,7 +64,7 @@ export class OrdersService {
 
   async updatePaid(
     id: string,
-    paymentResult: PaymentResult
+    paymentResult: PaymentResult,
   ): Promise<OrderDocument> {
     if (!Types.ObjectId.isValid(id))
       throw new BadRequestException('Invalid order ID.');

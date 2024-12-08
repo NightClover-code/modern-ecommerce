@@ -1,11 +1,20 @@
-import { CanActivate, ExecutionContext } from '@nestjs/common';
+import {
+  Injectable,
+  ExecutionContext,
+  UnauthorizedException,
+} from '@nestjs/common';
+import { JwtAuthGuard } from './jwt-auth.guard';
 
-export class AdminGuard implements CanActivate {
-  canActivate(context: ExecutionContext) {
+@Injectable()
+export class AdminGuard extends JwtAuthGuard {
+  async canActivate(context: ExecutionContext) {
+    await super.canActivate(context);
     const request = context.switchToHttp().getRequest();
 
-    if (!request.session.user) return false;
+    if (!request.user?.isAdmin) {
+      throw new UnauthorizedException('Admin access required');
+    }
 
-    return request.session.user.isAdmin;
+    return true;
   }
 }

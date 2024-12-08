@@ -5,21 +5,22 @@ import {
   Param,
   Post,
   Put,
-  Session,
   UseGuards,
 } from '@nestjs/common';
 import { AdminGuard } from 'src/guards/admin.guard';
-import { AuthGuard } from 'src/guards/auth.guard';
 import { OrdersService } from '../services/orders.service';
+import { UserDocument } from '@/users/schemas/user.schema';
+import { CurrentUser } from '@/decorators/current-user.decorator';
+import { JwtAuthGuard } from '@/guards/jwt-auth.guard';
 
 @Controller('orders')
 export class OrdersController {
   constructor(private ordersService: OrdersService) {}
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post()
-  async createOrder(@Body() body: any, @Session() session: any) {
-    return this.ordersService.create(body, session.user._id);
+  async createOrder(@Body() body: any, @CurrentUser() user: UserDocument) {
+    return this.ordersService.create(body, user._id.toString());
   }
 
   @UseGuards(AdminGuard)
@@ -28,23 +29,23 @@ export class OrdersController {
     return this.ordersService.findAll();
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get('myorders')
-  async getUserOrders(@Session() session: any) {
-    return this.ordersService.findUserOrders(session.user._id);
+  async getUserOrders(@CurrentUser() user: UserDocument) {
+    return this.ordersService.findUserOrders(user._id.toString());
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Get(':id')
   async getOrder(@Param('id') id: string) {
     return this.ordersService.findById(id);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Put(':id/pay')
   async updateOrderPayment(
     @Param('id') id: string,
-    @Body() { paymentResult }: any
+    @Body() { paymentResult }: any,
   ) {
     return this.ordersService.updatePaid(id, paymentResult);
   }

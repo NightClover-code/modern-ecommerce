@@ -3,17 +3,17 @@ import { ObjectId } from 'mongoose';
 
 export class UserDto {
   @Expose()
-  email: string;
+  email!: string;
 
   @Expose()
   @Transform(({ key, obj }) => obj[key])
-  _id: ObjectId;
+  _id!: ObjectId;
 
   @Expose()
-  name: string;
+  name!: string;
 
   @Expose()
-  isAdmin: boolean;
+  isAdmin!: boolean;
 
   @Expose()
   accessToken?: string;

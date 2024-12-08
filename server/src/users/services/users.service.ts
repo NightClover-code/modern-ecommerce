@@ -7,7 +7,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { User, UserDocument } from '../schemas/user.schema';
-import { encryptPassword } from 'src/utils';
+import { hashPassword } from '@/utils/password';
 
 @Injectable()
 export class UsersService {
@@ -86,9 +86,7 @@ export class UsersService {
     const updateData: Partial<User> = {
       ...attrs,
       isAdmin: isAdmin ? attrs.isAdmin : undefined,
-      password: attrs.password
-        ? await encryptPassword(attrs.password)
-        : undefined,
+      password: attrs.password ? await hashPassword(attrs.password) : undefined,
     };
 
     // Remove undefined values

@@ -2,14 +2,14 @@ import { IsString } from 'class-validator';
 
 export class SaveShippingDetailsDto {
   @IsString()
-  address: string;
+  address!: string;
 
   @IsString()
-  city: string;
+  city!: string;
 
   @IsString()
-  postalCode: string;
+  postalCode!: string;
 
   @IsString()
-  country: string;
+  country!: string;
 }

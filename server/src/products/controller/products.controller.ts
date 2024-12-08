@@ -7,7 +7,6 @@ import {
   Post,
   Put,
   Query,
-  Session,
   UseGuards,
 } from '@nestjs/common';
 import { AdminGuard } from 'src/guards/admin.guard';
@@ -15,6 +14,8 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { ProductDto } from '../dtos/product.dto';
 import { ReviewDto } from '../dtos/review.dto';
 import { ProductsService } from '../services/products.service';
+import { UserDocument } from '@/users/schemas/user.schema';
+import { CurrentUser } from '@/decorators/current-user.decorator';
 
 @Controller('products')
 export class ProductsController {
@@ -23,7 +24,7 @@ export class ProductsController {
   @Get()
   getProducts(
     @Query('keyword') keyword: string,
-    @Query('pageId') pageId: string
+    @Query('pageId') pageId: string,
   ) {
     return this.productsService.findMany(keyword, pageId);
   }
@@ -61,8 +62,8 @@ export class ProductsController {
   createReview(
     @Param('id') id: string,
     @Body() { rating, comment }: ReviewDto,
-    @Session() session: any
+    @CurrentUser() user: UserDocument,
   ) {
-    return this.productsService.createReview(id, session.user, rating, comment);
+    return this.productsService.createReview(id, user, rating, comment);
   }
 }

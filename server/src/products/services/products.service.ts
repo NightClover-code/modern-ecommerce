@@ -13,7 +13,7 @@ import { Product, ProductDocument } from '../schemas/product.schema';
 @Injectable()
 export class ProductsService {
   constructor(
-    @InjectModel(Product.name) private productModel: Model<ProductDocument>
+    @InjectModel(Product.name) private productModel: Model<Product>,
   ) {}
 
   async findTopRated(): Promise<ProductDocument[]> {
@@ -29,10 +29,10 @@ export class ProductsService {
 
   async findMany(
     keyword?: string,
-    pageId?: string
+    pageId?: string,
   ): Promise<PaginatedProducts> {
     const pageSize = 2;
-    const page = parseInt(pageId) || 1;
+    const page = parseInt(pageId ?? '1');
 
     const rgex = keyword ? { name: { $regex: keyword, $options: 'i' } } : {};
 
@@ -58,12 +58,10 @@ export class ProductsService {
     return product;
   }
 
-  async createMany(
-    products: Partial<ProductDocument>[]
-  ): Promise<ProductDocument[]> {
+  async createMany(products: Partial<Product>[]): Promise<ProductDocument[]> {
     const createdProducts = await this.productModel.insertMany(products);
 
-    return createdProducts;
+    return createdProducts as unknown as ProductDocument[];
   }
 
   async createSample(): Promise<ProductDocument> {
@@ -72,10 +70,7 @@ export class ProductsService {
     return createdProduct;
   }
 
-  async update(
-    id: string,
-    attrs: Partial<ProductDocument>
-  ): Promise<ProductDocument> {
+  async update(id: string, attrs: Partial<Product>): Promise<ProductDocument> {
     const { name, price, description, image, brand, category, countInStock } =
       attrs;
 
@@ -86,13 +81,13 @@ export class ProductsService {
 
     if (!product) throw new NotFoundException('No product with given ID.');
 
-    product.name = name;
-    product.price = price;
-    product.description = description;
-    product.image = image;
-    product.brand = brand;
-    product.category = category;
-    product.countInStock = countInStock;
+    product.name = name ?? '';
+    product.price = price ?? 0;
+    product.description = description ?? '';
+    product.image = image ?? '';
+    product.brand = brand ?? '';
+    product.category = category ?? '';
+    product.countInStock = countInStock ?? 0;
 
     const updatedProduct = await product.save();
 
@@ -101,9 +96,9 @@ export class ProductsService {
 
   async createReview(
     id: string,
-    user: Partial<UserDocument>,
+    user: UserDocument,
     rating: number,
-    comment: string
+    comment: string,
   ): Promise<ProductDocument> {
     if (!Types.ObjectId.isValid(id))
       throw new BadRequestException('Invalid product ID.');
@@ -113,7 +108,7 @@ export class ProductsService {
     if (!product) throw new NotFoundException('No product with given ID.');
 
     const alreadyReviewed = product.reviews.find(
-      r => r.user.toString() === user._id.toString()
+      r => r.user.toString() === user._id.toString(),
     );
 
     if (alreadyReviewed)
@@ -123,7 +118,7 @@ export class ProductsService {
       name: user.name,
       rating,
       comment,
-      user: user._id,
+      user,
     };
 
     product.reviews.push(review);
@@ -147,7 +142,7 @@ export class ProductsService {
 
     if (!product) throw new NotFoundException('No product with given ID.');
 
-    await product.remove();
+    await product.deleteOne();
   }
 
   async deleteMany(): Promise<void> {

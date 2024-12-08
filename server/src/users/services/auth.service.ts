@@ -1,55 +1,122 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from './users.service';
-import * as bcrypt from 'bcryptjs';
 import { JwtService } from '@nestjs/jwt';
-import { encryptPassword } from 'src/utils';
+import { AuthResponse, TokensDto, TokenPayload } from '../dtos/auth.dto';
+import { User, UserDocument } from '../schemas/user.schema';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { hashPassword, verifyPassword } from '@/utils/password';
 
 @Injectable()
 export class AuthService {
   constructor(
     private usersService: UsersService,
-    private jwtService: JwtService
+    private jwtService: JwtService,
+    @InjectModel(User.name) private userModel: Model<User>,
   ) {}
 
-  async validateUser(email: string, password: string) {
+  async validateUser(email: string, password: string): Promise<UserDocument> {
     const user = await this.usersService.findOne(email);
+    if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
 
-    if (!user) throw new NotFoundException('Invalid email or password');
-
-    const isValidPassword = await bcrypt.compare(password, user.password);
-
-    if (!isValidPassword)
-      throw new BadRequestException('Invalid email or password');
+    const isPasswordValid = await verifyPassword(user.password, password);
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
 
     return user;
   }
 
-  async login(username: string, userId: string) {
-    const payload = { username, sub: userId };
+  async login(user: UserDocument): Promise<AuthResponse> {
+    const tokens = await this.generateTokens(user);
+
+    await this.userModel.findByIdAndUpdate(user._id, {
+      refreshToken: await hashPassword(tokens.refreshToken),
+    });
 
     return {
-      accessToken: this.jwtService.sign(payload),
+      tokens,
+      user: {
+        id: user._id.toString(),
+        email: user.email,
+        name: user.name,
+        isAdmin: user.isAdmin,
+      },
     };
   }
 
-  async register(name: string, email: string, password: string) {
-    const existingUser = await this.usersService.findOne(email);
+  private async generateTokens(user: UserDocument): Promise<TokensDto> {
+    const [accessToken, refreshToken] = await Promise.all([
+      this.jwtService.signAsync(
+        {
+          sub: user._id.toString(),
+          email: user.email,
+          isAdmin: user.isAdmin,
+          type: 'access',
+        } as TokenPayload,
+        {
+          expiresIn: '15m',
+          secret: process.env.JWT_ACCESS_SECRET,
+        },
+      ),
+      this.jwtService.signAsync(
+        {
+          sub: user._id.toString(),
+          email: user.email,
+          isAdmin: user.isAdmin,
+          type: 'refresh',
+        } as TokenPayload,
+        {
+          expiresIn: '7d',
+          secret: process.env.JWT_REFRESH_SECRET,
+        },
+      ),
+    ]);
 
-    if (existingUser) throw new BadRequestException('Email is already in use.');
+    return {
+      accessToken,
+      refreshToken,
+    };
+  }
 
-    const encryptedPassword = await encryptPassword(password);
+  async refresh(refreshToken: string): Promise<TokensDto> {
+    try {
+      const payload = await this.jwtService.verifyAsync<TokenPayload>(
+        refreshToken,
+        {
+          secret: process.env.JWT_REFRESH_SECRET,
+        },
+      );
 
-    const user = await this.usersService.create({
-      email,
-      password: encryptedPassword,
-      isAdmin: false,
-      name,
+      if (payload.type !== 'refresh') {
+        throw new UnauthorizedException();
+      }
+
+      const user = await this.userModel.findById(payload.sub);
+      if (!user || !user.refreshToken) {
+        throw new UnauthorizedException();
+      }
+
+      const isRefreshTokenValid = await verifyPassword(
+        user.refreshToken,
+        refreshToken,
+      );
+
+      if (!isRefreshTokenValid) {
+        throw new UnauthorizedException();
+      }
+
+      return this.generateTokens(user);
+    } catch {
+      throw new UnauthorizedException();
+    }
+  }
+
+  async logout(userId: string): Promise<void> {
+    await this.userModel.findByIdAndUpdate(userId, {
+      refreshToken: null,
     });
-
-    return user;
   }
 }

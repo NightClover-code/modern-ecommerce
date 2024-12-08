@@ -8,7 +8,7 @@ export type OrderDocument = Order & mongoose.Document;
 @Schema({ timestamps: true })
 export class Order {
   @Prop({ type: mongoose.Schema.Types.ObjectId, required: true, ref: 'User' })
-  user: User;
+  user!: User;
 
   @Prop({
     required: true,
@@ -26,7 +26,7 @@ export class Order {
       },
     ],
   })
-  orderItems: OrderItem[];
+  orderItems!: OrderItem[];
 
   @Prop({
     required: true,
@@ -37,10 +37,10 @@ export class Order {
       country: { required: true, type: String },
     },
   })
-  shippingDetails: ShippingDetails;
+  shippingDetails!: ShippingDetails;
 
   @Prop({ required: true })
-  paymentMethod: string;
+  paymentMethod!: string;
 
   @Prop({
     required: false,
@@ -51,31 +51,31 @@ export class Order {
       email_address: { required: true, type: String },
     },
   })
-  paymentResult: PaymentResult;
+  paymentResult!: PaymentResult;
 
   @Prop({ required: true, default: 0.0 })
-  taxPrice: number;
+  taxPrice!: number;
 
   @Prop({ required: true, default: 0.0 })
-  shippingPrice: number;
+  shippingPrice!: number;
 
   @Prop({ required: true, default: 0.0 })
-  itemsPrice: number;
+  itemsPrice!: number;
 
   @Prop({ required: true, default: 0.0 })
-  totalPrice: number;
+  totalPrice!: number;
 
   @Prop({ default: false })
-  isPaid: boolean;
+  isPaid!: boolean;
 
   @Prop({ required: false })
-  paidAt: string;
+  paidAt!: string;
 
   @Prop({ default: false })
-  isDelivered: boolean;
+  isDelivered!: boolean;
 
   @Prop({ required: false })
-  deliveredAt: string;
+  deliveredAt!: string;
 }
 
 export const OrderSchema = SchemaFactory.createForClass(Order);

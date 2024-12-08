@@ -4,13 +4,13 @@ export class RegisterDto {
   @IsString()
   @MinLength(4, { message: 'Username is too short.' })
   @MaxLength(20, { message: 'Username is too long.' })
-  name: string;
+  name!: string;
 
   @IsEmail({}, { message: 'Email address is not valid.' })
-  email: string;
+  email!: string;
 
   @IsString()
   @MinLength(5, { message: 'Password is too short.' })
   @MaxLength(20, { message: 'Please is too long.' })
-  password: string;
+  password!: string;
 }

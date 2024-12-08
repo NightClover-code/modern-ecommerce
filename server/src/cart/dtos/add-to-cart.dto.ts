@@ -6,7 +6,7 @@ export class AddToCartDto {
   product?: ProductDocument;
 
   @IsNumber()
-  qty: number;
+  qty!: number;
 
   @IsOptional()
   @IsString()

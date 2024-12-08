@@ -4,8 +4,8 @@ export class ReviewDto {
   @Min(1)
   @Max(5)
   @IsNumber()
-  rating: number;
+  rating!: number;
 
   @IsString()
-  comment: string;
+  comment!: string;
 }

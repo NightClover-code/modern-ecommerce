@@ -1,22 +1,22 @@
-import * as bycrypt from 'bcryptjs';
+import { hashPassword } from '../password';
 
-export const users = [
+export const users = async () => [
   {
     name: 'Admin User',
     email: 'admin@example.com',
-    password: bycrypt.hashSync('123456', 10),
+    password: await hashPassword('123456'),
     isAdmin: true,
   },
   {
     name: 'John Doe',
     email: 'john@example.com',
-    password: bycrypt.hashSync('123456', 10),
+    password: await hashPassword('123456'),
     isAdmin: false,
   },
   {
     name: 'Jane Doe',
     email: 'jane@example.com',
-    password: bycrypt.hashSync('123456', 10),
+    password: await hashPassword('123456'),
     isAdmin: false,
   },
 ];
