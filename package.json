@@ -21,7 +21,6 @@
     "test": "turbo run test"
   },
   "devDependencies": {
-    "concurrently": "^7.0.0",
     "prettier": "^3.4.2",
     "turbo": "^2.3.3"
   }
