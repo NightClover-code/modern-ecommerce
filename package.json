@@ -2,6 +2,7 @@
   "name": "elecshop",
   "version": "1.0.0",
   "private": true,
+  "packageManager": "pnpm@8.15.4",
   "workspaces": [
     "client",
     "server"
@@ -11,10 +12,11 @@
     "dev": "turbo run dev",
     "start": "turbo run start",
     "start:server": "turbo run dev --filter=@elecshop/server",
-    "start:client": "turbo run start:dev --filter=@elecshop/client",
+    "start:client": "turbo run dev --filter=@elecshop/client",
     "lint": "turbo run lint",
     "clean": "turbo run clean && rm -rf node_modules",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "test": "turbo run test"
   },
   "devDependencies": {
     "concurrently": "^7.0.0",
