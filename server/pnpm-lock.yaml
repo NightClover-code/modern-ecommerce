@@ -35,6 +35,9 @@ importers:
       argon2:
         specifier: ^0.41.1
         version: 0.41.1
+      buffer-to-stream:
+        specifier: ^1.0.0
+        version: 1.0.0
       class-transformer:
         specifier: ^0.5.1
         version: 0.5.1
@@ -87,6 +90,9 @@ importers:
       '@nestjs/testing':
         specifier: ^10.4.13
         version: 10.4.13(@nestjs/common@10.4.13(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.13(@nestjs/common@10.4.13(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.13)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@10.4.13(@nestjs/common@10.4.13(class-transformer@0.5.1)(class-validator@0.14.1)(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@10.4.13))
+      '@types/buffer-to-stream':
+        specifier: ^1.0.3
+        version: 1.0.3
       '@types/express':
         specifier: ^5.0.0
         version: 5.0.0
@@ -707,6 +713,9 @@ packages:
   '@types/body-parser@1.19.5':
     resolution: {integrity: sha512-fB3Zu92ucau0iQ0JMCFQE7b/dv8Ot07NI3KaZIkIUNXq82k4eBAqUaneXfleGY9JWskeS9y+u0nXMyspcuQrCg==}
 
+  '@types/buffer-to-stream@1.0.3':
+    resolution: {integrity: sha512-1vVci4cNe4XDrTEDB8fWGORDQRE3HwAD+21j39W1NAlYitXWimPUh/gWpt3+tSZvu9FGrBeprYv5DC2qhq4LFg==}
+
   '@types/connect@3.4.38':
     resolution: {integrity: sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==}
 
@@ -1104,6 +1113,10 @@ packages:
 
   buffer-from@1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
+
+  buffer-to-stream@1.0.0:
+    resolution: {integrity: sha512-EMiRQgNY0mFGbPm7zV3b7vc1mSNs7WSkZvH2Rmvl2tjTe43uCuRlCVw1OAEon7NXBTT7He1Pf2lLoKKgvcAujA==}
+    engines: {node: '>=6'}
 
   buffer@5.7.1:
     resolution: {integrity: sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==}
@@ -3824,6 +3837,10 @@ snapshots:
       '@types/connect': 3.4.38
       '@types/node': 22.10.1
 
+  '@types/buffer-to-stream@1.0.3':
+    dependencies:
+      '@types/node': 22.10.1
+
   '@types/connect@3.4.38':
     dependencies:
       '@types/node': 22.10.1
@@ -4331,6 +4348,8 @@ snapshots:
   buffer-equal-constant-time@1.0.1: {}
 
   buffer-from@1.1.2: {}
+
+  buffer-to-stream@1.0.0: {}
 
   buffer@5.7.1:
     dependencies:

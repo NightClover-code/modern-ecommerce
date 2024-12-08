@@ -9,8 +9,11 @@ import { UserDto } from '../dtos/user.dto';
 import { UserDocument } from '../schemas/user.schema';
 import { AuthService } from '../services/auth.service';
 import { UsersService } from '../services/users.service';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { AuthResponseDto, LoginDto } from '../dtos/auth.dto';
+import { NotAuthenticatedGuard } from '@/guards/not-authenticated.guard';
 
-@Serialize(UserDto)
+@ApiTags('Authentication')
 @Controller('auth')
 export class AuthController {
   constructor(
@@ -18,12 +21,27 @@ export class AuthController {
     private usersService: UsersService,
   ) {}
 
-  @UseGuards(LocalAuthGuard)
+  @ApiOperation({ summary: 'Login with email and password' })
+  @ApiResponse({
+    status: 200,
+    description: 'Login successful',
+    type: AuthResponseDto,
+  })
+  @ApiResponse({
+    status: 401,
+    description: 'Invalid credentials',
+  })
+  @UseGuards(NotAuthenticatedGuard, LocalAuthGuard)
   @Post('login')
-  async login(@CurrentUser() user: UserDocument) {
+  async login(@Body() loginDto: LoginDto) {
+    const user = await this.authService.validateUser(
+      loginDto.email,
+      loginDto.password,
+    );
     return this.authService.login(user);
   }
 
+  @Serialize(UserDto)
   @UseGuards(JwtAuthGuard)
   @Get('profile')
   getProfile(@CurrentUser() user: UserDocument) {
@@ -41,6 +59,16 @@ export class AuthController {
     await this.authService.logout(user._id.toString());
   }
 
+  @ApiOperation({ summary: 'Register a new user' })
+  @ApiResponse({
+    status: 201,
+    description: 'User successfully registered',
+    type: AuthResponseDto,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Bad request - validation error',
+  })
   @Post('register')
   async register(@Body() registerDto: RegisterDto) {
     const user = await this.usersService.create(registerDto);

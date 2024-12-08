@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { JwtService } from '@nestjs/jwt';
-import { AuthResponse, TokensDto, TokenPayload } from '../dtos/auth.dto';
+import { AuthResponseDto, TokensDto, TokenPayload } from '../dtos/auth.dto';
 import { User, UserDocument } from '../schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -29,7 +29,7 @@ export class AuthService {
     return user;
   }
 
-  async login(user: UserDocument): Promise<AuthResponse> {
+  async login(user: UserDocument): Promise<AuthResponseDto> {
     const tokens = await this.generateTokens(user);
 
     await this.userModel.findByIdAndUpdate(user._id, {
@@ -57,7 +57,7 @@ export class AuthService {
           type: 'access',
         } as TokenPayload,
         {
-          expiresIn: '15m',
+          expiresIn: '1m',
           secret: process.env.JWT_ACCESS_SECRET,
         },
       ),

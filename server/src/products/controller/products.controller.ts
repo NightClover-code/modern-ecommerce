@@ -10,7 +10,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { AdminGuard } from 'src/guards/admin.guard';
-import { AuthGuard } from 'src/guards/auth.guard';
+import { JwtAuthGuard } from '@/guards/jwt-auth.guard';
 import { ProductDto } from '../dtos/product.dto';
 import { ReviewDto } from '../dtos/review.dto';
 import { ProductsService } from '../services/products.service';
@@ -57,7 +57,7 @@ export class ProductsController {
     return this.productsService.update(id, product);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Put(':id/review')
   createReview(
     @Param('id') id: string,

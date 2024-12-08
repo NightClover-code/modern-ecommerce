@@ -17,9 +17,22 @@ export class UsersService {
 
   async create(user: Partial<User>): Promise<UserDocument> {
     try {
-      return await this.userModel.create(user);
+      const hashedPassword = await hashPassword(user.password ?? '');
+      return await this.userModel.create({
+        ...user,
+        password: hashedPassword,
+      });
     } catch (error: any) {
       this.logger.error(`Failed to create user: ${error.message}`);
+
+      if (error.code === 11000) {
+        throw new BadRequestException('Email already exists');
+      }
+
+      if (error.name === 'ValidationError') {
+        throw new BadRequestException(error.message);
+      }
+
       throw new BadRequestException('Failed to create user');
     }
   }
