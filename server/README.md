@@ -1,4 +1,4 @@
-# NestJS Authentication API
+# Elecshop NestJS Authentication API
 
 A robust authentication system built with NestJS, featuring JWT-based authentication with access and refresh tokens.
 
