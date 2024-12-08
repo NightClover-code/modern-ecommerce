@@ -4,6 +4,9 @@
 seeds
 *.http
 
+# turbo
+.turbo
+
 # dependencies
 dist
 node_modules

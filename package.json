@@ -10,6 +10,8 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "start": "turbo run start",
+    "start:server": "turbo run dev --filter=@elecshop/server",
+    "start:client": "turbo run start:dev --filter=@elecshop/client",
     "lint": "turbo run lint",
     "clean": "turbo run clean && rm -rf node_modules",
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
