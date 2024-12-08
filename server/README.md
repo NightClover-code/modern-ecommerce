@@ -16,7 +16,7 @@ A robust authentication system built with NestJS, featuring JWT-based authentica
 ## Prerequisites
 
 - Node.js (v16 or higher)
-- MongoDB
+- Docker (recommended) 
 - pnpm (preferred)
 
 ## Getting Started
