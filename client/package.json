@@ -1,5 +1,5 @@
 {
-  "name": "client",
+  "name": "@elecshop/client",
   "private": true,
   "scripts": {
     "dev": "next dev",
