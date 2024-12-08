@@ -1,114 +1,134 @@
+import { Model, Types } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import {
   BadRequestException,
   Injectable,
+  Logger,
   NotFoundException,
 } from '@nestjs/common';
 import { User, UserDocument } from '../schemas/user.schema';
-import { Model, Types } from 'mongoose';
 import { encryptPassword } from 'src/utils';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  private readonly logger = new Logger(UsersService.name);
 
-  async createMany(users: Partial<UserDocument>[]): Promise<UserDocument[]> {
-    const createdUsers = await this.userModel.insertMany(users);
+  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-    return createdUsers;
+  async create(user: Partial<User>): Promise<UserDocument> {
+    try {
+      return await this.userModel.create(user);
+    } catch (error: any) {
+      this.logger.error(`Failed to create user: ${error.message}`);
+      throw new BadRequestException('Failed to create user');
+    }
   }
 
-  async create(user: Partial<UserDocument>): Promise<UserDocument> {
-    const createdUser = await this.userModel.create(user);
-
-    return createdUser;
+  async createMany(users: Partial<User>[]): Promise<UserDocument[]> {
+    try {
+      return (await this.userModel.insertMany(
+        users,
+      )) as unknown as UserDocument[];
+    } catch (error: any) {
+      this.logger.error(`Failed to create users: ${error.message}`);
+      throw new BadRequestException('Failed to create users');
+    }
   }
 
-  async findOne(email: string): Promise<UserDocument> {
-    const user = await this.userModel.findOne({ email });
-
-    return user;
+  async findOne(email: string): Promise<UserDocument | null> {
+    return this.userModel.findOne({ email });
   }
 
   async findById(id: string): Promise<UserDocument> {
-    if (!Types.ObjectId.isValid(id))
-      throw new BadRequestException('Invalid user ID.');
+    if (!Types.ObjectId.isValid(id)) {
+      throw new BadRequestException('Invalid user ID');
+    }
 
     const user = await this.userModel.findById(id);
-
-    if (!user) throw new NotFoundException('User not found.');
+    if (!user) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
 
     return user;
   }
 
   async findAll(): Promise<UserDocument[]> {
-    const users = await this.userModel.find();
-
-    return users;
+    return this.userModel.find();
   }
 
   async deleteOne(id: string): Promise<void> {
-    if (!Types.ObjectId.isValid(id))
-      throw new BadRequestException('Invalid user ID.');
+    if (!Types.ObjectId.isValid(id)) {
+      throw new BadRequestException('Invalid user ID');
+    }
 
-    const user = await this.userModel.findById(id);
-
-    if (!user) throw new NotFoundException('User not found.');
-
-    await user.remove();
+    const result = await this.userModel.findOneAndDelete({ _id: id });
+    if (!result) {
+      throw new NotFoundException(`User with ID ${id} not found`);
+    }
   }
 
   async update(
     id: string,
-    attrs: Partial<UserDocument>
+    attrs: Partial<User>,
+    isAdmin = false,
   ): Promise<UserDocument> {
-    if (!Types.ObjectId.isValid(id))
-      throw new BadRequestException('Invalid user ID.');
-
-    const user = await this.userModel.findById(id);
-
-    if (!user) throw new NotFoundException('User not found.');
-
-    const existingUser = await this.findOne(attrs.email);
-
-    if (existingUser && existingUser.email !== user.email)
-      throw new BadRequestException('Email is already in use.');
-
-    user.name = attrs.name || user.name;
-    user.email = attrs.email || user.email;
-
-    if (attrs.password) {
-      user.password = await encryptPassword(attrs.password);
+    if (!Types.ObjectId.isValid(id)) {
+      throw new BadRequestException('Invalid user ID');
     }
 
-    const updatedUser = await user.save();
+    if (attrs.email) {
+      const existingUser = await this.findOne(attrs.email);
+      if (existingUser && existingUser._id.toString() !== id) {
+        throw new BadRequestException('Email is already in use');
+      }
+    }
 
-    return updatedUser;
+    const updateData: Partial<User> = {
+      ...attrs,
+      isAdmin: isAdmin ? attrs.isAdmin : undefined,
+      password: attrs.password
+        ? await encryptPassword(attrs.password)
+        : undefined,
+    };
+
+    // Remove undefined values
+    type UpdateKeys = keyof Partial<User>;
+    Object.keys(updateData as Record<UpdateKeys, unknown>).forEach(
+      key =>
+        updateData[key as UpdateKeys] === undefined &&
+        delete updateData[key as UpdateKeys],
+    );
+
+    try {
+      const updatedUser = await this.userModel.findByIdAndUpdate(
+        id,
+        updateData,
+        { new: true, runValidators: true },
+      );
+
+      if (!updatedUser) {
+        throw new NotFoundException(`User with ID ${id} not found`);
+      }
+
+      this.logger.log(`User ${id} updated successfully`);
+      return updatedUser;
+    } catch (error: any) {
+      this.logger.error(`Failed to update user ${id}: ${error.message}`);
+      throw new BadRequestException('Failed to update user');
+    }
   }
 
-  async adminUpdate(id: string, attrs: Partial<UserDocument>) {
-    if (!Types.ObjectId.isValid(id))
-      throw new BadRequestException('Invalid user ID.');
-
-    const user = await this.userModel.findById(id);
-
-    if (!user) throw new NotFoundException('User not found.');
-
-    const existingUser = await this.findOne(attrs.email);
-
-    if (existingUser && existingUser.email !== user.email)
-      throw new BadRequestException('Email is already in use.');
-
-    user.name = attrs.name || user.name;
-    user.email = attrs.email || user.email;
-    user.isAdmin = attrs.isAdmin !== undefined && attrs.isAdmin;
-
-    const updatedUser = await user.save();
-
-    return updatedUser;
+  async adminUpdate(id: string, attrs: Partial<User>): Promise<UserDocument> {
+    return this.update(id, attrs, true);
   }
 
   async deleteMany(): Promise<void> {
-    await this.userModel.deleteMany({});
+    try {
+      await this.userModel.deleteMany({});
+      this.logger.log('All users deleted successfully');
+    } catch (error: any) {
+      this.logger.error(`Failed to delete users: ${error.message}`);
+      throw new BadRequestException('Failed to delete users');
+    }
   }
 }
