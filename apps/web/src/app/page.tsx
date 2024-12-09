@@ -1,7 +1,16 @@
+import { Container } from '@/components/ui/container';
+import { ProductGrid } from '@/modules/products/components/product-grid';
+import { products } from '@/modules/products/data';
+
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-satoshi)]">
-      Hi
-    </div>
+    <Container>
+      <div className="space-y-10 pb-10">
+        <div className="flex flex-col gap-y-8 px-4 sm:px-6 lg:px-8">
+          <h1 className="text-3xl font-bold">Latest Products</h1>
+          <ProductGrid products={products} />
+        </div>
+      </div>
+    </Container>
   );
 }

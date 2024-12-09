@@ -6,8 +6,17 @@ export default {
     './src/pages/**/*.{js,ts,jsx,tsx,mdx}',
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
+    './src/modules/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
+    screens: {
+      xl: { max: '1279px' },
+      lg: { max: '1090px' },
+      md: { max: '767px' },
+      sm: { max: '639px' },
+      xs: { max: '479px' },
+      xxs: { max: '330px' },
+    },
     extend: {
       fontFamily: {
         sans: ['var(--font-satoshi)', 'system-ui', 'sans-serif'],

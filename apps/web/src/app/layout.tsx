@@ -1,41 +1,11 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
-
-const satoshi = localFont({
-  src: [
-    {
-      path: './fonts/Satoshi-Light.woff2',
-      weight: '300',
-      style: 'normal',
-    },
-    {
-      path: './fonts/Satoshi-Regular.woff2',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: './fonts/Satoshi-Medium.woff2',
-      weight: '500',
-      style: 'normal',
-    },
-    {
-      path: './fonts/Satoshi-Bold.woff2',
-      weight: '700',
-      style: 'normal',
-    },
-    {
-      path: './fonts/Satoshi-Black.woff2',
-      weight: '900',
-      style: 'normal',
-    },
-  ],
-  variable: '--font-satoshi',
-});
+import type { Metadata } from 'next';
+import { satoshi } from './fonts';
+import './globals.css';
+import { Header } from '@/components/header';
 
 export const metadata: Metadata = {
-  title: "Elecshop",
-  description: "Modern eCommerce platform",
+  title: 'Elecshop',
+  description: 'Modern eCommerce platform',
 };
 
 export default function RootLayout({
@@ -45,8 +15,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${satoshi.variable} antialiased`}>
-        {children}
+      <body
+        className={`${satoshi.variable} antialiased min-h-screen flex flex-col`}
+      >
+        <Header />
+        <main className="flex-1">{children}</main>
       </body>
     </html>
   );
