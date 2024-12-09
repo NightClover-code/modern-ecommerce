@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { Container } from '@/components/ui/container';
 import { ShoppingCart, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { SearchBox } from '@/components/search-box';
 
 export function Header() {
   return (
@@ -13,6 +14,11 @@ export function Header() {
               <h1 className="text-xl font-bold">ELECSHOP</h1>
             </Link>
           </div>
+
+          <div className="flex-1 mx-8">
+            <SearchBox />
+          </div>
+
           <nav className="flex items-center space-x-4">
             <Button variant="ghost" size="icon">
               <ShoppingCart />
