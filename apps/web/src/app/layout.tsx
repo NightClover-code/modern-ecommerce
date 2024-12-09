@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { satoshi } from './fonts';
 import './globals.css';
 import { Header } from '@/components/header';
+import { Providers } from './providers';
 
 export const metadata: Metadata = {
   title: 'Elecshop',
@@ -18,8 +19,10 @@ export default function RootLayout({
       <body
         className={`${satoshi.variable} antialiased min-h-screen flex flex-col`}
       >
-        <Header />
-        <main className="flex-1">{children}</main>
+        <Providers>
+          <Header />
+          <main className="flex-1">{children}</main>
+        </Providers>
       </body>
     </html>
   );
