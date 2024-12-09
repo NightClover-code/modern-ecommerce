@@ -20,7 +20,7 @@ export function ProductCard({ product }: ProductCardProps) {
             sizes="(min-width: 1024px) 20vw, (min-width: 768px) 25vw, (min-width: 640px) 33vw, 50vw"
           />
         </div>
-        <div className="p-4">
+        <div className="p-4 border-t border-border">
           <h3 className="font-medium">{product.name}</h3>
           <div className="mt-2 flex items-center justify-between">
             <p className="text-lg font-bold">${product.price}</p>

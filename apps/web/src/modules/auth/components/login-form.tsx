@@ -104,6 +104,12 @@ export function LoginForm() {
           Google
         </Button>
       </div>
+      <div className="text-center text-sm text-muted-foreground">
+        Don't have an account?{' '}
+        <Link href="/register" className="text-primary hover:underline">
+          Sign up
+        </Link>
+      </div>
     </div>
   );
 }
