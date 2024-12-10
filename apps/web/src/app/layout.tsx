@@ -3,6 +3,7 @@ import { satoshi } from './fonts';
 import './globals.css';
 import { Header } from '@/components/header';
 import { Providers } from './providers';
+import { Toaster } from '@/components/ui/toaster';
 
 export const metadata: Metadata = {
   title: 'Elecshop',
@@ -22,6 +23,7 @@ export default function RootLayout({
         <Providers>
           <Header />
           <main className="flex-1">{children}</main>
+          <Toaster />
         </Providers>
       </body>
     </html>

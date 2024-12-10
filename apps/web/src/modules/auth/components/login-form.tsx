@@ -13,10 +13,10 @@ import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { useState } from 'react';
 import { FaGithub, FaGoogle } from 'react-icons/fa';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { useLogin } from '../hooks/use-auth';
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -24,7 +24,7 @@ const formSchema = z.object({
 });
 
 export function LoginForm() {
-  const [isLoading, setIsLoading] = useState(false);
+  const { mutate: login, isPending } = useLogin();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -35,9 +35,7 @@ export function LoginForm() {
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-    // TODO: Implement login logic
-    setIsLoading(false);
+    login(values);
   }
 
   return (
@@ -70,6 +68,7 @@ export function LoginForm() {
               </FormItem>
             )}
           />
+
           <div className="flex items-center justify-end">
             <Link
               href="/forgot-password"
@@ -78,8 +77,8 @@ export function LoginForm() {
               Forgot password?
             </Link>
           </div>
-          <Button className="w-full" type="submit" disabled={isLoading}>
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          <Button className="w-full" type="submit" disabled={isPending}>
+            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
             Sign in
           </Button>
         </form>
@@ -95,11 +94,11 @@ export function LoginForm() {
         </div>
       </div>
       <div className="grid grid-cols-2 sm:grid-cols-1 gap-4">
-        <Button variant="outline" disabled={isLoading}>
+        <Button variant="outline" disabled={isPending}>
           <FaGithub className="mr-2 h-4 w-4" />
           GitHub
         </Button>
-        <Button variant="outline" disabled={isLoading}>
+        <Button variant="outline" disabled={isPending}>
           <FaGoogle className="mr-2 h-4 w-4" />
           Google
         </Button>
