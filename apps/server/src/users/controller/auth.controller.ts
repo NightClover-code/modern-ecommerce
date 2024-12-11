@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Put,
+  UseGuards,
+  Res,
+  Req,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CurrentUser } from 'src/decorators/current-user.decorator';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 import { LocalAuthGuard } from 'src/guards/local-auth.guard';
@@ -12,6 +22,7 @@ import { UsersService } from '../services/users.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthResponseDto, LoginDto } from '../dtos/auth.dto';
 import { NotAuthenticatedGuard } from '@/guards/not-authenticated.guard';
+import { Response } from 'express';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -33,12 +44,32 @@ export class AuthController {
   })
   @UseGuards(NotAuthenticatedGuard, LocalAuthGuard)
   @Post('login')
-  async login(@Body() loginDto: LoginDto) {
+  async login(
+    @Body() loginDto: LoginDto,
+    @Res({ passthrough: true }) response: Response,
+  ) {
     const user = await this.authService.validateUser(
       loginDto.email,
       loginDto.password,
     );
-    return this.authService.login(user);
+
+    const { tokens, user: userData } = await this.authService.login(user);
+
+    response.cookie('access_token', tokens.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 15 * 60 * 1000, // 15 minutes
+    });
+
+    response.cookie('refresh_token', tokens.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+    });
+
+    return { user: userData };
   }
 
   @Serialize(UserDto)
@@ -49,14 +80,46 @@ export class AuthController {
   }
 
   @Post('refresh')
-  async refresh(@Body('refreshToken') refreshToken: string) {
-    return this.authService.refresh(refreshToken);
+  async refresh(
+    @Req() request: Request,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const refreshToken = request.cookies['refresh_token'];
+    if (!refreshToken) {
+      throw new UnauthorizedException('No refresh token');
+    }
+
+    const tokens = await this.authService.refresh(refreshToken);
+
+    response.cookie('access_token', tokens.accessToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 15 * 60 * 1000,
+    });
+
+    response.cookie('refresh_token', tokens.refreshToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'lax',
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
+
+    return { success: true };
   }
 
-  @UseGuards(JwtAuthGuard)
   @Post('logout')
-  async logout(@CurrentUser() user: UserDocument) {
+  @UseGuards(JwtAuthGuard)
+  async logout(
+    @CurrentUser() user: UserDocument,
+    @Res({ passthrough: true }) response: Response,
+  ) {
     await this.authService.logout(user._id.toString());
+
+    response.clearCookie('access_token');
+    response.clearCookie('refresh_token');
+
+    return { success: true };
   }
 
   @ApiOperation({ summary: 'Register a new user' })

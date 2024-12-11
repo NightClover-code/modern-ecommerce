@@ -8,16 +8,12 @@ import { toast } from '@/hooks/use-toast';
 
 export function useLogin() {
   const router = useRouter();
-  const { setUser, setTokens } = useAuthStore();
+  const { setUser } = useAuthStore();
 
   return useMutation({
     mutationFn: authApi.login,
     onSuccess: data => {
       setUser(data.user);
-      setTokens({
-        accessToken: data.accessToken,
-        refreshToken: data.refreshToken,
-      });
       toast({
         title: 'Welcome back!',
         description: `Signed in as ${data.user.email}`,
