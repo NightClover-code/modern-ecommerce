@@ -1,116 +1,110 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 import * as z from 'zod';
-import { useState } from 'react';
 import { FaGithub, FaGoogle } from 'react-icons/fa';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
+import { register } from '../actions/register';
+import { useRouter } from 'next/navigation';
+import { toast } from '@/hooks/use-toast';
+import { useAuthStore } from '../store/auth-store';
+import { useActionState, useEffect, useState } from 'react';
+import { Label } from '@/components/ui/label';
+import { registerSchema } from '../validation';
 
-const formSchema = z
-  .object({
-    name: z.string().min(2, 'Name must be at least 2 characters'),
-    email: z.string().email('Invalid email address'),
-    password: z.string().min(6, 'Password must be at least 6 characters'),
-    confirmPassword: z.string(),
-  })
-  .refine(data => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ['confirmPassword'],
-  });
+type RegisterFormData = z.infer<typeof registerSchema>;
 
 export function RegisterForm() {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-    },
+  const router = useRouter();
+  const { setUser } = useAuthStore();
+  const [formData, setFormData] = useState<RegisterFormData>({
+    name: '',
+    email: '',
+    password: '',
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true);
-    // TODO: Implement register logic
-    setIsLoading(false);
-  }
+  const registerBound = register.bind(null, {
+    name: formData.name,
+    email: formData.email,
+    password: formData.password,
+  });
+  const [registerState, registerAction, pending] = useActionState(
+    registerBound,
+    {},
+  );
+
+  useEffect(() => {
+    if (registerState.data) {
+      setUser(registerState.data.user);
+      toast({
+        title: registerState.data.title,
+        description: registerState.data.description,
+      });
+      router.push('/');
+    } else if (registerState.error) {
+      toast({
+        variant: 'destructive',
+        title: registerState.error.title,
+        description: registerState.error.description,
+      });
+    }
+  }, [registerState, router, setUser]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   return (
     <div className="grid gap-6 w-full">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
+      <form action={registerAction} className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="name">Name</Label>
+          <Input
+            id="name"
             name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input placeholder="John Doe" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            type="text"
+            value={formData.name}
+            onChange={handleChange}
+            placeholder="John Doe"
+            required
           />
-          <FormField
-            control={form.control}
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
             name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input placeholder="name@example.com" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="name@example.com"
+            required
           />
-          <FormField
-            control={form.control}
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="password">Password</Label>
+          <Input
+            id="password"
             name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input type="password" placeholder="********" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="********"
+            required
           />
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Confirm Password</FormLabel>
-                <FormControl>
-                  <Input type="password" placeholder="********" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button className="w-full" type="submit" disabled={isLoading}>
-            {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Create account
-          </Button>
-        </form>
-      </Form>
+        </div>
+        <Button className="w-full" type="submit" disabled={pending}>
+          {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          Create account
+        </Button>
+      </form>
+
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
@@ -121,16 +115,18 @@ export function RegisterForm() {
           </span>
         </div>
       </div>
+
       <div className="grid grid-cols-2 gap-4">
-        <Button variant="outline" disabled={isLoading}>
+        <Button variant="outline" disabled={pending}>
           <FaGithub className="mr-2 h-4 w-4" />
           GitHub
         </Button>
-        <Button variant="outline" disabled={isLoading}>
+        <Button variant="outline" disabled={pending}>
           <FaGoogle className="mr-2 h-4 w-4" />
           Google
         </Button>
       </div>
+
       <div className="text-center text-sm text-muted-foreground">
         Already have an account?{' '}
         <Link href="/login" className="text-primary hover:underline">

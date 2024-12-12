@@ -1,114 +1,128 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { FaGithub, FaGoogle } from 'react-icons/fa';
 import { Loader2 } from 'lucide-react';
 import Link from 'next/link';
-import { useLogin } from '../hooks/use-auth';
+import { login } from '../actions/login';
+import { useRouter } from 'next/navigation';
+import { toast } from '@/hooks/use-toast';
+import { useAuthStore } from '../store/auth-store';
+import { useActionState, useEffect, useState } from 'react';
+import { Label } from '@/components/ui/label';
+import { loginSchema } from '../validation';
 
-const formSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(6),
-});
+type LoginFormData = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
-  const { mutate: login, isPending } = useLogin();
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: '',
-      password: '',
-    },
+  const router = useRouter();
+  const { setUser } = useAuthStore();
+  const [formData, setFormData] = useState<LoginFormData>({
+    email: '',
+    password: '',
   });
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    login(values);
-  }
+  const loginBound = login.bind(null, {
+    email: formData.email,
+    password: formData.password,
+  });
+  const [loginState, loginAction, pending] = useActionState(loginBound, {});
+
+  useEffect(() => {
+    if (loginState.data) {
+      setUser(loginState.data.user);
+      toast({
+        title: loginState.data.title,
+        description: loginState.data.description,
+      });
+      router.push('/');
+    } else if (loginState.error) {
+      toast({
+        variant: 'destructive',
+        title: loginState.error.title,
+        description: loginState.error.description,
+      });
+    }
+  }, [loginState, router, setUser]);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
 
   return (
     <div className="grid gap-6 w-full">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-          <FormField
-            control={form.control}
+      <form action={loginAction} className="space-y-4">
+        <div className="space-y-2">
+          <Label htmlFor="email">Email</Label>
+          <Input
+            id="email"
             name="email"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input placeholder="name@example.com" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="name@example.com"
+            required
           />
-          <FormField
-            control={form.control}
+        </div>
+        <div className="space-y-2">
+          <Label htmlFor="password">Password</Label>
+          <Input
+            id="password"
             name="password"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <Input type="password" placeholder="********" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="********"
+            required
           />
+        </div>
 
-          <div className="flex items-center justify-end">
-            <Link
-              href="/forgot-password"
-              className="text-sm text-muted-foreground hover:text-primary hover:underline"
-            >
-              Forgot password?
-            </Link>
+        <div className="flex items-center justify-end">
+          <Link
+            href="/forgot-password"
+            className="text-sm text-muted-foreground hover:text-primary hover:underline"
+          >
+            Forgot password?
+          </Link>
+        </div>
+        <Button className="w-full" type="submit" disabled={pending}>
+          {pending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+          Sign in
+        </Button>
+
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t" />
           </div>
-          <Button className="w-full" type="submit" disabled={isPending}>
-            {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Sign in
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-background px-2 text-muted-foreground">
+              Or continue with
+            </span>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-1 gap-4">
+          <Button variant="outline" disabled={pending}>
+            <FaGithub className="mr-2 h-4 w-4" />
+            GitHub
           </Button>
-        </form>
-      </Form>
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
+          <Button variant="outline" disabled={pending}>
+            <FaGoogle className="mr-2 h-4 w-4" />
+            Google
+          </Button>
         </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            Or continue with
-          </span>
+        <div className="text-center text-sm text-muted-foreground">
+          Don't have an account?{' '}
+          <Link href="/register" className="text-primary hover:underline">
+            Sign up
+          </Link>
         </div>
-      </div>
-      <div className="grid grid-cols-2 sm:grid-cols-1 gap-4">
-        <Button variant="outline" disabled={isPending}>
-          <FaGithub className="mr-2 h-4 w-4" />
-          GitHub
-        </Button>
-        <Button variant="outline" disabled={isPending}>
-          <FaGoogle className="mr-2 h-4 w-4" />
-          Google
-        </Button>
-      </div>
-      <div className="text-center text-sm text-muted-foreground">
-        Don't have an account?{' '}
-        <Link href="/register" className="text-primary hover:underline">
-          Sign up
-        </Link>
-      </div>
+      </form>
     </div>
   );
 }

@@ -1,7 +1,10 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  transpilePackages: ['@apps/shared'],
+  experimental: {
+    externalDir: true,
+  },
 };
 
 export default nextConfig;

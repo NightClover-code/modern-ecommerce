@@ -22,7 +22,8 @@ import { UsersService } from '../services/users.service';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthResponseDto, LoginDto } from '../dtos/auth.dto';
 import { NotAuthenticatedGuard } from '@/guards/not-authenticated.guard';
-import { Response } from 'express';
+import { Response, Request } from 'express';
+import { cookieConfig } from '@apps/shared/cookie-config';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -91,19 +92,17 @@ export class AuthController {
 
     const tokens = await this.authService.refresh(refreshToken);
 
-    response.cookie('access_token', tokens.accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 15 * 60 * 1000,
-    });
+    response.cookie(
+      'access_token',
+      tokens.accessToken,
+      cookieConfig.access.options,
+    );
 
-    response.cookie('refresh_token', tokens.refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000,
-    });
+    response.cookie(
+      'refresh_token',
+      tokens.refreshToken,
+      cookieConfig.refresh.options,
+    );
 
     return { success: true };
   }

@@ -10,8 +10,6 @@ export class NotAuthenticatedGuard implements CanActivate {
     const request = context.switchToHttp().getRequest();
     const token = ExtractJwt.fromAuthHeaderAsBearerToken()(request);
 
-    console.log(token);
-
     if (!token) {
       return true; // Allow access if no token
     }
