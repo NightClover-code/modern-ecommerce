@@ -1,4 +1,22 @@
 {
   "collection": "@nestjs/schematics",
-  "sourceRoot": "src"
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "webpack": true,
+    "tsConfigPath": "tsconfig.json",
+    "assets": ["**/*.proto"],
+    "watchAssets": true
+  },
+  "monorepo": true,
+  "projects": {
+    "shared": {
+      "type": "library",
+      "root": "../shared",
+      "entryFile": "index",
+      "sourceRoot": "../shared",
+      "compilerOptions": {
+        "tsConfigPath": "../shared/tsconfig.json"
+      }
+    }
+  }
 }

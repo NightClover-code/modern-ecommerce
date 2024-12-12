@@ -148,4 +148,15 @@ export class ProductsService {
   async deleteMany(): Promise<void> {
     await this.productModel.deleteMany({});
   }
+
+  async create(productData: Partial<Product>): Promise<ProductDocument> {
+    const product = await this.productModel.create({
+      ...productData,
+      rating: 0,
+      numReviews: 0,
+      reviews: [],
+    });
+
+    return product;
+  }
 }

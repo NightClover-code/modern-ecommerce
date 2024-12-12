@@ -13,13 +13,16 @@ import { Card } from '@/components/ui/card';
 import { Plus, Pencil, Trash2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export function ProductsList() {
+  const router = useRouter();
+
   return (
     <Card>
       <div className="flex items-center justify-between p-6">
         <h1 className="text-3xl font-bold">Products</h1>
-        <Button>
+        <Button onClick={() => router.push('/admin/products/create')}>
           <Plus className="mr-2 h-4 w-4" />
           Add Product
         </Button>

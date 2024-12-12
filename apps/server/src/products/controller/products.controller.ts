@@ -8,6 +8,8 @@ import {
   Put,
   Query,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
 } from '@nestjs/common';
 import { AdminGuard } from 'src/guards/admin.guard';
 import { JwtAuthGuard } from '@/guards/jwt-auth.guard';
@@ -16,10 +18,15 @@ import { ReviewDto } from '../dtos/review.dto';
 import { ProductsService } from '../services/products.service';
 import { UserDocument } from '@/users/schemas/user.schema';
 import { CurrentUser } from '@/decorators/current-user.decorator';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { AppService } from '@/app/services/app.service';
 
 @Controller('products')
 export class ProductsController {
-  constructor(private productsService: ProductsService) {}
+  constructor(
+    private productsService: ProductsService,
+    private appService: AppService,
+  ) {}
 
   @Get()
   getProducts(
@@ -47,8 +54,13 @@ export class ProductsController {
 
   @UseGuards(AdminGuard)
   @Post()
-  createProduct() {
-    return this.productsService.createSample();
+  @UseInterceptors(FileInterceptor('image'))
+  async createProduct(
+    @Body() productData: ProductDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const imageUrl = await this.appService.uploadImageToCloudinary(file);
+    return this.productsService.create({ ...productData, image: imageUrl });
   }
 
   @UseGuards(AdminGuard)

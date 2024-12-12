@@ -1,16 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es2017",
     "module": "commonjs",
     "declaration": true,
+    "removeComments": true,
+    "target": "es2017",
+    "sourceMap": true,
     "outDir": "./dist",
-    "strict": true,
-    "esModuleInterop": true,
+    "baseUrl": "./",
+    "incremental": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true,
-    "paths": {
-      "@apps/*": ["../../apps/*"]
-    }
+    "strict": true
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules", "dist"]
