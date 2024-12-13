@@ -1,14 +1,12 @@
 import { refreshToken } from '@/modules/auth/api/refresh-token';
 import { apiClient } from './api-client';
-import { useQueryClient } from '@tanstack/react-query';
+import { queryClient } from '@/app/providers';
 
 let isRefreshing = false;
 let failedQueue: Array<{
   resolve: (token: string) => void;
   reject: (error: any) => void;
 }> = [];
-
-const queryClient = useQueryClient();
 
 const processQueue = (error: any, token: string | null = null) => {
   failedQueue.forEach(prom => {

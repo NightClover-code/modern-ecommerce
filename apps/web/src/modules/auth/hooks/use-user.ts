@@ -4,7 +4,11 @@ import { userQueryConfig } from '../user-config';
 export function useUser() {
   const queryClient = useQueryClient();
 
-  const { data: user, isLoading } = useQuery({
+  const {
+    data: user,
+    isLoading,
+    error,
+  } = useQuery({
     ...userQueryConfig,
     placeholderData: () => queryClient.getQueryData(['user']),
   });
@@ -13,5 +17,6 @@ export function useUser() {
     user,
     isLoading,
     isAuthenticated: !!user,
+    error,
   };
 }

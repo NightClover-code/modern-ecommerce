@@ -2,11 +2,13 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 const publicPaths = ['/login', '/register', '/forgot-password'];
-const protectedPaths = ['/profile', '/orders'];
+const protectedPaths = ['/profile', '/orders', '/admin'];
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const isAuthenticated = request.cookies.get('access_token');
+  const hasTokens =
+    request.cookies.get('access_token') || request.cookies.get('refresh_token');
+  const isAuthenticated = hasTokens;
 
   // Skip middleware for non-relevant paths (like api, _next, static files)
   if (

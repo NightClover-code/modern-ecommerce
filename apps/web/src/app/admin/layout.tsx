@@ -2,22 +2,21 @@
 
 import { useUser } from '@/modules/auth/hooks/use-user';
 import { redirect } from 'next/navigation';
-import { useEffect } from 'react';
 
 export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const { user, isLoading } = useUser();
+  const { user, isLoading, error } = useUser();
 
-  useEffect(() => {
-    if (!isLoading && (!user || !user.isAdmin)) {
-      redirect('/');
-    }
-  }, [user, isLoading]);
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-  if (isLoading) return null;
+  if (!user?.isAdmin || error) {
+    redirect('/login');
+  }
 
   return children;
 }
