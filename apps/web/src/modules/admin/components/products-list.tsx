@@ -1,5 +1,3 @@
-'use client';
-
 import {
   Table,
   TableBody,
@@ -10,22 +8,25 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Plus, Pencil, Trash2 } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { getProducts } from '@/modules/products/actions/get-products';
+import { ProductsActions } from './products-actions';
 
-export function ProductsList() {
-  const router = useRouter();
+export async function ProductsList() {
+  const products = await getProducts();
 
   return (
     <Card>
       <div className="flex items-center justify-between p-6">
         <h1 className="text-3xl font-bold">Products</h1>
-        <Button onClick={() => router.push('/admin/products/create')}>
-          <Plus className="mr-2 h-4 w-4" />
-          Add Product
-        </Button>
+        <Link href="/admin/products/create">
+          <Button>
+            <Plus className="mr-2 h-4 w-4" />
+            Add Product
+          </Button>
+        </Link>
       </div>
       <Table>
         <TableHeader>
@@ -40,34 +41,25 @@ export function ProductsList() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {[1, 2, 3].map(product => (
-            <TableRow key={product}>
-              <TableCell className="font-medium">#1234{product}</TableCell>
+          {products.map(product => (
+            <TableRow key={product._id}>
+              <TableCell className="font-medium">#{product._id}</TableCell>
               <TableCell>
                 <div className="relative h-10 w-10">
                   <Image
-                    src="/images/airpods.jpg"
-                    alt="Product"
+                    src={product.image}
+                    alt={product.name}
                     fill
                     className="object-cover rounded-md"
                   />
                 </div>
               </TableCell>
-              <TableCell>Airpods Wireless</TableCell>
-              <TableCell>$199.99</TableCell>
-              <TableCell>Electronics</TableCell>
-              <TableCell>23</TableCell>
-              <TableCell className="text-right space-x-2">
-                <Button variant="ghost" size="sm">
-                  <Pencil className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-red-500 hover:text-red-600"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+              <TableCell>{product.name}</TableCell>
+              <TableCell>${product.price}</TableCell>
+              <TableCell>{product.category}</TableCell>
+              <TableCell>{product.countInStock}</TableCell>
+              <TableCell className="text-right">
+                <ProductsActions product={product} />
               </TableCell>
             </TableRow>
           ))}

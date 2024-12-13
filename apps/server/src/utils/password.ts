@@ -13,5 +13,12 @@ export const verifyPassword = async (
   hashedPassword: string,
   plainPassword: string,
 ): Promise<boolean> => {
-  return argon2.verify(hashedPassword, plainPassword);
+  try {
+    const result = await argon2.verify(hashedPassword, plainPassword);
+    console.log(result);
+    return result;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
 };

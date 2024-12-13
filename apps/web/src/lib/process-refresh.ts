@@ -19,44 +19,48 @@ const processQueue = (error: any, token: string | null = null) => {
   failedQueue = [];
 };
 
+// Reset function for cleanup
+const resetRefreshState = () => {
+  isRefreshing = false;
+  failedQueue = [];
+};
+
 apiClient.interceptors.response.use(
   response => response,
   async error => {
     const originalRequest = error.config;
+    console.log('Interceptor triggered:', {
+      status: error.response?.status,
+      isRetry: originalRequest._retry,
+      isRefreshing,
+    });
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      if (isRefreshing) {
-        return new Promise((resolve, reject) => {
-          failedQueue.push({ resolve, reject });
-        })
-          .then(() => {
-            return apiClient(originalRequest);
-          })
-          .catch(err => {
-            return Promise.reject(err);
-          });
-      }
-
-      originalRequest._retry = true;
-      isRefreshing = true;
-
-      try {
-        const response = await refreshToken();
-        if (!response) {
-          throw new Error('Refresh failed');
-        }
-        processQueue(null, 'refreshed');
-        return apiClient(originalRequest);
-      } catch (error) {
-        processQueue(error, null);
-        // Clear user data on refresh failure
-        queryClient.setQueryData(['user'], null);
-        return Promise.reject(error);
-      } finally {
-        isRefreshing = false;
-      }
+    // If we're already retrying or it's not a 401, reject immediately
+    if (originalRequest._retry || error.response?.status !== 401) {
+      return Promise.reject(error);
     }
 
-    return Promise.reject(error);
+    // Safety check - if we somehow got stuck
+    if (isRefreshing) {
+      console.warn('Refresh got stuck, resetting state');
+      resetRefreshState();
+      queryClient.setQueryData(['user'], null);
+      queryClient.cancelQueries({ queryKey: ['user'] });
+      return Promise.reject(error);
+    }
+
+    originalRequest._retry = true;
+    isRefreshing = true;
+
+    try {
+      await refreshToken();
+      processQueue(null, 'refreshed');
+      return apiClient(originalRequest);
+    } catch (error) {
+      processQueue(error, null);
+      throw error;
+    } finally {
+      resetRefreshState();
+    }
   },
 );

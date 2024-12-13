@@ -17,7 +17,7 @@ export const cookieConfig: Record<string, CookieConfig> = {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax' as const,
-      maxAge: 15 * 60 * 1000, // 15 minutes,
+      maxAge: 10 * 60 * 1000, // 10 minutes,
     },
   },
   refresh: {

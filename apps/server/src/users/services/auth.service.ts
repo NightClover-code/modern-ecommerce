@@ -57,7 +57,7 @@ export class AuthService {
           type: 'access',
         } as TokenPayload,
         {
-          expiresIn: '15m',
+          expiresIn: '10m',
           secret: process.env.JWT_ACCESS_SECRET,
         },
       ),
@@ -104,8 +104,10 @@ export class AuthService {
         refreshToken,
       );
 
+      console.log(isRefreshTokenValid);
+
       if (!isRefreshTokenValid) {
-        throw new UnauthorizedException();
+        throw new UnauthorizedException('Invalid refresh token');
       }
 
       return this.generateTokens(user);
