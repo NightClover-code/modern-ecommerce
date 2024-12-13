@@ -11,9 +11,38 @@ import {
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Pencil, Trash2, ShieldCheck, User } from 'lucide-react';
+import { Pencil, Trash2, ShieldCheck, User as UserIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { toast } from '@/hooks/use-toast';
+import { deleteUser } from '@/modules/admin/actions/delete-user';
+import type { User } from '@/modules/admin/actions/get-users';
 
-export function UsersList() {
+interface UsersListProps {
+  users: User[];
+}
+
+export function UsersList({ users }: UsersListProps) {
+  const router = useRouter();
+
+  const handleDelete = async (userId: string) => {
+    if (confirm('Are you sure you want to delete this user?')) {
+      const result = await deleteUser(userId);
+
+      if (result.success) {
+        toast({
+          title: 'Success',
+          description: result.message,
+        });
+      } else {
+        toast({
+          variant: 'destructive',
+          title: 'Error',
+          description: result.message,
+        });
+      }
+    }
+  };
+
   return (
     <Card>
       <div className="flex items-center justify-between p-6">
@@ -31,33 +60,40 @@ export function UsersList() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {[1, 2, 3].map(user => (
-            <TableRow key={user}>
-              <TableCell className="font-medium">#9876{user}</TableCell>
-              <TableCell>John Doe</TableCell>
-              <TableCell>john@example.com</TableCell>
+          {users.map(user => (
+            <TableRow key={user._id}>
+              <TableCell className="font-medium">#{user._id}</TableCell>
+              <TableCell>{user.name}</TableCell>
+              <TableCell>{user.email}</TableCell>
               <TableCell>
-                {user === 1 ? (
+                {user.isAdmin ? (
                   <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">
                     <ShieldCheck className="mr-1 h-3 w-3" />
                     Admin
                   </Badge>
                 ) : (
                   <Badge variant="secondary">
-                    <User className="mr-1 h-3 w-3" />
+                    <UserIcon className="mr-1 h-3 w-3" />
                     Customer
                   </Badge>
                 )}
               </TableCell>
-              <TableCell>March 15, 2024</TableCell>
+              <TableCell>
+                {new Date(user.createdAt).toLocaleDateString()}
+              </TableCell>
               <TableCell className="text-right space-x-2">
-                <Button variant="ghost" size="sm">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => router.push(`/admin/users/${user._id}/edit`)}
+                >
                   <Pencil className="h-4 w-4" />
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
                   className="text-red-500 hover:text-red-600"
+                  onClick={() => handleDelete(user._id)}
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>

@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Table,
   TableBody,
@@ -11,12 +13,14 @@ import { Card } from '@/components/ui/card';
 import { Plus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { getProducts } from '@/modules/products/actions/get-products';
+import type { Product } from '@/modules/admin/actions/get-products';
 import { ProductsActions } from './products-actions';
 
-export async function ProductsList() {
-  const products = await getProducts();
+interface ProductsListProps {
+  products: Product[];
+}
 
+export function ProductsList({ products }: ProductsListProps) {
   return (
     <Card>
       <div className="flex items-center justify-between p-6">

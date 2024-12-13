@@ -5,7 +5,8 @@ import { AuthResponseDto, TokensDto, TokenPayload } from '../dtos/auth.dto';
 import { User, UserDocument } from '../schemas/user.schema';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { hashPassword, verifyPassword } from '@/utils/password';
+import { verifyPassword } from '@/utils/password';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class AuthService {
@@ -32,10 +33,6 @@ export class AuthService {
   async login(user: UserDocument): Promise<AuthResponseDto> {
     const tokens = await this.generateTokens(user);
 
-    await this.userModel.findByIdAndUpdate(user._id, {
-      refreshToken: await hashPassword(tokens.refreshToken),
-    });
-
     return {
       tokens,
       user: {
@@ -48,6 +45,8 @@ export class AuthService {
   }
 
   private async generateTokens(user: UserDocument): Promise<TokensDto> {
+    const jti = randomUUID();
+
     const [accessToken, refreshToken] = await Promise.all([
       this.jwtService.signAsync(
         {
@@ -67,6 +66,7 @@ export class AuthService {
           email: user.email,
           isAdmin: user.isAdmin,
           type: 'refresh',
+          jti,
         } as TokenPayload,
         {
           expiresIn: '7d',
@@ -74,6 +74,10 @@ export class AuthService {
         },
       ),
     ]);
+
+    await this.userModel.findByIdAndUpdate(user._id, {
+      refreshToken: jti,
+    });
 
     return {
       accessToken,
@@ -90,7 +94,7 @@ export class AuthService {
         },
       );
 
-      if (payload.type !== 'refresh') {
+      if (payload.type !== 'refresh' || !payload.jti) {
         throw new UnauthorizedException();
       }
 
@@ -99,14 +103,7 @@ export class AuthService {
         throw new UnauthorizedException();
       }
 
-      const isRefreshTokenValid = await verifyPassword(
-        user.refreshToken,
-        refreshToken,
-      );
-
-      console.log(isRefreshTokenValid);
-
-      if (!isRefreshTokenValid) {
+      if (user.refreshToken !== payload.jti) {
         throw new UnauthorizedException('Invalid refresh token');
       }
 

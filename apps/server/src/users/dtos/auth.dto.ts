@@ -36,6 +36,7 @@ export interface TokenPayload {
   email: string;
   isAdmin: boolean;
   type: 'access' | 'refresh';
+  jti?: string; // Add this for refresh tokens
 }
 
 export class UserResponseDto {
