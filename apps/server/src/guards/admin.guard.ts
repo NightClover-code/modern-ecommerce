@@ -11,8 +11,6 @@ export class AdminGuard extends JwtAuthGuard {
     await super.canActivate(context);
     const request = context.switchToHttp().getRequest();
 
-    console.log(request.user);
-
     if (!request.user?.isAdmin) {
       throw new UnauthorizedException('Admin access required');
     }

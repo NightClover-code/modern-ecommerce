@@ -8,6 +8,8 @@ export default async function AdminLayout({
 }) {
   const user = await getCurrentUser();
 
+  console.log(user);
+
   if (!user.isAdmin) {
     redirect('/');
   }

@@ -1,23 +1,28 @@
-import { headers } from 'next/headers';
+import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 
 export async function getCurrentUser() {
-  const headersList = await headers();
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get('access_token');
 
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/auth/profile`,
       {
+        credentials: 'include',
         headers: {
-          Cookie: headersList.get('cookie') || '',
+          Cookie: `access_token=${accessToken?.value}`,
         },
+        cache: 'no-store',
       },
     );
 
-    if (!response.ok) throw new Error('Not authenticated');
+    if (!response.ok) {
+      throw new Error('Not authenticated');
+    }
 
     return response.json();
-  } catch {
+  } catch (error) {
     redirect('/login');
   }
 }
