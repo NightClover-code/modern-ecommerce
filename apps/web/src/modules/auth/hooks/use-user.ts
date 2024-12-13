@@ -1,11 +1,12 @@
-import { useQuery } from '@tanstack/react-query';
-import { authApi } from '../api/auth-api';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { userQueryConfig } from '../user-config';
 
 export function useUser() {
+  const queryClient = useQueryClient();
+
   const { data: user, isLoading } = useQuery({
-    queryKey: ['user'],
-    queryFn: authApi.getProfile,
-    retry: false,
+    ...userQueryConfig,
+    placeholderData: () => queryClient.getQueryData(['user']),
   });
 
   return {

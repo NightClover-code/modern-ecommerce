@@ -1,14 +1,11 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { authApi } from '@/modules/auth/api/auth-api';
+import { userQueryConfig } from '@/modules/auth/user-config';
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   useQuery({
-    queryKey: ['user'],
-    queryFn: authApi.getProfile,
-    retry: false,
+    ...userQueryConfig,
   });
-
   return <>{children}</>;
 }

@@ -1,11 +1,14 @@
 import { refreshToken } from '@/modules/auth/api/refresh-token';
 import { apiClient } from './api-client';
+import { useQueryClient } from '@tanstack/react-query';
 
 let isRefreshing = false;
 let failedQueue: Array<{
   resolve: (token: string) => void;
   reject: (error: any) => void;
 }> = [];
+
+const queryClient = useQueryClient();
 
 const processQueue = (error: any, token: string | null = null) => {
   failedQueue.forEach(prom => {
@@ -40,11 +43,16 @@ apiClient.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        await refreshToken();
+        const response = await refreshToken();
+        if (!response) {
+          throw new Error('Refresh failed');
+        }
         processQueue(null, 'refreshed');
         return apiClient(originalRequest);
       } catch (error) {
         processQueue(error, null);
+        // Clear user data on refresh failure
+        queryClient.setQueryData(['user'], null);
         return Promise.reject(error);
       } finally {
         isRefreshing = false;
