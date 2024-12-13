@@ -1,7 +1,9 @@
 'use server';
 
+import { cookies } from 'next/headers';
 import { ProductFormData, productSchema } from '../validation/product';
 import { revalidatePath } from 'next/cache';
+import { getAccessToken } from '@/modules/auth/api/get-access-token';
 
 export interface ProductResponseState {
   data?: {
@@ -30,11 +32,19 @@ export async function createProduct(
     };
   }
 
+  const accessToken = await getAccessToken();
+
   try {
-    const response = await fetch('/products', {
-      method: 'POST',
-      body: formData,
-    });
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/products`,
+      {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Cookie: `access_token=${accessToken}`,
+        },
+      },
+    );
 
     if (!response.ok) {
       const error = await response.json();
