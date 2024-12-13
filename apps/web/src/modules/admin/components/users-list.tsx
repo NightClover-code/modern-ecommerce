@@ -15,7 +15,7 @@ import { Pencil, Trash2, ShieldCheck, User as UserIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from '@/hooks/use-toast';
 import { deleteUser } from '@/modules/admin/actions/delete-user';
-import type { User } from '@/modules/admin/actions/get-users';
+import type { User } from '@apps/shared/types';
 
 interface UsersListProps {
   users: User[];

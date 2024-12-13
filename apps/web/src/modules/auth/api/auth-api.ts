@@ -1,5 +1,5 @@
 import { apiClient } from '@/lib/api-client';
-import { User } from '../types/user';
+import type { User } from '@apps/shared/types';
 
 interface LoginCredentials {
   email: string;

@@ -13,7 +13,7 @@ import { Card } from '@/components/ui/card';
 import { Plus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import type { Product } from '@/modules/admin/actions/get-products';
+import type { Product } from '@apps/shared/types';
 import { ProductsActions } from './products-actions';
 
 interface ProductsListProps {

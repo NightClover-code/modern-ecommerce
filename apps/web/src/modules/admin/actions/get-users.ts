@@ -1,12 +1,5 @@
 import { fetchWithAuth } from '@/lib/fetch-with-auth';
-
-export interface User {
-  _id: string;
-  name: string;
-  email: string;
-  isAdmin: boolean;
-  createdAt: string;
-}
+import type { User } from '@apps/shared/types';
 
 export async function getUsers(): Promise<User[]> {
   try {
@@ -16,7 +9,8 @@ export async function getUsers(): Promise<User[]> {
       throw new Error('Failed to fetch users');
     }
 
-    return response.json();
+    const data = await response.json();
+    return data.users;
   } catch (error) {
     console.error('Error fetching users:', error);
     return [];

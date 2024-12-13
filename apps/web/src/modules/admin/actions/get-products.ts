@@ -1,15 +1,7 @@
 'use server';
 
 import { fetchWithAuth } from '@/lib/fetch-with-auth';
-
-export interface Product {
-  _id: string;
-  name: string;
-  price: number;
-  image: string;
-  category: string;
-  countInStock: number;
-}
+import type { PaginatedProducts, Product } from '@apps/shared/types';
 
 export async function getProducts(): Promise<Product[]> {
   try {
@@ -19,7 +11,8 @@ export async function getProducts(): Promise<Product[]> {
       throw new Error('Failed to fetch products');
     }
 
-    return response.json();
+    const data = (await response.json()) as PaginatedProducts;
+    return data.products;
   } catch (error) {
     console.error('Error fetching products:', error);
     return [];
