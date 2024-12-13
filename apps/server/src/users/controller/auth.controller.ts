@@ -56,19 +56,17 @@ export class AuthController {
 
     const { tokens, user: userData } = await this.authService.login(user);
 
-    response.cookie('access_token', tokens.accessToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 15 * 60 * 1000, // 15 minutes
-    });
+    response.cookie(
+      'access_token',
+      tokens.accessToken,
+      cookieConfig.access.options,
+    );
 
-    response.cookie('refresh_token', tokens.refreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'lax',
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
-    });
+    response.cookie(
+      'refresh_token',
+      tokens.refreshToken,
+      cookieConfig.refresh.options,
+    );
 
     return { user: userData };
   }
@@ -92,17 +90,15 @@ export class AuthController {
 
     const tokens = await this.authService.refresh(refreshToken);
 
-    response.cookie(
-      'access_token',
-      tokens.accessToken,
-      cookieConfig.access.options,
-    );
+    response.cookie('access_token', tokens.accessToken, {
+      ...cookieConfig.access.options,
+      expires: new Date(Date.now() + cookieConfig.access.options.maxAge),
+    });
 
-    response.cookie(
-      'refresh_token',
-      tokens.refreshToken,
-      cookieConfig.refresh.options,
-    );
+    response.cookie('refresh_token', tokens.refreshToken, {
+      ...cookieConfig.refresh.options,
+      expires: new Date(Date.now() + cookieConfig.refresh.options.maxAge),
+    });
 
     return { success: true };
   }

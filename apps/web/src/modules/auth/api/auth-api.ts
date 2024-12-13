@@ -1,4 +1,5 @@
 import { apiClient } from '@/lib/api-client';
+import { User } from '../types/user';
 
 interface LoginCredentials {
   email: string;
@@ -6,12 +7,7 @@ interface LoginCredentials {
 }
 
 interface AuthResponse {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    isAdmin: boolean;
-  };
+  user: User;
   accessToken: string;
   refreshToken: string;
 }
@@ -27,6 +23,11 @@ export const authApi = {
 
   register: async (data: LoginCredentials & { name: string }) => {
     const response = await apiClient.post<AuthResponse>('/auth/register', data);
+    return response.data;
+  },
+
+  getProfile: async () => {
+    const response = await apiClient.get<User>('/auth/profile');
     return response.data;
   },
 

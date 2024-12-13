@@ -10,14 +10,14 @@ export interface CookieConfig {
   options: CookieOptions;
 }
 
-export const cookieConfig = {
+export const cookieConfig: Record<string, CookieConfig> = {
   access: {
     name: 'access_token',
     options: {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax' as const,
-      maxAge: 15 * 60 * 1000, // 15 minutes
+      maxAge: 15 * 60 * 1000, // 15 minutes,
     },
   },
   refresh: {

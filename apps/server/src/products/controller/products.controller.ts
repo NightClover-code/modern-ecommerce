@@ -54,7 +54,16 @@ export class ProductsController {
 
   @UseGuards(AdminGuard)
   @Post()
-  @UseInterceptors(FileInterceptor('image'))
+  @UseInterceptors(
+    FileInterceptor('image', {
+      fileFilter: (req, file, cb) => {
+        if (!file.mimetype.match(/^image\/(jpg|jpeg|png|gif)$/)) {
+          cb(new Error('Only image files are allowed!'), false);
+        }
+        cb(null, true);
+      },
+    }),
+  )
   async createProduct(
     @Body() productData: ProductDto,
     @UploadedFile() file: Express.Multer.File,

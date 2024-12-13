@@ -7,10 +7,10 @@ import { Textarea } from '@/components/ui/textarea';
 import { Loader2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { toast } from '@/hooks/use-toast';
-import { useActionState, useEffect, useState, useRef } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 import { createProduct } from '@/modules/products/actions/create-product';
 import { productSchema } from '@/modules/products/validation/product';
-import type { z } from 'zod';
+import { ZodError, type z } from 'zod';
 import {
   Select,
   SelectContent,
@@ -32,12 +32,15 @@ const categories = [
 
 export function CreateProductForm() {
   const router = useRouter();
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [errors, setErrors] = useState<
+    Partial<Record<keyof ProductFormData, string>>
+  >({});
   const [formData, setFormData] = useState<ProductFormData>({
     name: '',
     description: '',
     price: 0,
     image: '',
+    brand: '',
     category: '',
     countInStock: 0,
   });
@@ -65,6 +68,19 @@ export function CreateProductForm() {
     }
   }, [productState, router]);
 
+  const validateField = (field: keyof ProductFormData, value: any) => {
+    try {
+      productSchema.shape[field].parse(value);
+      setErrors(prev => ({ ...prev, [field]: undefined }));
+      return true;
+    } catch (error) {
+      if (error instanceof ZodError) {
+        setErrors(prev => ({ ...prev, [field]: error.errors[0].message }));
+      }
+      return false;
+    }
+  };
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
@@ -89,8 +105,22 @@ export function CreateProductForm() {
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async (e: FormData) => {
+    const isValid = Object.keys(formData).every(field =>
+      validateField(
+        field as keyof ProductFormData,
+        formData[field as keyof ProductFormData],
+      ),
+    );
+
+    if (!isValid) {
+      toast({
+        variant: 'destructive',
+        title: 'Validation Error',
+        description: 'Please check the form for errors',
+      });
+      return;
+    }
 
     if (!selectedFile) {
       toast({
@@ -102,19 +132,23 @@ export function CreateProductForm() {
     }
 
     const formDataToSend = new FormData();
-    formDataToSend.append('image', selectedFile);
-    formDataToSend.append('name', formData.name);
-    formDataToSend.append('description', formData.description);
-    formDataToSend.append('price', formData.price.toString());
-    formDataToSend.append('category', formData.category);
-    formDataToSend.append('countInStock', formData.countInStock.toString());
+
+    if (selectedFile) {
+      formDataToSend.append('image', selectedFile);
+    }
+
+    Object.entries(formData).forEach(([key, value]) => {
+      if (key !== 'image') {
+        formDataToSend.append(key, value.toString());
+      }
+    });
 
     return productAction(formDataToSend);
   };
 
   return (
     <div className="grid gap-6 w-full max-w-2xl mx-auto">
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form action={handleSubmit} className="space-y-4">
         <div className="space-y-2">
           <Label htmlFor="name">Product Name</Label>
           <Input
@@ -125,6 +159,7 @@ export function CreateProductForm() {
             placeholder="Enter product name"
             required
           />
+          {errors.name && <p className="text-red-500">{errors.name}</p>}
         </div>
 
         <div className="space-y-2">
@@ -137,6 +172,9 @@ export function CreateProductForm() {
             placeholder="Enter product description"
             required
           />
+          {errors.description && (
+            <p className="text-red-500">{errors.description}</p>
+          )}
         </div>
 
         <div className="space-y-2">
@@ -151,6 +189,7 @@ export function CreateProductForm() {
             step={0.01}
             required
           />
+          {errors.price && <p className="text-red-500">{errors.price}</p>}
         </div>
 
         <div className="space-y-2">
@@ -159,11 +198,24 @@ export function CreateProductForm() {
             id="image"
             name="image"
             type="file"
-            accept="image/*"
+            accept="image/png, image/jpeg, image/gif"
             onChange={handleFileChange}
-            ref={fileInputRef}
             required
           />
+          {errors.image && <p className="text-red-500">{errors.image}</p>}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="brand">Brand</Label>
+          <Input
+            id="brand"
+            name="brand"
+            value={formData.brand}
+            onChange={handleChange}
+            placeholder="Enter brand name"
+            required
+          />
+          {errors.brand && <p className="text-red-500">{errors.brand}</p>}
         </div>
 
         <div className="space-y-2">
@@ -183,6 +235,7 @@ export function CreateProductForm() {
               ))}
             </SelectContent>
           </Select>
+          {errors.category && <p className="text-red-500">{errors.category}</p>}
         </div>
 
         <div className="space-y-2">
@@ -196,6 +249,9 @@ export function CreateProductForm() {
             min={0}
             required
           />
+          {errors.countInStock && (
+            <p className="text-red-500">{errors.countInStock}</p>
+          )}
         </div>
 
         <Button className="w-full" type="submit" disabled={pending}>

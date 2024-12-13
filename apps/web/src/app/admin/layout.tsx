@@ -1,18 +1,23 @@
-import { getCurrentUser } from '@/modules/auth/api/get-current-user';
-import { redirect } from 'next/navigation';
+'use client';
 
-export default async function AdminLayout({
+import { useUser } from '@/modules/auth/hooks/use-user';
+import { redirect } from 'next/navigation';
+import { useEffect } from 'react';
+
+export default function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const user = await getCurrentUser();
+  const { user, isLoading } = useUser();
 
-  console.log(user);
+  useEffect(() => {
+    if (!isLoading && (!user || !user.isAdmin)) {
+      redirect('/');
+    }
+  }, [user, isLoading]);
 
-  if (!user.isAdmin) {
-    redirect('/');
-  }
+  if (isLoading) return null;
 
   return children;
 }

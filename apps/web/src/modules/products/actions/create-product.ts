@@ -30,15 +30,31 @@ export async function createProduct(
     };
   }
 
-  const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/products`, {
-    method: 'POST',
-    body: formData,
-    credentials: 'include',
-    cache: 'no-store',
-  });
+  try {
+    const response = await fetch('/products', {
+      method: 'POST',
+      body: formData,
+    });
 
-  if (!response.ok) {
-    const error = await response.json();
+    if (!response.ok) {
+      const error = await response.json();
+      return {
+        error: {
+          title: 'Error',
+          description: error.message || 'Failed to create product',
+        },
+      };
+    }
+
+    revalidatePath('/admin/products');
+
+    return {
+      data: {
+        title: 'Success',
+        description: 'Product created successfully',
+      },
+    };
+  } catch (error: any) {
     return {
       error: {
         title: 'Error',
@@ -46,13 +62,4 @@ export async function createProduct(
       },
     };
   }
-
-  revalidatePath('/admin/products');
-
-  return {
-    data: {
-      title: 'Success',
-      description: 'Product created successfully',
-    },
-  };
 }
