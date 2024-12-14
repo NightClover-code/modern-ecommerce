@@ -29,11 +29,12 @@ apiClient.interceptors.response.use(
   response => response,
   async error => {
     const originalRequest = error.config;
-    console.log('Interceptor triggered:', {
-      status: error.response?.status,
-      isRetry: originalRequest._retry,
-      isRefreshing,
-    });
+
+    // // Skip refresh for auth endpoints
+    // const isAuthEndpoint = originalRequest.url?.includes('/auth/');
+    // if (isAuthEndpoint) {
+    //   return Promise.reject(error);
+    // }
 
     // If we're already retrying or it's not a 401, reject immediately
     if (originalRequest._retry || error.response?.status !== 401) {

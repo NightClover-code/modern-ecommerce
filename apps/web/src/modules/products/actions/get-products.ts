@@ -1,22 +1,20 @@
 'use server';
 
 import { fetchWithAuth } from '@/lib/fetch-with-auth';
+import type { PaginatedProducts, Product } from '@apps/shared/types';
 
-export interface Product {
-  _id: string;
-  name: string;
-  image: string;
-  price: number;
-  category: string;
-  countInStock: number;
-}
-
-export async function getProducts() {
+export async function getProducts(): Promise<Product[]> {
   try {
     const response = await fetchWithAuth('/products');
-    const data = await response.json();
-    return data.products as Product[];
-  } catch (error: any) {
-    throw new Error(error.message || 'Failed to fetch products');
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch products');
+    }
+
+    const data = (await response.json()) as PaginatedProducts;
+    return data.products;
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    return [];
   }
 }

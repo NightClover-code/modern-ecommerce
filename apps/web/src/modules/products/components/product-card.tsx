@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Card } from '@/components/ui/card';
-import { Product } from '../types';
+import { Product } from '@apps/shared/types';
 
 interface ProductCardProps {
   product: Product;
@@ -13,7 +13,7 @@ export function ProductCard({ product }: ProductCardProps) {
       <Card className="h-full overflow-hidden transition-colors hover:bg-accent">
         <div className="relative aspect-square">
           <Image
-            src={product.image}
+            src={product.images[0]}
             alt={product.name}
             fill
             className="object-cover"

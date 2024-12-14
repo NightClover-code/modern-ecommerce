@@ -1,8 +1,10 @@
 import { Container } from '@/components/ui/container';
 import { ProductGrid } from '@/modules/products/components/product-grid';
-import { products } from '@/modules/products/data';
+import { getProducts } from '@/modules/products/actions/get-products';
 
-export default function Home() {
+export default async function Home() {
+  const products = await getProducts();
+
   return (
     <Container className="mt-10">
       <div className="space-y-10 pb-10">

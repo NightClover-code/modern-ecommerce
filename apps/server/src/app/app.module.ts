@@ -11,6 +11,7 @@ import { OrderModule } from '../orders/order.module';
 import { AppController } from './controllers/app.controller';
 import { CloudinaryModule } from '../cloudinary/cloudinary.module';
 import { AppService } from './services/app.service';
+import { AiModule } from '@/ai/ai.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { AppService } from './services/app.service';
     CartModule,
     OrderModule,
     CloudinaryModule,
+    AiModule,
     // SeedsModule,
   ],
   controllers: [AppController],

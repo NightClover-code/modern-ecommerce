@@ -1,8 +1,9 @@
 import Link from 'next/link';
 import { Container } from '@/components/ui/container';
-import { ShoppingCart, User } from 'lucide-react';
+import { ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SearchBox } from '@/components/search-box';
+import { UserMenu } from './navbar/user-menu';
 
 export function Header() {
   return (
@@ -23,9 +24,7 @@ export function Header() {
             <Button variant="ghost" size="icon">
               <ShoppingCart />
             </Button>
-            <Button variant="ghost" size="icon">
-              <User />
-            </Button>
+            <UserMenu />
           </nav>
         </div>
       </Container>

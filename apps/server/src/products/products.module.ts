@@ -5,6 +5,8 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { Product, ProductSchema } from './schemas/product.schema';
 import { AppService } from '@/app/services/app.service';
 import { CloudinaryModule } from '@/cloudinary/cloudinary.module';
+import { AiModule } from '@/ai/ai.module';
+import { ProductExpertAgent } from '@/ai/agents/product-expert.agent';
 
 @Module({
   imports: [
@@ -15,8 +17,9 @@ import { CloudinaryModule } from '@/cloudinary/cloudinary.module';
       },
     ]),
     CloudinaryModule,
+    AiModule,
   ],
-  providers: [ProductsService, AppService],
+  providers: [ProductsService, AppService, ProductExpertAgent],
   controllers: [ProductsController],
 })
 export class ProductsModule {}

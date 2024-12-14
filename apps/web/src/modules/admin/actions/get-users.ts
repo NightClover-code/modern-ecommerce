@@ -9,8 +9,9 @@ export async function getUsers(): Promise<User[]> {
       throw new Error('Failed to fetch users');
     }
 
-    const data = await response.json();
-    return data.users;
+    const data: User[] = await response.json();
+
+    return data;
   } catch (error) {
     console.error('Error fetching users:', error);
     return [];

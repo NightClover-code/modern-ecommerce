@@ -30,21 +30,30 @@ const categories = [
   'Gaming',
 ];
 
+interface FormData {
+  name: string;
+  price: string;
+  description: string;
+  images: File[];
+  brand: string;
+  category: string;
+  countInStock: string;
+}
+
 export function CreateProductForm() {
   const router = useRouter();
   const [errors, setErrors] = useState<
     Partial<Record<keyof ProductFormData, string>>
   >({});
-  const [formData, setFormData] = useState<ProductFormData>({
+  const [formData, setFormData] = useState<FormData>({
     name: '',
+    price: '',
     description: '',
-    price: 0,
-    image: '',
+    images: [],
     brand: '',
     category: '',
-    countInStock: 0,
+    countInStock: '',
   });
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   const createProductBound = createProduct.bind(null, formData);
   const [productState, productAction, pending] = useActionState(
@@ -100,8 +109,11 @@ export function CreateProductForm() {
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files?.[0]) {
-      setSelectedFile(e.target.files[0]);
+    if (e.target.files) {
+      setFormData(prev => ({
+        ...prev,
+        images: Array.from(e.target.files || []),
+      }));
     }
   };
 
@@ -122,23 +134,25 @@ export function CreateProductForm() {
       return;
     }
 
-    if (!selectedFile) {
+    if (!formData.images.length) {
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: 'Please select an image',
+        description: 'Please select images',
       });
       return;
     }
 
     const formDataToSend = new FormData();
 
-    if (selectedFile) {
-      formDataToSend.append('image', selectedFile);
+    if (formData.images.length) {
+      formData.images.forEach((image, index) => {
+        formDataToSend.append('images', image);
+      });
     }
 
     Object.entries(formData).forEach(([key, value]) => {
-      if (key !== 'image') {
+      if (key !== 'images') {
         formDataToSend.append(key, value.toString());
       }
     });
@@ -193,16 +207,17 @@ export function CreateProductForm() {
         </div>
 
         <div className="space-y-2">
-          <Label htmlFor="image">Product Image</Label>
+          <Label htmlFor="images">Product Images</Label>
           <Input
-            id="image"
-            name="image"
+            id="images"
+            name="images"
             type="file"
             accept="image/png, image/jpeg, image/gif"
             onChange={handleFileChange}
+            multiple
             required
           />
-          {errors.image && <p className="text-red-500">{errors.image}</p>}
+          {errors.images && <p className="text-red-500">{errors.images}</p>}
         </div>
 
         <div className="space-y-2">

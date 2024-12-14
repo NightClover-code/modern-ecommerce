@@ -71,7 +71,7 @@ export class ProductsService {
   }
 
   async update(id: string, attrs: Partial<Product>): Promise<ProductDocument> {
-    const { name, price, description, image, brand, category, countInStock } =
+    const { name, price, description, images, brand, category, countInStock } =
       attrs;
 
     if (!Types.ObjectId.isValid(id))
@@ -84,7 +84,7 @@ export class ProductsService {
     product.name = name ?? '';
     product.price = price ?? 0;
     product.description = description ?? '';
-    product.image = image ?? '';
+    product.images = images ?? [];
     product.brand = brand ?? '';
     product.category = category ?? '';
     product.countInStock = countInStock ?? 0;

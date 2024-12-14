@@ -1,3 +1,5 @@
+'use client';
+
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { authApi } from '../api/auth-api';
@@ -46,6 +48,28 @@ export function useRegister() {
         variant: 'destructive',
         title: 'Oops!',
         description: error.response?.data?.message || 'Registration failed',
+      });
+    },
+  });
+}
+
+export function useLogout() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: authApi.logout,
+    onSuccess: () => {
+      queryClient.setQueryData(['user'], null);
+      toast({
+        title: 'Signed out',
+        description: 'You have been signed out',
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        variant: 'destructive',
+        title: 'Oops!',
+        description: error.response?.data?.message || 'Logout failed',
       });
     },
   });
