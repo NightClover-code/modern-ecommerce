@@ -94,24 +94,24 @@ export class ProductsController {
     return this.productsService.createReview(id, user, rating, comment);
   }
 
-  @Post('seed')
-  // @UseGuards(AdminGuard)
-  async seedProducts() {
-    // Clear existing products first
-    // await this.productsService.deleteMany();
+  // @Post('seed')
+  // // @UseGuards(AdminGuard)
+  // async seedProducts() {
+  //   // Clear existing products first
+  //   // await this.productsService.deleteMany();
 
-    // Generate 3 products
-    await testProductImageGeneration();
+  //   // Generate 3 products
+  //   await testProductImageGeneration();
 
-    // Create the products in the database
-    // const createdProducts = await this.productsService.createMany(products);
+  //   // Create the products in the database
+  //   // const createdProducts = await this.productsService.createMany(products);
 
-    // return {
-    //   message: 'Products seeded successfully',
-    //   // count: createdProducts.length,
-    //   // products: createdProducts,
-    // };
-  }
+  //   // return {
+  //   //   message: 'Products seeded successfully',
+  //   //   // count: createdProducts.length,
+  //   //   // products: createdProducts,
+  //   // };
+  // }
 
   @Post('test-image')
   async testImageGeneration() {

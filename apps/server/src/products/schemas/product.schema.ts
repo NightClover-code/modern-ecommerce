@@ -34,6 +34,9 @@ export class Product {
   brand!: string;
 
   @Prop({ required: true })
+  brandLogo!: string;
+
+  @Prop({ required: true })
   category!: string;
 
   @Prop({ required: true, type: [String], default: [] })

@@ -31,7 +31,7 @@ export class ProductsService {
     keyword?: string,
     pageId?: string,
   ): Promise<PaginatedProducts> {
-    const pageSize = 2;
+    const pageSize = 10;
     const page = parseInt(pageId ?? '1');
 
     const rgex = keyword ? { name: { $regex: keyword, $options: 'i' } } : {};
@@ -71,27 +71,33 @@ export class ProductsService {
   }
 
   async update(id: string, attrs: Partial<Product>): Promise<ProductDocument> {
-    const { name, price, description, images, brand, category, countInStock } =
-      attrs;
+    const {
+      name,
+      price,
+      description,
+      images,
+      brandLogo,
+      brand,
+      category,
+      countInStock,
+    } = attrs;
 
     if (!Types.ObjectId.isValid(id))
       throw new BadRequestException('Invalid product ID.');
 
     const product = await this.productModel.findById(id);
-
     if (!product) throw new NotFoundException('No product with given ID.');
 
-    product.name = name ?? '';
-    product.price = price ?? 0;
-    product.description = description ?? '';
-    product.images = images ?? [];
-    product.brand = brand ?? '';
-    product.category = category ?? '';
-    product.countInStock = countInStock ?? 0;
+    product.name = name ?? product.name;
+    product.price = price ?? product.price;
+    product.description = description ?? product.description;
+    product.images = images ?? product.images;
+    product.brandLogo = brandLogo ?? product.brandLogo;
+    product.brand = brand ?? product.brand;
+    product.category = category ?? product.category;
+    product.countInStock = countInStock ?? product.countInStock;
 
-    const updatedProduct = await product.save();
-
-    return updatedProduct;
+    return product.save();
   }
 
   async createReview(

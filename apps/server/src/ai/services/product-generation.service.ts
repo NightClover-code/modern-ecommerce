@@ -23,11 +23,15 @@ export class ProductGenerationService {
       on pure white background, studio lighting setup, high-end commercial photography, 
       8k resolution, photorealistic, ultra detailed, product catalog style`;
 
-    const images = await this.generateProductViews(imagePrompt);
+    const [images, brandLogo] = await Promise.all([
+      this.generateProductViews(imagePrompt),
+      this.generateBrandLogo(productInfo.brand),
+    ]);
 
     return {
       ...productInfo,
       images,
+      brandLogo,
       rating: 0,
       numReviews: 0,
       reviews: [],
@@ -72,5 +76,23 @@ export class ProductGenerationService {
     );
 
     return allViews.flatMap(view => view.urls);
+  }
+
+  async generateBrandLogo(brand: string) {
+    const prompt = `Minimalist modern logo for ${brand} brand, 
+      tech company style, clean and professional, icon only, no text,
+      pure white background, vector style, simple shapes, centered composition`;
+
+    const logoResponse = await this.imageGeneration.generateProductImage({
+      prompt,
+      negativePrompt:
+        'text, letters, words, watermark, low quality, blurry, distorted, complex design, busy background',
+      width: 512,
+      height: 512,
+      steps: 4,
+      numOutputs: 1,
+    });
+
+    return logoResponse.urls[0];
   }
 }
