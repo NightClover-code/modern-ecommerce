@@ -11,7 +11,26 @@ export const products = [
     countInStock: 10,
     rating: 4.5,
     numReviews: 12,
-    reviews: [],
+    reviews: [
+      {
+        name: 'Helen M.',
+        rating: 5,
+        comment: 'Excellent running shoes. It turns very sharply on the foot.',
+        createdAt: '2024-03-19T10:00:00Z',
+      },
+      {
+        name: 'Ann D.',
+        rating: 4,
+        comment: 'Good shoes',
+        createdAt: '2024-03-17T15:30:00Z',
+      },
+      {
+        name: 'Andrew G.',
+        rating: 3,
+        comment: 'Is it suitable for running?',
+        createdAt: '2024-03-17T09:15:00Z',
+      },
+    ],
   },
   {
     _id: '2',
