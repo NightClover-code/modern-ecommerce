@@ -82,7 +82,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
             <div className="flex items-center gap-2">
               <div className="relative w-6 h-6 rounded-full overflow-hidden">
                 <Image
-                  src={'/images/samsung.jpg'}
+                  src={product.brandLogo}
                   alt={product.brand}
                   fill
                   className="object-cover"

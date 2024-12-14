@@ -8,6 +8,8 @@ import {
 } from '@nestjs/common';
 import { User, UserDocument } from '../schemas/user.schema';
 import { hashPassword } from '@/utils/password';
+import { generateUsers } from '@/utils/seed-users';
+import { PaginatedResponse } from '@apps/shared/types';
 
 @Injectable()
 export class UsersService {
@@ -65,8 +67,28 @@ export class UsersService {
     return user;
   }
 
-  async findAll(): Promise<UserDocument[]> {
-    return this.userModel.find();
+  async findAll(
+    page: number = 1,
+    limit: number = 20,
+  ): Promise<PaginatedResponse<UserDocument>> {
+    const skip = (page - 1) * limit;
+
+    const [users, total] = await Promise.all([
+      this.userModel
+        .find({})
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(limit)
+        .exec(),
+      this.userModel.countDocuments({}),
+    ]);
+
+    return {
+      items: users,
+      total,
+      page,
+      pages: Math.ceil(total / limit),
+    };
   }
 
   async deleteOne(id: string): Promise<void> {
@@ -141,5 +163,10 @@ export class UsersService {
       this.logger.error(`Failed to delete users: ${error.message}`);
       throw new BadRequestException('Failed to delete users');
     }
+  }
+
+  async generateUsers(count: number): Promise<UserDocument[]> {
+    const generatedUsers = await generateUsers(count);
+    return this.createMany(generatedUsers);
   }
 }
