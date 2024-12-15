@@ -23,8 +23,8 @@ interface ProductsListProps {
 export function ProductsList({ products }: ProductsListProps) {
   return (
     <Card>
-      <div className="flex items-center justify-between p-6">
-        <h1 className="text-3xl font-bold">Products</h1>
+      <div className="flex items-center justify-between p-5">
+        <h1 className="text-2xl font-bold">Products</h1>
         <Link href="/admin/products/create">
           <Button>
             <Plus className="mr-2 h-4 w-4" />
@@ -51,7 +51,7 @@ export function ProductsList({ products }: ProductsListProps) {
               <TableCell>
                 <div className="relative h-10 w-10">
                   <Image
-                    src={product.image}
+                    src={product.images[0]}
                     alt={product.name}
                     fill
                     className="object-cover rounded-md"

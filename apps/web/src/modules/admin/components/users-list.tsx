@@ -45,8 +45,8 @@ export function UsersList({ users }: UsersListProps) {
 
   return (
     <Card>
-      <div className="flex items-center justify-between p-6">
-        <h1 className="text-3xl font-bold">Users</h1>
+      <div className="flex items-center justify-between p-5">
+        <h1 className="text-2xl font-bold">Users</h1>
       </div>
       <Table>
         <TableHeader>
@@ -61,7 +61,7 @@ export function UsersList({ users }: UsersListProps) {
         </TableHeader>
         <TableBody>
           {users.map(user => (
-            <TableRow key={user._id}>
+            <TableRow className="hover:bg-muted/50" key={user._id}>
               <TableCell className="font-medium">#{user._id}</TableCell>
               <TableCell>{user.name}</TableCell>
               <TableCell>{user.email}</TableCell>
@@ -81,22 +81,24 @@ export function UsersList({ users }: UsersListProps) {
               <TableCell>
                 {new Date(user.createdAt).toLocaleDateString()}
               </TableCell>
-              <TableCell className="text-right space-x-2">
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => router.push(`/admin/users/${user._id}/edit`)}
-                >
-                  <Pencil className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="text-red-500 hover:text-red-600"
-                  onClick={() => handleDelete(user._id)}
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+              <TableCell className="text-right">
+                <div className="flex items-center justify-end gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => router.push(`/admin/users/${user._id}/edit`)}
+                  >
+                    <Pencil className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-red-500 hover:text-red-600"
+                    onClick={() => handleDelete(user._id)}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
               </TableCell>
             </TableRow>
           ))}

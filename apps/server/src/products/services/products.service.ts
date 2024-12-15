@@ -9,6 +9,7 @@ import { PaginatedProducts } from 'src/interfaces';
 import { UserDocument } from 'src/users/schemas/user.schema';
 import { sampleProduct } from '../../utils/data/product';
 import { Product, ProductDocument } from '../schemas/product.schema';
+import { PaginatedResponse } from '../../../../shared/types';
 
 @Injectable()
 export class ProductsService {
@@ -30,7 +31,7 @@ export class ProductsService {
   async findMany(
     keyword?: string,
     pageId?: string,
-  ): Promise<PaginatedProducts> {
+  ): Promise<PaginatedResponse<Product>> {
     const pageSize = 10;
     const page = parseInt(pageId ?? '1');
 
@@ -44,7 +45,12 @@ export class ProductsService {
 
     if (!products.length) throw new NotFoundException('No products found.');
 
-    return { products, page, pages: Math.ceil(count / pageSize) };
+    return {
+      items: products,
+      total: count,
+      page,
+      pages: Math.ceil(count / pageSize),
+    };
   }
 
   async findById(id: string): Promise<ProductDocument> {

@@ -30,40 +30,42 @@ export default async function AdminUsersPage({
       <div className="py-10 space-y-6">
         <UsersList users={users} />
         <div className="flex justify-center">
-          <Pagination>
-            <PaginationContent>
-              <PaginationItem>
-                <PaginationPrevious
-                  href={`/admin/users?page=${currentPage - 1}`}
-                  isActive={currentPage > 1}
-                />
-              </PaginationItem>
+          {pages > 1 && (
+            <Pagination>
+              <PaginationContent>
+                <PaginationItem>
+                  <PaginationPrevious
+                    href={`/admin/users?page=${currentPage - 1}`}
+                    isActive={currentPage > 1}
+                  />
+                </PaginationItem>
 
-              {visiblePages.map((pageNum, idx) =>
-                pageNum === null ? (
-                  <PaginationItem key={`ellipsis-${idx}`}>
-                    <PaginationEllipsis />
-                  </PaginationItem>
-                ) : (
-                  <PaginationItem key={pageNum}>
-                    <PaginationLink
-                      href={`/admin/users?page=${pageNum}`}
-                      isActive={currentPage === pageNum}
-                    >
-                      {pageNum}
-                    </PaginationLink>
-                  </PaginationItem>
-                ),
-              )}
+                {visiblePages.map((pageNum, idx) =>
+                  pageNum === null ? (
+                    <PaginationItem key={`ellipsis-${idx}`}>
+                      <PaginationEllipsis />
+                    </PaginationItem>
+                  ) : (
+                    <PaginationItem key={pageNum}>
+                      <PaginationLink
+                        href={`/admin/users?page=${pageNum}`}
+                        isActive={currentPage === pageNum}
+                      >
+                        {pageNum}
+                      </PaginationLink>
+                    </PaginationItem>
+                  ),
+                )}
 
-              <PaginationItem>
-                <PaginationNext
-                  href={`/admin/users?page=${currentPage + 1}`}
-                  isActive={currentPage < pages}
-                />
-              </PaginationItem>
-            </PaginationContent>
-          </Pagination>
+                <PaginationItem>
+                  <PaginationNext
+                    href={`/admin/users?page=${currentPage + 1}`}
+                    isActive={currentPage < pages}
+                  />
+                </PaginationItem>
+              </PaginationContent>
+            </Pagination>
+          )}
         </div>
       </div>
     </Container>
