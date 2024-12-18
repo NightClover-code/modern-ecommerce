@@ -23,6 +23,7 @@
     "test:e2e": "cross-env NODE_ENV=test jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@ai-sdk/openai": "^1.0.8",
     "@elecshop/shared": "workspace:*",
     "@faker-js/faker": "^9.3.0",
     "@nestjs/common": "^10.4.13",
@@ -33,6 +34,7 @@
     "@nestjs/passport": "^10.0.3",
     "@nestjs/platform-express": "^10.4.13",
     "@nestjs/swagger": "^8.1.0",
+    "ai": "^4.0.18",
     "argon2": "^0.41.1",
     "buffer-to-stream": "^1.0.0",
     "class-transformer": "^0.5.1",
@@ -53,7 +55,8 @@
     "reflect-metadata": "^0.2.2",
     "replicate": "^1.0.1",
     "rxjs": "^7.8.1",
-    "stream": "^0.0.3"
+    "stream": "^0.0.3",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.4.8",

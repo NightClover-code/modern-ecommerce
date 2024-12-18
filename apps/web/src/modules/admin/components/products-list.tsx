@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/table';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Plus } from 'lucide-react';
+import { Sparkles, Plus } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import type { Product } from '@apps/shared/types';
@@ -25,12 +25,20 @@ export function ProductsList({ products }: ProductsListProps) {
     <Card>
       <div className="flex items-center justify-between p-5">
         <h1 className="text-2xl font-bold">Products</h1>
-        <Link href="/admin/products/create">
-          <Button>
-            <Plus className="mr-2 h-4 w-4" />
-            Add Product
-          </Button>
-        </Link>
+        <div className="flex gap-2">
+          <Link href="/admin/products/create">
+            <Button variant="outline">
+              <Plus className="mr-2 h-4 w-4" />
+              Add Product
+            </Button>
+          </Link>
+          <Link href="/admin/products/ai">
+            <Button>
+              <Sparkles className="h-4 w-4" />
+              Create Products with AI
+            </Button>
+          </Link>
+        </div>
       </div>
       <Table>
         <TableHeader>

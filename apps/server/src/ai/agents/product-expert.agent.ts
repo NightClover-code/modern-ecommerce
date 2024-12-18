@@ -1,146 +1,92 @@
 import { Injectable } from '@nestjs/common';
-import { BaseAgent } from './base.agent';
-import { AgentAction, AgentState, ValidationError } from '../interfaces/agents';
-import { Product } from '@/products/schemas/product.schema';
+import { convertToCoreMessages, streamText } from 'ai';
+import { z } from 'zod';
+import { AiConfigService } from '../services/ai-config.service';
+import { ProductGenerationTool } from '../tools/product-generation.tool';
+
+interface ChatMessage {
+  role: string;
+  content: string;
+}
 
 @Injectable()
-export class ProductExpertAgent extends BaseAgent {
-  name = 'product_expert';
-  systemPrompt = `You are a product expert helping create product listings through conversation.
-  Analyze user input for inconsistencies and missing information.
-  When you find issues:
-  1. Point out conflicts (e.g. brand mismatches)
-  2. Ask for clarification
-  3. Provide specific options when possible
-  
-  Always return JSON with these fields:
-  - message: string (your response to the user)
-  - type: "ASK_CLARIFICATION" | "PROVIDE_SUGGESTIONS" | "UPDATE_PRODUCT" | "COMPLETE"
-  - validationErrors?: array of {field, message, suggestion}
-  - choices?: array of strings (when providing options)
-  - productUpdate?: object with any valid product fields`;
+export class ProductExpertAgent {
+  constructor(
+    private aiConfig: AiConfigService,
+    private productTool: ProductGenerationTool,
+  ) {}
 
-  async execute(state: AgentState): Promise<AgentAction> {
-    if (state.productDraft) {
-      const errors = this.validateProduct(state.productDraft);
-      if (errors.length > 0) {
-        return {
-          type: 'ASK_CLARIFICATION',
-          message: 'There are some issues with the product details.',
-          payload: {
-            validationErrors: errors,
-            currentStep: state.context.currentStep,
+  async chat(messages: ChatMessage[]) {
+    const coreMessages = convertToCoreMessages(messages).filter(
+      message => message.content.length > 0,
+    );
+
+    const result = streamText({
+      model: this.aiConfig.getModel(),
+      system: `
+        - You are a product development expert who helps users create and refine product ideas
+        - Keep responses concise and focused on the next step
+        - Guide users through the product development process step by step
+        - Ask follow-up questions to gather necessary details
+        - The optimal flow is:
+          1. Generate basic product info from user description
+          2. Generate product images
+          3. Generate brand assets
+          4. Validate final product
+        - Allow users to iterate and refine at any step
+        - Always show pricing in USD
+      `,
+      messages: coreMessages,
+      tools: {
+        generateBasicInfo: {
+          description: 'Generate initial product concept from user description',
+          parameters: z.object({
+            userPrompt: z.string().describe('User product description'),
+            category: z.string().describe('Product category'),
+          }),
+          execute: async ({ userPrompt, category }) => {
+            return await this.productTool.generateBasicInfo({
+              userPrompt,
+              category,
+            });
           },
-        };
-      }
-    }
-
-    const action = await this.think(state.messages);
-
-    switch (action.type) {
-      case 'ASK_CLARIFICATION':
-        return {
-          type: 'ASK_CLARIFICATION',
-          message: action.message,
-          payload: {
-            validationErrors: action.validationErrors,
-            currentStep: state.context.currentStep,
+        },
+        generateProductImages: {
+          description: 'Generate product images',
+          parameters: z.object({
+            productInfo: z.any().describe('Product information'),
+          }),
+          execute: async ({ productInfo }) => {
+            return await this.productTool.generateProductImages({
+              productInfo,
+            });
           },
-        };
-
-      case 'PROVIDE_SUGGESTIONS':
-        return {
-          type: 'PROVIDE_SUGGESTIONS',
-          message: action.message,
-          choices: action.choices,
-          payload: {
-            currentStep: state.context.currentStep,
+        },
+        generateBrandAssets: {
+          description: 'Generate brand logo and assets',
+          parameters: z.object({
+            brand: z.string(),
+            productInfo: z.any(),
+          }),
+          execute: async ({ brand, productInfo }) => {
+            return await this.productTool.generateBrandAssets({
+              brand,
+              productInfo,
+            });
           },
-        };
+        },
+        validateProduct: {
+          description: 'Validate product details and completeness',
+          parameters: z.object({
+            product: z.any(),
+          }),
+          execute: async ({ product }) => {
+            return await this.productTool.validateProduct(product);
+          },
+        },
+      },
+    });
 
-      case 'UPDATE_PRODUCT':
-        const updatedProduct = {
-          ...state.productDraft,
-          ...action.productUpdate,
-        };
-
-        return {
-          type: 'UPDATE_PRODUCT',
-          message: action.message,
-          payload: updatedProduct,
-        };
-
-      case 'COMPLETE':
-        return {
-          type: 'COMPLETE',
-          message: 'Product details are complete and valid.',
-          payload: state.productDraft,
-        };
-    }
-  }
-
-  private validateProduct(product: Partial<Product>): ValidationError[] {
-    const errors: ValidationError[] = [];
-
-    if (
-      product.brand &&
-      !['Apple', 'Samsung', 'Sony', 'LG', 'Canon', 'Nikon'].includes(
-        product.brand,
-      )
-    ) {
-      errors.push({
-        field: 'brand',
-        message: 'Invalid brand selected',
-        suggestion:
-          'Please choose from: Apple, Samsung, Sony, LG, Canon, Nikon',
-      });
-    }
-
-    if (
-      product.category &&
-      ![
-        'Electronics',
-        'Computers',
-        'Smart Home',
-        'Phones',
-        'Cameras',
-        'Gaming',
-      ].includes(product.category)
-    ) {
-      errors.push({
-        field: 'category',
-        message: 'Invalid category selected',
-        suggestion:
-          'Please choose from: Electronics, Computers, Smart Home, Phones, Cameras, Gaming',
-      });
-    }
-
-    if (product.price) {
-      if (product.price < 0) {
-        errors.push({
-          field: 'price',
-          message: 'Price cannot be negative',
-          suggestion: 'Please provide a positive price',
-        });
-      }
-
-      if (product.brand === 'Apple' && product.price < 299) {
-        errors.push({
-          field: 'price',
-          message: 'Price too low for Apple product',
-          suggestion: 'Apple products typically start at $299',
-        });
-      }
-    }
-
-    if (product.name && product.name.length < 3) {
-      errors.push({
-        field: 'name',
-        message: 'Product name too short',
-        suggestion: 'Please provide a more descriptive name',
-      });
-    }
-
-    return errors;
+    return result;
   }
 }

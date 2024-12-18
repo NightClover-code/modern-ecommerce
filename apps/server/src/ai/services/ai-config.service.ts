@@ -1,20 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import Replicate from 'replicate';
-import OpenAI from 'openai';
+import {
+  LanguageModel,
+  experimental_wrapLanguageModel as wrapLanguageModel,
+} from 'ai';
+import { openai } from '@ai-sdk/openai';
+import { customMiddleware } from '../custom-middleware';
 
 @Injectable()
 export class AiConfigService {
   private replicate: Replicate;
-  private openai: OpenAI;
+  private openAIModel: LanguageModel;
 
   constructor(private configService: ConfigService) {
     this.replicate = new Replicate({
       auth: this.configService.get('REPLICATE_API_TOKEN'),
     });
 
-    this.openai = new OpenAI({
-      apiKey: this.configService.get('OPENAI_API_KEY'),
+    this.openAIModel = wrapLanguageModel({
+      model: openai('gpt-3.5-turbo'),
+      middleware: customMiddleware,
     });
   }
 
@@ -22,7 +28,7 @@ export class AiConfigService {
     return this.replicate;
   }
 
-  getOpenAI() {
-    return this.openai;
+  getModel() {
+    return this.openAIModel;
   }
 }
