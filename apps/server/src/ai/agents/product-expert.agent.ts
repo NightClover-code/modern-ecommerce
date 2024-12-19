@@ -42,6 +42,11 @@ export class ProductExpertAgent {
         - Get final user approval
         - Make suggested improvements
 
+      5. When saving the product:
+        - Validate the product data
+        - Save the product to the database
+        - Provide a link to the saved product 
+
       Always ask for explicit user confirmation before proceeding to next step.
       Use markdown formatting for all responses.
       `;
@@ -151,8 +156,45 @@ export class ProductExpertAgent {
             return result;
           },
         },
+        saveProduct: {
+          description: 'Save the finalized product to the database',
+          parameters: z.object({
+            product: z.any().describe('Complete product information'),
+          }),
+          execute: async ({ product }) => {
+            const result = await this.productTool.validateProduct(product);
+
+            if (!result.isValid) {
+              return {
+                success: false,
+                message:
+                  'Product validation failed. Please fix the following issues:',
+                errors: result.missingFields,
+                canProgress: false,
+              };
+            }
+
+            const saveResult = await this.productTool.saveProduct(product);
+
+            if (!saveResult.success) {
+              return {
+                success: false,
+                message: `Unable to save product: ${saveResult.message}`,
+                errors: saveResult.errors,
+                canProgress: false,
+              };
+            }
+
+            return {
+              success: true,
+              message: `Perfect! I've saved the product to the database. You can view it at /products/${saveResult.productId}`,
+              canProgress: true,
+              productId: saveResult.productId,
+            };
+          },
+        },
       },
-      maxSteps: 5,
+      maxSteps: 10,
       experimental_telemetry: {
         isEnabled: true,
         functionId: 'stream-text',

@@ -21,5 +21,6 @@ import { ProductExpertAgent } from '@/ai/agents/product-expert.agent';
   ],
   providers: [ProductsService, AppService, ProductExpertAgent],
   controllers: [ProductsController],
+  exports: [ProductsService],
 })
 export class ProductsModule {}
