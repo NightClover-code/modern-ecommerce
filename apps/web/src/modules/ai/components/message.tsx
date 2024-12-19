@@ -46,6 +46,10 @@ export function Message({ role, content, toolInvocations }: MessageProps) {
                   <div key={toolCallId}>
                     {toolName === 'generateBasicInfo' ? (
                       <ProductInfo productInfo={result} />
+                    ) : toolName === 'handleApproval' ? (
+                      result.productInfo ? (
+                        <ProductInfo productInfo={result.productInfo} />
+                      ) : null
                     ) : toolName === 'generateProductImages' ? (
                       <ProductImages images={result.images} />
                     ) : toolName === 'generateBrandAssets' ? (

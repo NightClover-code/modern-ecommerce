@@ -6,7 +6,14 @@ import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
 interface ProductImagesProps {
-  images?: string[];
+  images?: {
+    urls: string[];
+    metadata?: {
+      model: any;
+      prompt: string;
+      generationTime?: number;
+    };
+  }[];
 }
 
 export function ProductImages({ images }: ProductImagesProps) {
@@ -37,7 +44,7 @@ export function ProductImages({ images }: ProductImagesProps) {
           >
             <div className="aspect-square relative">
               <Image
-                src={image}
+                src={image.urls[0]}
                 alt={`Product image ${index + 1}`}
                 fill
                 className="object-cover"

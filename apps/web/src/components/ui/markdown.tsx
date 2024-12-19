@@ -1,32 +1,29 @@
-'use client';
-
+import { memo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
-import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism';
+import { cn } from '@/lib/utils';
 
-interface MarkdownProps {
+export const Markdown = memo(function Markdown({
+  children,
+  className,
+}: {
   children: string;
-}
-
-export function Markdown({ children }: MarkdownProps) {
+  className?: string;
+}) {
   return (
     <ReactMarkdown
+      className={cn('prose dark:prose-invert max-w-none', className)}
       remarkPlugins={[remarkGfm]}
       components={{
         code({ node, inline, className, children, ...props }) {
           const match = /language-(\w+)/.exec(className || '');
           return !inline && match ? (
-            <SyntaxHighlighter
-              {...props}
-              style={oneDark}
-              language={match[1]}
-              PreTag="div"
-            >
+            <SyntaxHighlighter language={match[1]} PreTag="div" {...props}>
               {String(children).replace(/\n$/, '')}
             </SyntaxHighlighter>
           ) : (
-            <code {...props} className={className}>
+            <code className={className} {...props}>
               {children}
             </code>
           );
@@ -36,4 +33,4 @@ export function Markdown({ children }: MarkdownProps) {
       {children}
     </ReactMarkdown>
   );
-}
+});

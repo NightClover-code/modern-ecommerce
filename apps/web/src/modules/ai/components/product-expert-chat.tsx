@@ -11,6 +11,7 @@ export default function ProductExpertChat() {
   const { messages, input, handleInputChange, handleSubmit, isLoading, stop } =
     useChat({
       api: `${process.env.NEXT_PUBLIC_API_URL}/products/agent/chat`,
+
       initialMessages: [
         {
           id: '1',
@@ -27,7 +28,7 @@ export default function ProductExpertChat() {
   const [attachments, setAttachments] = useState<Array<Attachment>>([]);
 
   return (
-    <div className="flex flex-col h-[800px] rounded-lg border bg-background">
+    <div className="flex flex-col h-[600px] rounded-lg border bg-background">
       <div
         ref={messagesContainerRef}
         className="flex-1 overflow-y-auto p-4 space-y-6"

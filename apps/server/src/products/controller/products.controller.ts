@@ -93,16 +93,12 @@ export class ProductsController {
     return this.productsService.createReview(id, user, rating, comment);
   }
 
-  @Post('agent/chat')
-  @UseGuards(AdminGuard)
+  @Post('agent/chat') //TODO: add admin guard
   async chat(@Body() body: ChatRequest, @Res() res: Response) {
     const { messages } = body;
 
-    console.log('Messages from client', messages);
-
     const result = await this.productExpertAgent.chat(messages);
 
-    // Stream the response back to client
-    return result.pipeTextStreamToResponse(res);
+    return result.pipeDataStreamToResponse(res);
   }
 }

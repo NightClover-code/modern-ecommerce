@@ -10,7 +10,7 @@ interface ProductInfoProps {
     brand: string;
     category: string;
     price: number;
-    keyFeatures: string[];
+    countInStock: number;
   };
 }
 
@@ -18,6 +18,8 @@ export function ProductInfo({ productInfo }: ProductInfoProps) {
   if (!productInfo) {
     return <Card className="w-full h-32 animate-pulse" />;
   }
+
+  const isOutOfStock = productInfo.countInStock === 0;
 
   return (
     <motion.div
@@ -41,18 +43,15 @@ export function ProductInfo({ productInfo }: ProductInfoProps) {
 
         <p className="text-sm">{productInfo.description}</p>
 
-        {productInfo.keyFeatures && (
-          <div>
-            <p className="font-medium mb-2">Key Features:</p>
-            <ul className="list-disc list-inside space-y-1">
-              {productInfo.keyFeatures.map((feature, index) => (
-                <li key={index} className="text-sm">
-                  {feature}
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+        <div>
+          {isOutOfStock ? (
+            <div className="text-red-500 text-sm font-medium">Out of Stock</div>
+          ) : (
+            <div className="text-green-600 text-sm font-medium">
+              In Stock ({productInfo.countInStock} units)
+            </div>
+          )}
+        </div>
       </Card>
     </motion.div>
   );
