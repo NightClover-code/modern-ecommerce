@@ -55,7 +55,7 @@ export function Message({ role, content, toolInvocations }: MessageProps) {
                     ) : toolName === 'generateBrandAssets' ? (
                       <BrandAssets brandLogo={result.brandLogo} />
                     ) : toolName === 'validateProduct' ? (
-                      <ValidationResult validation={result} />
+                      <ValidationResult {...result} />
                     ) : (
                       <pre className="bg-zinc-100 p-4 rounded-lg overflow-auto">
                         {JSON.stringify(result, null, 2)}
@@ -73,7 +73,13 @@ export function Message({ role, content, toolInvocations }: MessageProps) {
                     ) : toolName === 'generateBrandAssets' ? (
                       <BrandAssets />
                     ) : toolName === 'validateProduct' ? (
-                      <ValidationResult />
+                      <ValidationResult
+                        isValid={false}
+                        missingFields={[]}
+                        suggestions={[]}
+                        marketFitScore={0}
+                        pricingFeedback={''}
+                      />
                     ) : null}
                   </div>
                 );

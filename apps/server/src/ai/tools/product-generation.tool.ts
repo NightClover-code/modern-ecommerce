@@ -44,31 +44,49 @@ export class ProductGenerationTool {
   }
 
   async generateProductImages({ productInfo }: { productInfo: any }) {
-    try {
-      console.log('Generating product images for ', productInfo);
+    const basePrompt = `Professional product photography of a ${productInfo.brand} ${productInfo.name}, ${productInfo.category},
+      premium product visualization, floating in space, light gray background (#F0F0F0),
+      soft shadow beneath product, studio lighting, 8k resolution, photorealistic, ultra detailed`;
 
-      const { object: imagePrompts } = await generateObject({
-        model: this.aiConfig.getModel(),
-        prompt: `Generate 4 consistent product image prompts with different angles for: ${JSON.stringify(productInfo)}`,
-        schema: z.object({
-          mainImage: z.string().describe('Main product shot prompt'),
-          lifestyle: z.string().describe('Lifestyle usage shot prompt'),
-          detail: z.string().describe('Detail/feature shot prompt'),
-          packaging: z.string().describe('Product packaging shot prompt'),
+    const seed = Math.floor(Math.random() * 1000000);
+
+    const angles = [
+      {
+        name: 'front',
+        prompt: `${basePrompt}, straight front view, perfectly centered`,
+      },
+      {
+        name: 'side',
+        prompt: `${basePrompt}, perfect side profile view, showing product depth`,
+      },
+      {
+        name: '45-degree',
+        prompt: `${basePrompt}, 45-degree angle view showing front and side`,
+      },
+      {
+        name: 'back',
+        prompt: `${basePrompt}, straight back view showing ports and connections`,
+      },
+    ];
+
+    const images = await Promise.all(
+      angles.map(angle =>
+        this.imageService.generateProductImage({
+          prompt: angle.prompt,
+          negativePrompt:
+            'text, watermark, low quality, blurry, distorted, hands, people, accessories, busy background, pure white background',
+          width: 1024,
+          height: 1024,
+          seed,
         }),
-      });
+      ),
+    );
 
-      const images = await Promise.all(
-        Object.values(imagePrompts).map(prompt =>
-          this.imageService.generateProductImage({ prompt }),
-        ),
-      );
-
-      return { images };
-    } catch (error) {
-      console.error('Error generating product images', error);
-      throw error;
-    }
+    return {
+      images: images.map((image, index) => ({
+        url: image.urls[0],
+      })),
+    };
   }
 
   async generateBrandAssets({
@@ -92,12 +110,11 @@ export class ProductGenerationTool {
         }),
       });
 
-      console.log('Logo prompt', logoPrompt);
-      // const brandLogo = await this.imageService.generateProductImage({
-      //   prompt: logoPrompt.prompt,
-      // });
+      const brandLogo = await this.imageService.generateProductImage({
+        prompt: logoPrompt.prompt,
+      });
 
-      // return { brandLogo };
+      return { brandLogo: { url: brandLogo.urls[0] } };
     } catch (error) {
       console.error('Error generating brand assets', error);
       throw error;

@@ -92,21 +92,6 @@ export class ProductExpertAgent {
             step: z.enum(['basic-info', 'details', 'images', 'review']),
           }),
           execute: async ({ productInfo, userFeedback, step }) => {
-            // Check if userFeedback contains a number (stock quantity)
-            const stockMatch = userFeedback.match(/\d+/);
-            if (stockMatch) {
-              const stockQuantity = parseInt(stockMatch[0], 10);
-              return {
-                approved: true,
-                canProgress: true, // Allow progress once we have stock
-                message: `Perfect! I've set the inventory count to ${stockQuantity} units. Let's move on to generating product images.`,
-                productInfo: {
-                  ...productInfo,
-                  countInStock: stockQuantity,
-                },
-              };
-            }
-
             const result = await this.productTool.handleUserApproval({
               productInfo,
               userFeedback,
@@ -120,7 +105,7 @@ export class ProductExpertAgent {
                 canProgress: false,
                 message: `Great! Since you approved the product details, could you please specify the inventory count for the ${productInfo.name} product?
 
-> For example: "Set initial stock to 100 units" or "Start with 50 in stock"`,
+                  > For example: "Set initial stock to 100 units" or "Start with 50 in stock"`,
               };
             }
 
@@ -147,10 +132,12 @@ export class ProductExpertAgent {
             productInfo: z.any(),
           }),
           execute: async ({ brand, productInfo }) => {
-            return await this.productTool.generateBrandAssets({
+            const result = await this.productTool.generateBrandAssets({
               brand,
               productInfo,
             });
+
+            return result;
           },
         },
         validateProduct: {
@@ -159,7 +146,9 @@ export class ProductExpertAgent {
             product: z.any(),
           }),
           execute: async ({ product }) => {
-            return await this.productTool.validateProduct(product);
+            const result = await this.productTool.validateProduct(product);
+
+            return result;
           },
         },
       },

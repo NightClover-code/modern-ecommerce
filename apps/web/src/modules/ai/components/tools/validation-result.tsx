@@ -1,26 +1,33 @@
-"use client";
+'use client';
 
 import { motion } from 'framer-motion';
 import { Card } from '@/components/ui/card';
 import { CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
 
 interface ValidationResultProps {
-  validation?: {
-    isValid: boolean;
-    score: number;
-    feedback: string[];
-    improvements?: string[];
-  };
+  isValid: boolean;
+  missingFields: string[];
+  suggestions: string[];
+  marketFitScore: number;
+  pricingFeedback: string;
 }
 
-export function ValidationResult({ validation }: ValidationResultProps) {
-  if (!validation) {
+export function ValidationResult({
+  isValid,
+  missingFields,
+  suggestions,
+  marketFitScore,
+  pricingFeedback,
+}: ValidationResultProps) {
+  if (!isValid) {
     return <Card className="w-full h-32 animate-pulse" />;
   }
 
   const getStatusIcon = () => {
-    if (validation.score >= 8) return <CheckCircle2 className="text-green-500 h-6 w-6" />;
-    if (validation.score >= 5) return <AlertCircle className="text-yellow-500 h-6 w-6" />;
+    if (marketFitScore >= 80)
+      return <CheckCircle2 className="text-green-500 h-6 w-6" />;
+    if (marketFitScore >= 50)
+      return <AlertCircle className="text-yellow-500 h-6 w-6" />;
     return <XCircle className="text-red-500 h-6 w-6" />;
   };
 
@@ -35,35 +42,48 @@ export function ValidationResult({ validation }: ValidationResultProps) {
           {getStatusIcon()}
           <div>
             <h3 className="font-semibold">
-              Product Validation Score: {validation.score}/10
+              Market Fit Score: {marketFitScore}/100
             </h3>
             <p className="text-sm text-muted-foreground">
-              {validation.isValid ? "Product meets basic requirements" : "Product needs improvements"}
+              {isValid
+                ? 'Product details are complete'
+                : 'Missing required information'}
             </p>
           </div>
         </div>
 
-        <div className="space-y-3">
+        {missingFields.length > 0 && (
           <div>
-            <h4 className="font-medium mb-2">Feedback:</h4>
+            <h4 className="text-sm font-medium text-red-500 mb-2">
+              Missing Fields:
+            </h4>
             <ul className="list-disc list-inside space-y-1">
-              {validation.feedback.map((item, index) => (
-                <li key={index} className="text-sm">{item}</li>
+              {missingFields.map((field, index) => (
+                <li key={index} className="text-sm text-red-500">
+                  {field}
+                </li>
               ))}
             </ul>
           </div>
+        )}
 
-          {validation.improvements && validation.improvements.length > 0 && (
-            <div>
-              <h4 className="font-medium mb-2">Suggested Improvements:</h4>
-              <ul className="list-disc list-inside space-y-1">
-                {validation.improvements.map((item, index) => (
-                  <li key={index} className="text-sm text-muted-foreground">{item}</li>
-                ))}
-              </ul>
-            </div>
-          )}
+        <div>
+          <h4 className="text-sm font-medium mb-2">Pricing Analysis:</h4>
+          <p className="text-sm text-muted-foreground">{pricingFeedback}</p>
         </div>
+
+        {suggestions.length > 0 && (
+          <div>
+            <h4 className="text-sm font-medium mb-2">Suggestions:</h4>
+            <ul className="list-disc list-inside space-y-1">
+              {suggestions.map((suggestion, index) => (
+                <li key={index} className="text-sm text-muted-foreground">
+                  {suggestion}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
       </Card>
     </motion.div>
   );
