@@ -1,3 +1,5 @@
+'use client';
+
 import { useCart } from '../context/cart-context';
 import { CartEmpty } from './cart-empty';
 import { CartItem } from './cart-item';

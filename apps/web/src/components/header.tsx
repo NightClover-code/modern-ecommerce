@@ -1,9 +1,10 @@
+'use client';
+
 import Link from 'next/link';
 import { Container } from '@/components/ui/container';
-import { ShoppingCart } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { SearchBox } from '@/components/search-box';
 import { UserMenu } from './navbar/user-menu';
+import { CartIcon } from '@/modules/cart/components/cart-icon';
 
 export function Header() {
   return (
@@ -21,9 +22,7 @@ export function Header() {
           </div>
 
           <nav className="flex items-center space-x-4">
-            <Button variant="ghost" size="icon">
-              <ShoppingCart />
-            </Button>
+            <CartIcon />
             <UserMenu />
           </nav>
         </div>

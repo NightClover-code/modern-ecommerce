@@ -17,18 +17,33 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useCart } from '@/modules/cart/context/cart-context';
 
 interface ProductDetailsProps {
   product: Product;
 }
 
 export function ProductDetails({ product }: ProductDetailsProps) {
+  const { addItem } = useCart();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   if (!product) return null;
 
   const isOutOfStock = product.countInStock === 0;
+
+  const handleAddToCart = async () => {
+    setLoading(true);
+    try {
+      await addItem(product._id, quantity);
+      // Could add a toast notification here
+    } catch (error) {
+      console.error('Failed to add item to cart:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="container mx-auto px-4 py-10 md:px-2 lg:px-1">
@@ -151,10 +166,15 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 
           <Button
             className="w-full h-12 text-lg [&_svg]:size-5"
-            disabled={isOutOfStock}
+            disabled={isOutOfStock || loading}
+            onClick={handleAddToCart}
           >
             <HiOutlineShoppingBag className="mr-2" size={30} />
-            {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
+            {isOutOfStock
+              ? 'Out of Stock'
+              : loading
+                ? 'Adding...'
+                : 'Add to Cart'}
           </Button>
 
           <div className="mt-12 sm:mt-8">

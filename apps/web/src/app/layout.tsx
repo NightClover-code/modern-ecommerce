@@ -5,6 +5,7 @@ import { Header } from '@/components/header';
 import { Providers } from './providers';
 import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider } from '@/components/auth-provider';
+import { CartProvider } from '@/modules/cart/context/cart-context';
 
 export const metadata: Metadata = {
   title: 'Elecshop',
@@ -23,9 +24,11 @@ export default function RootLayout({
       >
         <Providers>
           <AuthProvider>
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Toaster />
+            <CartProvider>
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Toaster />
+            </CartProvider>
           </AuthProvider>
         </Providers>
       </body>
