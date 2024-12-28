@@ -18,6 +18,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useCart } from '@/modules/cart/context/cart-context';
+import { useToast } from '@/hooks/use-toast';
 
 interface ProductDetailsProps {
   product: Product;
@@ -25,6 +26,7 @@ interface ProductDetailsProps {
 
 export function ProductDetails({ product }: ProductDetailsProps) {
   const { addItem } = useCart();
+  const { toast } = useToast();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -35,11 +37,19 @@ export function ProductDetails({ product }: ProductDetailsProps) {
 
   const handleAddToCart = async () => {
     setLoading(true);
+    toast({
+      title: 'Adding to cart...',
+      description: 'Please wait while we add your item.',
+    });
+
     try {
       await addItem(product._id, quantity);
-      // Could add a toast notification here
     } catch (error) {
-      console.error('Failed to add item to cart:', error);
+      toast({
+        title: 'Error',
+        description: 'Failed to add item to cart. Please try again.',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }

@@ -4,6 +4,7 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import { CartItem } from '@apps/shared/types/cart';
 import { apiClient } from '@/lib/api-client';
 import { useUser } from '@/modules/auth/hooks/use-user';
+import { useToast } from '@/hooks/use-toast';
 
 interface CartContextType {
   items: CartItem[];
@@ -22,6 +23,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
+  const { toast } = useToast();
 
   // Load initial cart data
   useEffect(() => {
@@ -29,9 +31,29 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       setLoading(true);
       try {
         if (user) {
-          // Fetch cart from API for authenticated users
+          // Get local cart before fetching server cart
+          const localCart = localStorage.getItem(CART_STORAGE_KEY);
+          const localItems = localCart ? JSON.parse(localCart) : [];
+
+          // Fetch server cart
           const { data } = await apiClient.get('/cart');
-          setItems(data.items);
+
+          // If we have local items and just logged in, merge carts
+          if (localItems.length > 0) {
+            toast({
+              title: 'Syncing your cart...',
+              description: "We're adding your saved items to your account.",
+            });
+            await mergeCarts(localItems, data.items);
+            toast({
+              title: 'Cart synced!',
+              description: 'Your items have been saved to your account.',
+            });
+            // Clear local storage after successful merge
+            localStorage.removeItem(CART_STORAGE_KEY);
+          } else {
+            setItems(data.items);
+          }
         } else {
           // Load cart from localStorage for guests
           const storedCart = localStorage.getItem(CART_STORAGE_KEY);
@@ -66,6 +88,10 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           qty,
         });
         setItems(data.items);
+        toast({
+          title: 'Item added to cart',
+          description: 'Your item has been added to your cart successfully.',
+        });
       } else {
         // Add to local cart for guests
         const response = await apiClient.get(`/products/${productId}`);
@@ -89,8 +115,17 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
           };
           setItems([...items, newItem]);
         }
+        toast({
+          title: 'Item added to cart',
+          description: 'Your item has been saved to your local cart.',
+        });
       }
     } catch (error) {
+      toast({
+        title: 'Error adding item',
+        description: 'There was a problem adding your item to the cart.',
+        variant: 'destructive',
+      });
       console.error('Error adding item to cart:', error);
     } finally {
       setLoading(false);
@@ -106,8 +141,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       } else {
         setItems(items.filter(item => item.productId !== productId));
       }
+      toast({
+        title: 'Item removed',
+        description: 'The item has been removed from your cart.',
+      });
     } catch (error) {
-      console.error('Error removing item from cart:', error);
+      toast({
+        title: 'Error removing item',
+        description: 'There was a problem removing the item from your cart.',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
     }
@@ -142,10 +185,43 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         await apiClient.delete('/cart');
       }
       setItems([]);
+      toast({
+        title: 'Cart cleared',
+        description: 'All items have been removed from your cart.',
+      });
     } catch (error) {
-      console.error('Error clearing cart:', error);
+      toast({
+        title: 'Error clearing cart',
+        description: 'There was a problem clearing your cart.',
+        variant: 'destructive',
+      });
     } finally {
       setLoading(false);
+    }
+  };
+
+  const mergeCarts = async (
+    localItems: CartItem[],
+    serverItems: CartItem[],
+  ) => {
+    // Create a map of server items for quick lookup
+    const serverItemsMap = new Map(
+      serverItems.map(item => [item.productId, item]),
+    );
+
+    // Merge local items with server items
+    for (const localItem of localItems) {
+      const serverItem = serverItemsMap.get(localItem.productId);
+      if (serverItem) {
+        // If item exists in both carts, take the higher quantity
+        await updateQuantity(
+          localItem.productId,
+          Math.max(localItem.qty, serverItem.qty),
+        );
+      } else {
+        // If item only exists locally, add it to server cart
+        await addItem(localItem.productId, localItem.qty);
+      }
     }
   };
 
