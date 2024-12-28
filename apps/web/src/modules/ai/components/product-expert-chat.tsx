@@ -22,8 +22,6 @@ export default function ProductExpertChat() {
       ],
     });
 
-  console.log({ messages });
-
   const [messagesContainerRef, messagesEndRef] =
     useScrollToBottom<HTMLDivElement>();
 

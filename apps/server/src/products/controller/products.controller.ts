@@ -36,9 +36,10 @@ export class ProductsController {
   @Get()
   getProducts(
     @Query('keyword') keyword: string,
-    @Query('pageId') pageId: string,
+    @Query('page') page: string,
+    @Query('limit') limit: string,
   ) {
-    return this.productsService.findMany(keyword, pageId);
+    return this.productsService.findMany(keyword, page, limit);
   }
 
   @Get('topRated')

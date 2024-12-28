@@ -29,10 +29,11 @@ export class ProductsService {
 
   async findMany(
     keyword?: string,
-    pageId?: string,
+    page?: string,
+    limit?: string,
   ): Promise<PaginatedResponse<Product>> {
-    const pageSize = 10;
-    const page = parseInt(pageId ?? '1');
+    const pageSize = parseInt(limit ?? '10');
+    const currentPage = parseInt(page ?? '1');
 
     const rgex = keyword ? { name: { $regex: keyword, $options: 'i' } } : {};
 
@@ -40,14 +41,14 @@ export class ProductsService {
     const products = await this.productModel
       .find({ ...rgex })
       .limit(pageSize)
-      .skip(pageSize * (page - 1));
+      .skip(pageSize * (currentPage - 1));
 
     if (!products.length) throw new NotFoundException('No products found.');
 
     return {
       items: products,
       total: count,
-      page,
+      page: currentPage,
       pages: Math.ceil(count / pageSize),
     };
   }

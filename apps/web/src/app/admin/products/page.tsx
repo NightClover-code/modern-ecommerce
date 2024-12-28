@@ -23,7 +23,7 @@ export default async function AdminProductsPage({
 }: AdminProductsPageProps) {
   const { page } = searchParams;
   const currentPage = Number(page) || 1;
-  const { items: products, pages } = await getProducts(currentPage, 10);
+  const { items: products, pages } = await getProducts(currentPage, 8);
 
   const visiblePages = getVisiblePages(currentPage, pages);
 

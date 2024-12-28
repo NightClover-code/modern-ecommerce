@@ -13,13 +13,13 @@ import {
 import { getVisiblePages } from '@/lib/utils';
 
 interface HomePageProps {
-  searchParams: { page?: string };
+  searchParams: Promise<{ page?: string }>;
 }
 
 export default async function Home({ searchParams }: HomePageProps) {
-  const { page } = searchParams;
+  const { page } = await searchParams;
   const currentPage = Number(page) || 1;
-  const { items: products, pages } = await getProducts(currentPage, 12);
+  const { items: products, pages } = await getProducts(currentPage, 10);
 
   const visiblePages = getVisiblePages(currentPage, pages);
 

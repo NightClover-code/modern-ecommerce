@@ -1,8 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { convertToCoreMessages, Message, streamText } from 'ai';
+import { convertToCoreMessages, Message, streamText, tool } from 'ai';
 import { z } from 'zod';
 import { AiConfigService } from '../services/ai-config.service';
 import { ProductGenerationTool } from '../tools/product-generation.tool';
+import { ProductCreationStep } from '@apps/shared/types/agents';
 
 @Injectable()
 export class ProductExpertAgent {
@@ -56,7 +57,7 @@ export class ProductExpertAgent {
       system: systemPrompt,
       messages: coreMessages,
       tools: {
-        generateBasicInfo: {
+        generateBasicInfo: tool({
           description: 'Generate initial product concept from user description',
           parameters: z.object({
             userPrompt: z.string().describe('User product description'),
@@ -71,53 +72,59 @@ export class ProductExpertAgent {
             return {
               ...result,
               message: `
-                        ### Generated Product Details
-                        - **Name:** ${result.name}
-                        - **Brand:** ${result.brand}
-                        - **Category:** ${result.category}
-                        - **Price:** $${result.price}
+                    ### Generated Product Details
+                    - **Name:** ${result.name}
+                    - **Brand:** ${result.brand}
+                    - **Category:** ${result.category}
+                    - **Price:** $${result.price}
+                    - **Description:**: ${result.description}
 
-                        ${result.description}
+                    ${result.description}
 
 
-                        > Please review these details. Would you like to:
-                        1. Approve and specify inventory count
-                        2. Modify any details
-                        3. Start over with a different concept
+                    > Please review these details. Would you like to:
+                    1. Approve and specify inventory count
+                    2. Modify any details
+                    3. Start over with a different concept
 
-                        What would you like to do?`,
+                    What would you like to do?`,
             };
           },
-        },
-        handleApproval: {
-          description: 'Process user approval and feedback',
+        }),
+        handleApproval: tool({
+          description: 'Handle user approval for product details',
           parameters: z.object({
             productInfo: z.any(),
             userFeedback: z.string(),
-            step: z.enum(['basic-info', 'details', 'images', 'review']),
+            step: z.string(),
           }),
           execute: async ({ productInfo, userFeedback, step }) => {
-            const result = await this.productTool.handleUserApproval({
+            // First handle the approval/feedback
+            const approvalResult = await this.productTool.handleUserApproval({
               productInfo,
               userFeedback,
-              step,
+              step: step as ProductCreationStep,
             });
 
-            // Only ask for inventory if approved and we don't have it yet
-            if (result.approved && !productInfo.countInStock) {
-              return {
-                approved: true,
-                canProgress: false,
-                message: `Great! Since you approved the product details, could you please specify the inventory count for the ${productInfo.name} product?
+            // If basic info step was approved, validate the product
+            if (step === 'basic-info' && approvalResult.approved) {
+              const validationResult =
+                await this.productTool.validateProduct(productInfo);
 
-                  > For example: "Set initial stock to 100 units" or "Start with 50 in stock"`,
-              };
+              if (!validationResult.isValid) {
+                return {
+                  approved: false,
+                  nextAction: 'revise',
+                  message: `Before proceeding, please address these issues:\n${validationResult.missingFields.join('\n')}`,
+                  validationErrors: validationResult.missingFields,
+                };
+              }
             }
 
-            return result;
+            return approvalResult;
           },
-        },
-        generateProductImages: {
+        }),
+        generateProductImages: tool({
           description: 'Generate product images',
           parameters: z.object({
             productInfo: z.any().describe('Product information'),
@@ -126,11 +133,16 @@ export class ProductExpertAgent {
             const result = await this.productTool.generateProductImages({
               productInfo,
             });
-
-            return result;
+            return {
+              ...result,
+              productInfo: {
+                ...productInfo,
+                images: result.images.map(img => img.url),
+              },
+            };
           },
-        },
-        generateBrandAssets: {
+        }),
+        generateBrandAssets: tool({
           description: 'Generate brand logo and assets',
           parameters: z.object({
             brand: z.string(),
@@ -141,11 +153,16 @@ export class ProductExpertAgent {
               brand,
               productInfo,
             });
-
-            return result;
+            return {
+              ...result,
+              productInfo: {
+                ...productInfo,
+                brandLogo: result.brandLogo.url,
+              },
+            };
           },
-        },
-        validateProduct: {
+        }),
+        validateProduct: tool({
           description: 'Validate product details and completeness',
           parameters: z.object({
             product: z.any(),
@@ -155,8 +172,8 @@ export class ProductExpertAgent {
 
             return result;
           },
-        },
-        saveProduct: {
+        }),
+        saveProduct: tool({
           description: 'Save the finalized product to the database',
           parameters: z.object({
             product: z.any().describe('Complete product information'),
@@ -192,9 +209,15 @@ export class ProductExpertAgent {
               productId: saveResult.productId,
             };
           },
-        },
+        }),
       },
-      maxSteps: 10,
+      onStepFinish({ text, toolCalls, toolResults, finishReason }) {
+        console.log('Step:', text);
+        console.log('Tool Calls:', JSON.stringify(toolCalls, null, 2));
+        console.log('Tool Results:', JSON.stringify(toolResults, null, 2));
+        console.log('Finish Reason:', finishReason);
+      },
+      maxSteps: 20,
       experimental_telemetry: {
         isEnabled: true,
         functionId: 'stream-text',
