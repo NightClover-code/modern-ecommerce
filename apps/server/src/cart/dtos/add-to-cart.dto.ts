@@ -8,7 +8,6 @@ export class AddToCartDto {
   @IsNumber()
   qty!: number;
 
-  @IsOptional()
   @IsString()
-  productId?: string;
+  productId!: string;
 }
