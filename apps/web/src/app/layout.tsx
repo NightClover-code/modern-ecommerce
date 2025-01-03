@@ -6,6 +6,7 @@ import { Providers } from './providers';
 import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider } from '@/components/auth-provider';
 import { CartProvider } from '@/modules/cart/context/cart-context';
+import { CheckoutProvider } from '@/modules/checkout/context/checkout-context';
 
 export const metadata: Metadata = {
   title: 'Elecshop',
@@ -25,9 +26,11 @@ export default function RootLayout({
         <Providers>
           <AuthProvider>
             <CartProvider>
-              <Header />
-              <main className="flex-1">{children}</main>
-              <Toaster />
+              <CheckoutProvider>
+                <Header />
+                <main className="flex-1">{children}</main>
+                <Toaster />
+              </CheckoutProvider>
             </CartProvider>
           </AuthProvider>
         </Providers>

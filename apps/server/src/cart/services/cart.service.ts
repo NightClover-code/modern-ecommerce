@@ -112,6 +112,7 @@ export class CartService {
 
   validateShippingDetails(shippingDetails: ShippingDetails): ShippingDetails {
     const { address, city, postalCode, country } = shippingDetails;
+
     if (!address || !city || !postalCode || !country) {
       throw new BadRequestException('All shipping fields are required');
     }
