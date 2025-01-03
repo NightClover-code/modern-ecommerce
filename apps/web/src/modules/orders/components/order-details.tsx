@@ -9,6 +9,7 @@ import { CheckCircle2, XCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Order } from '@apps/shared/types/order';
+import { PayPalButton } from './paypal-button';
 
 interface OrderDetailsProps {
   order: Order;
@@ -143,9 +144,7 @@ export function OrderDetails({ order }: OrderDetailsProps) {
               </div>
 
               {!order.isPaid && (
-                <Button className="w-full" size="lg">
-                  Pay with PayPal
-                </Button>
+                <PayPalButton orderId={order._id} amount={order.totalPrice} />
               )}
             </div>
           </Card>
