@@ -8,18 +8,22 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { CheckCircle2, XCircle } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { Order } from '@apps/shared/types/order';
 
 interface OrderDetailsProps {
-  orderId: string;
+  order: Order;
 }
 
-export function OrderDetails({ orderId }: OrderDetailsProps) {
+export function OrderDetails({ order }: OrderDetailsProps) {
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Order #{orderId}</h1>
-        <Badge variant="outline" className="text-sm">
-          Processing
+        <h1 className="text-3xl font-bold">Order #{order._id}</h1>
+        <Badge
+          variant={order.isPaid ? 'default' : 'destructive'}
+          className="text-sm"
+        >
+          {order.isPaid ? 'Paid' : 'Pending Payment'}
         </Badge>
       </div>
 
@@ -30,26 +34,25 @@ export function OrderDetails({ orderId }: OrderDetailsProps) {
             <h2 className="text-xl font-semibold mb-4">Shipping</h2>
             <div className="space-y-2">
               <p>
-                <span className="font-medium">Name: </span>
-                John Doe
-              </p>
-              <p>
-                <span className="font-medium">Email: </span>
-                <a
-                  href="mailto:john@example.com"
-                  className="text-primary hover:underline"
-                >
-                  john@example.com
-                </a>
-              </p>
-              <p>
                 <span className="font-medium">Address: </span>
-                123 Example St, New York, NY 10001, United States
+                {order.shippingDetails.address}, {order.shippingDetails.city},{' '}
+                {order.shippingDetails.postalCode},{' '}
+                {order.shippingDetails.country}
               </p>
-              <Alert className="mt-4">
-                <XCircle className="h-4 w-4" />
-                <AlertDescription>Not Delivered</AlertDescription>
-              </Alert>
+              {order.isDelivered ? (
+                <Alert variant="default" className="mt-4">
+                  <CheckCircle2 className="h-4 w-4" />
+                  <AlertDescription>
+                    Delivered on{' '}
+                    {new Date(order.deliveredAt!).toLocaleDateString()}
+                  </AlertDescription>
+                </Alert>
+              ) : (
+                <Alert variant="destructive" className="mt-4">
+                  <XCircle className="h-4 w-4" />
+                  <AlertDescription>Not Delivered</AlertDescription>
+                </Alert>
+              )}
             </div>
           </Card>
 
@@ -59,12 +62,21 @@ export function OrderDetails({ orderId }: OrderDetailsProps) {
             <div className="space-y-2">
               <p>
                 <span className="font-medium">Method: </span>
-                PayPal
+                {order.paymentMethod}
               </p>
-              <Alert variant="default" className="mt-4">
-                <CheckCircle2 className="h-4 w-4" />
-                <AlertDescription>Paid on March 15, 2024</AlertDescription>
-              </Alert>
+              {order.isPaid ? (
+                <Alert variant="default" className="mt-4">
+                  <CheckCircle2 className="h-4 w-4" />
+                  <AlertDescription>
+                    Paid on {new Date(order.paidAt!).toLocaleDateString()}
+                  </AlertDescription>
+                </Alert>
+              ) : (
+                <Alert variant="destructive" className="mt-4">
+                  <XCircle className="h-4 w-4" />
+                  <AlertDescription>Not Paid</AlertDescription>
+                </Alert>
+              )}
             </div>
           </Card>
 
@@ -72,25 +84,29 @@ export function OrderDetails({ orderId }: OrderDetailsProps) {
           <Card className="p-6">
             <h2 className="text-xl font-semibold mb-4">Order Items</h2>
             <div className="space-y-4">
-              {[1, 2].map(item => (
-                <div key={item} className="flex items-center space-x-4">
+              {order.orderItems.map(item => (
+                <div
+                  key={item.productId}
+                  className="flex items-center space-x-4"
+                >
                   <div className="relative h-20 w-20">
                     <Image
-                      src="/images/airpods.jpg"
-                      alt="Product"
+                      src={item.image}
+                      alt={item.name}
                       fill
                       className="object-cover rounded-md"
                     />
                   </div>
                   <div className="flex-1">
                     <Link
-                      href="/products/1"
+                      href={`/products/${item.productId}`}
                       className="font-medium hover:underline"
                     >
-                      Airpods Wireless
+                      {item.name}
                     </Link>
                     <p className="text-sm text-muted-foreground">
-                      2 x $199.00 = $398.00
+                      {item.qty} x ${item.price.toFixed(2)} = $
+                      {(item.qty * item.price).toFixed(2)}
                     </p>
                   </div>
                 </div>
@@ -106,26 +122,31 @@ export function OrderDetails({ orderId }: OrderDetailsProps) {
             <div className="space-y-4">
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Items</span>
-                <span>$398.00</span>
+                <span>${order.itemsPrice.toFixed(2)}</span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Shipping</span>
-                <span>Free</span>
+                <span>
+                  {order.shippingPrice === 0
+                    ? 'Free'
+                    : `$${order.shippingPrice.toFixed(2)}`}
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Tax</span>
-                <span>$39.80</span>
+                <span>${order.taxPrice.toFixed(2)}</span>
               </div>
               <Separator />
               <div className="flex justify-between font-medium">
                 <span>Total</span>
-                <span>$437.80</span>
+                <span>${order.totalPrice.toFixed(2)}</span>
               </div>
 
-              {/* PayPal Button will go here */}
-              <Button className="w-full" size="lg">
-                Pay with PayPal
-              </Button>
+              {!order.isPaid && (
+                <Button className="w-full" size="lg">
+                  Pay with PayPal
+                </Button>
+              )}
             </div>
           </Card>
         </div>

@@ -1,5 +1,6 @@
 'use client';
 
+import { Card } from '@/components/ui/card';
 import {
   Table,
   TableBody,
@@ -8,13 +9,17 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { CheckCircle2, XCircle } from 'lucide-react';
 import Link from 'next/link';
+import { Order } from '@apps/shared/types/order';
 
-export function OrderHistory() {
+interface OrderHistoryProps {
+  orders: Order[];
+}
+
+export function OrderHistory({ orders }: OrderHistoryProps) {
   return (
     <Card>
       <div className="p-6">
@@ -32,26 +37,42 @@ export function OrderHistory() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {[1, 2, 3].map(order => (
-            <TableRow key={order}>
-              <TableCell className="font-medium">#6543{order}</TableCell>
-              <TableCell>2024-03-15</TableCell>
-              <TableCell>$234.56</TableCell>
+          {orders.map(order => (
+            <TableRow key={order._id}>
+              <TableCell className="font-medium">#{order._id}</TableCell>
               <TableCell>
-                <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-                  <CheckCircle2 className="mr-1 h-3 w-3" />
-                  March 15, 2024
-                </Badge>
+                {new Date(order.createdAt).toLocaleDateString()}
+              </TableCell>
+              <TableCell>${order.totalPrice.toFixed(2)}</TableCell>
+              <TableCell>
+                {order.isPaid ? (
+                  <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+                    <CheckCircle2 className="mr-1 h-3 w-3" />
+                    {new Date(order.paidAt!).toLocaleDateString()}
+                  </Badge>
+                ) : (
+                  <Badge variant="destructive">
+                    <XCircle className="mr-1 h-3 w-3" />
+                    Not Paid
+                  </Badge>
+                )}
               </TableCell>
               <TableCell>
-                <Badge variant="secondary">
-                  <XCircle className="mr-1 h-3 w-3" />
-                  Not Delivered
-                </Badge>
+                {order.isDelivered ? (
+                  <Badge variant="default">
+                    <CheckCircle2 className="mr-1 h-3 w-3" />
+                    {new Date(order.deliveredAt!).toLocaleDateString()}
+                  </Badge>
+                ) : (
+                  <Badge variant="secondary">
+                    <XCircle className="mr-1 h-3 w-3" />
+                    Not Delivered
+                  </Badge>
+                )}
               </TableCell>
               <TableCell className="text-right">
                 <Button variant="ghost" size="sm" asChild>
-                  <Link href={`/orders/${order}`}>View Details</Link>
+                  <Link href={`/orders/${order._id}`}>View Details</Link>
                 </Button>
               </TableCell>
             </TableRow>

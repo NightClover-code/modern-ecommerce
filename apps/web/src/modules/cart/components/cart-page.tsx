@@ -6,9 +6,11 @@ import { CartItem } from './cart-item';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
+import { useRouter } from 'next/navigation';
 
 export function CartPage() {
   const { items, loading } = useCart();
+  const router = useRouter();
 
   if (loading) {
     return <div>Loading...</div>;
@@ -62,7 +64,11 @@ export function CartPage() {
                 <span>Total</span>
                 <span>${total.toFixed(2)}</span>
               </div>
-              <Button className="w-full" size="lg">
+              <Button
+                className="w-full"
+                size="lg"
+                onClick={() => router.push('/checkout/shipping')}
+              >
                 Proceed to Checkout
               </Button>
             </div>

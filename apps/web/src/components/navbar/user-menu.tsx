@@ -48,7 +48,7 @@ export function UserMenu() {
           <Link href="/profile">Profile</Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/orders">Orders</Link>
+          <Link href="/profile/orders">Orders</Link>
         </DropdownMenuItem>
         {user.isAdmin && (
           <>

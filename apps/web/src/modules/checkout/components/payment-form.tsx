@@ -10,29 +10,51 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
 import { Card } from '@/components/ui/card';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { CreditCard } from 'lucide-react';
 import { FaPaypal } from 'react-icons/fa';
+import { useCheckout } from '../context/checkout-context';
+import { useRouter } from 'next/navigation';
+import { apiClient } from '@/lib/api-client';
+import { useToast } from '@/hooks/use-toast';
 
 const formSchema = z.object({
-  paymentMethod: z.enum(['paypal', 'card'], {
+  paymentMethod: z.enum(['PayPal', 'Stripe'], {
     required_error: 'Please select a payment method.',
   }),
 });
 
 export function PaymentForm() {
+  const { setPaymentMethod } = useCheckout();
+  const router = useRouter();
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      paymentMethod: 'paypal',
+      paymentMethod: 'PayPal',
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Will implement later
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await apiClient.post('/cart/payment', {
+        paymentMethod: values.paymentMethod,
+      });
+      const paymentMethod = response.data;
+      console.log(paymentMethod);
+      setPaymentMethod(paymentMethod);
+      router.push('/checkout/review');
+    } catch (error) {
+      toast({
+        title: 'Error saving payment method',
+        description: 'Please try again.',
+        variant: 'destructive',
+      });
+    }
   }
 
   return (
@@ -63,8 +85,8 @@ export function PaymentForm() {
                         <FormControl>
                           <div className="border rounded-lg p-4 cursor-pointer hover:border-primary [&:has(:checked)]:border-primary">
                             <RadioGroupItem
-                              value="paypal"
-                              id="paypal"
+                              value="PayPal"
+                              id="PayPal"
                               className="sr-only"
                             />
                             <div className="flex flex-col items-center space-y-2">
@@ -80,26 +102,24 @@ export function PaymentForm() {
                         <FormControl>
                           <div className="border rounded-lg p-4 cursor-pointer hover:border-primary [&:has(:checked)]:border-primary">
                             <RadioGroupItem
-                              value="card"
-                              id="card"
+                              value="Stripe"
+                              id="Stripe"
                               className="sr-only"
                             />
                             <div className="flex flex-col items-center space-y-2">
                               <CreditCard className="h-6 w-6" />
-                              <span className="text-sm font-medium">
-                                Credit Card
-                              </span>
+                              <span className="text-sm font-medium">Card</span>
                             </div>
                           </div>
                         </FormControl>
                       </FormItem>
                     </RadioGroup>
                   </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />
-
-            <Button type="submit" className="w-full" size="lg">
+            <Button type="submit" className="w-full">
               Continue to Review
             </Button>
           </form>
