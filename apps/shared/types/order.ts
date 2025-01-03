@@ -1,5 +1,5 @@
 import { ShippingDetails, PaymentResult } from './shipping';
-
+import { User } from '.';
 export interface OrderItem {
   name: string;
   qty: number;
@@ -10,7 +10,7 @@ export interface OrderItem {
 
 export interface Order {
   _id: string;
-  user: string;
+  user: User;
   orderItems: OrderItem[];
   shippingDetails: ShippingDetails;
   paymentMethod: string;

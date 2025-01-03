@@ -13,8 +13,36 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { CheckCircle2, XCircle } from 'lucide-react';
 import Link from 'next/link';
+import { Order } from '@apps/shared/types/order';
+import { useToast } from '@/hooks/use-toast';
+import { apiClient } from '@/lib/api-client';
+import { useRouter } from 'next/navigation';
 
-export function OrdersList() {
+interface OrdersListProps {
+  orders: Order[];
+}
+
+export function OrdersList({ orders }: OrdersListProps) {
+  const { toast } = useToast();
+  const router = useRouter();
+
+  const markAsDelivered = async (orderId: string) => {
+    try {
+      await apiClient.put(`/orders/${orderId}/deliver`);
+      toast({
+        title: 'Success',
+        description: 'Order marked as delivered',
+      });
+      router.refresh();
+    } catch (error) {
+      toast({
+        title: 'Error',
+        description: 'Failed to mark order as delivered',
+        variant: 'destructive',
+      });
+    }
+  };
+
   return (
     <Card>
       <div className="flex items-center justify-between p-6">
@@ -33,28 +61,53 @@ export function OrdersList() {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {[1, 2, 3].map(order => (
-            <TableRow key={order}>
-              <TableCell className="font-medium">#6543{order}</TableCell>
-              <TableCell>John Doe</TableCell>
-              <TableCell>2024-03-15</TableCell>
-              <TableCell>$234.56</TableCell>
+          {orders.map(order => (
+            <TableRow key={order._id}>
+              <TableCell className="font-medium">#{order._id}</TableCell>
+              <TableCell>{order.user}</TableCell>
               <TableCell>
-                <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
-                  <CheckCircle2 className="mr-1 h-3 w-3" />
-                  Paid
-                </Badge>
+                {new Date(order.createdAt).toLocaleDateString()}
+              </TableCell>
+              <TableCell>${order.totalPrice.toFixed(2)}</TableCell>
+              <TableCell>
+                {order.isPaid ? (
+                  <Badge className="bg-green-100 text-green-800 hover:bg-green-100">
+                    <CheckCircle2 className="mr-1 h-3 w-3" />
+                    {new Date(order.paidAt!).toLocaleDateString()}
+                  </Badge>
+                ) : (
+                  <Badge variant="destructive">
+                    <XCircle className="mr-1 h-3 w-3" />
+                    Not Paid
+                  </Badge>
+                )}
               </TableCell>
               <TableCell>
-                <Badge variant="secondary">
-                  <XCircle className="mr-1 h-3 w-3" />
-                  Pending
-                </Badge>
+                {order.isDelivered ? (
+                  <Badge variant="default">
+                    <CheckCircle2 className="mr-1 h-3 w-3" />
+                    {new Date(order.deliveredAt!).toLocaleDateString()}
+                  </Badge>
+                ) : (
+                  <Badge variant="secondary">
+                    <XCircle className="mr-1 h-3 w-3" />
+                    Not Delivered
+                  </Badge>
+                )}
               </TableCell>
-              <TableCell className="text-right">
+              <TableCell className="text-right space-x-2">
                 <Button variant="ghost" size="sm" asChild>
-                  <Link href={`/admin/orders/${order}`}>View Details</Link>
+                  <Link href={`/admin/orders/${order._id}`}>View</Link>
                 </Button>
+                {order.isPaid && !order.isDelivered && (
+                  <Button
+                    variant="default"
+                    size="sm"
+                    onClick={() => markAsDelivered(order._id)}
+                  >
+                    Mark Delivered
+                  </Button>
+                )}
               </TableCell>
             </TableRow>
           ))}
