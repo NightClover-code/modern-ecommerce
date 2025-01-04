@@ -14,3 +14,10 @@ export const getVisiblePages = (current: number, total: number) => {
 
   return [1, null, current - 1, current, current + 1, null, total];
 };
+
+export function formatPrice(price: number) {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+  }).format(price);
+}
