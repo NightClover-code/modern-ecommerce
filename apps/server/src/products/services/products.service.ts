@@ -35,11 +35,29 @@ export class ProductsService {
     const pageSize = parseInt(limit ?? '10');
     const currentPage = parseInt(page ?? '1');
 
-    const rgex = keyword ? { name: { $regex: keyword, $options: 'i' } } : {};
+    const decodedKeyword = keyword ? decodeURIComponent(keyword) : '';
 
-    const count = await this.productModel.countDocuments({ ...rgex });
+    const searchPattern = decodedKeyword
+      ? decodedKeyword
+          .split(' ')
+          .map(term => `(?=.*${term})`)
+          .join('')
+      : '';
+
+    const searchQuery = decodedKeyword
+      ? {
+          $or: [
+            { name: { $regex: searchPattern, $options: 'i' } },
+            { description: { $regex: searchPattern, $options: 'i' } },
+            { brand: { $regex: searchPattern, $options: 'i' } },
+            { category: { $regex: searchPattern, $options: 'i' } },
+          ],
+        }
+      : {};
+
+    const count = await this.productModel.countDocuments(searchQuery);
     const products = await this.productModel
-      .find({ ...rgex })
+      .find(searchQuery)
       .limit(pageSize)
       .skip(pageSize * (currentPage - 1));
 

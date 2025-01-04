@@ -56,7 +56,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
   };
 
   return (
-    <div className="container mx-auto px-4 py-10 md:px-2 lg:px-1">
+    <div className="container mx-auto py-10 md:px-2 lg:px-1">
       <div className="grid grid-cols-2 gap-x-12 sm:gap-x-8 md:gap-x-6 md:grid-cols-1 lg:gap-y-6">
         {/* Left Column - Images */}
         <div className="space-y-6 sm:space-y-4">

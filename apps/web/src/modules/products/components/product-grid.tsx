@@ -2,6 +2,7 @@
 
 import { Product } from '@apps/shared/types';
 import { ProductCard } from './product-card';
+import { ProductCardSkeleton } from './product-card-skeleton';
 import { useEffect, useState } from 'react';
 import { getProducts } from '../actions/get-products';
 import {
@@ -28,9 +29,11 @@ export function ProductGrid({
 }: ProductGridProps) {
   const [products, setProducts] = useState(initialProducts);
   const [pages, setPages] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (searchKeyword) {
+      setIsLoading(true);
       const fetchSearchResults = async () => {
         try {
           const { items, pages: totalPages } = await getProducts(
@@ -42,6 +45,8 @@ export function ProductGrid({
           setPages(totalPages);
         } catch (error) {
           console.error('Failed to search products:', error);
+        } finally {
+          setIsLoading(false);
         }
       };
 
@@ -50,6 +55,18 @@ export function ProductGrid({
       setProducts(initialProducts);
     }
   }, [searchKeyword, currentPage, initialProducts]);
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="grid grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <ProductCardSkeleton key={i} />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   if (!products?.length) {
     return (
