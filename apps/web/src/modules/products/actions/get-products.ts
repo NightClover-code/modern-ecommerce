@@ -6,10 +6,20 @@ import type { PaginatedResponse, Product } from '@apps/shared/types';
 export async function getProducts(
   page: number = 1,
   limit: number = 10,
+  keyword?: string,
 ): Promise<PaginatedResponse<Product>> {
   try {
+    const searchParams = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString(),
+    });
+
+    if (keyword) {
+      searchParams.append('keyword', keyword);
+    }
+
     const response = await fetchWithAuth(
-      `/products?page=${page}&limit=${limit}`,
+      `/products?${searchParams.toString()}`,
     );
 
     if (!response.ok) {

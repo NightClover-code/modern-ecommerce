@@ -8,9 +8,14 @@ interface SearchPageProps {
   params: {
     keyword: string;
   };
+  searchParams: {
+    page?: string;
+  };
 }
 
-export default function SearchPage({ params }: SearchPageProps) {
+export default function SearchPage({ params, searchParams }: SearchPageProps) {
+  const currentPage = Number(searchParams.page) || 1;
+
   return (
     <Container>
       <div className="py-10 space-y-8">
@@ -25,7 +30,7 @@ export default function SearchPage({ params }: SearchPageProps) {
             Search Results: {decodeURIComponent(params.keyword)}
           </h1>
         </div>
-        <ProductGrid searchKeyword={params.keyword} />
+        <ProductGrid searchKeyword={params.keyword} currentPage={currentPage} />
       </div>
     </Container>
   );
