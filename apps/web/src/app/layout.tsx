@@ -7,6 +7,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { AuthProvider } from '@/components/auth-provider';
 import { CartProvider } from '@/modules/cart/context/cart-context';
 import { CheckoutProvider } from '@/modules/checkout/context/checkout-context';
+import { ThemeProvider } from '@/components/theme-provider';
 
 export const metadata: Metadata = {
   title: 'Elecshop',
@@ -23,17 +24,24 @@ export default function RootLayout({
       <body
         className={`${satoshi.variable} antialiased min-h-screen flex flex-col`}
       >
-        <Providers>
-          <AuthProvider>
-            <CartProvider>
-              <CheckoutProvider>
-                <Header />
-                <main className="flex-1">{children}</main>
-                <Toaster />
-              </CheckoutProvider>
-            </CartProvider>
-          </AuthProvider>
-        </Providers>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Providers>
+            <AuthProvider>
+              <CartProvider>
+                <CheckoutProvider>
+                  <Header />
+                  <main className="flex-1">{children}</main>
+                  <Toaster />
+                </CheckoutProvider>
+              </CartProvider>
+            </AuthProvider>
+          </Providers>
+        </ThemeProvider>
       </body>
     </html>
   );

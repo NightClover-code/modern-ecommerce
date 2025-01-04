@@ -46,8 +46,10 @@ export function ProductGrid({
       };
 
       fetchSearchResults();
+    } else {
+      setProducts(initialProducts);
     }
-  }, [searchKeyword, currentPage]);
+  }, [searchKeyword, currentPage, initialProducts]);
 
   if (!products?.length) {
     return (
@@ -61,19 +63,23 @@ export function ProductGrid({
 
   return (
     <div className="space-y-6">
-      <div className="grid grid-cols-4 md:grid-cols-3 lg:grid-cols-3 sm:grid-cols-4 gap-6">
+      <div className="grid grid-cols-4 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-6">
         {products.map(product => (
           <ProductCard key={product._id} product={product} />
         ))}
       </div>
 
-      {searchKeyword && pages > 1 && (
+      {pages > 1 && (
         <div className="flex justify-center mt-8">
           <Pagination>
             <PaginationContent>
               <PaginationItem>
                 <PaginationPrevious
-                  href={`/search/${searchKeyword}?page=${currentPage - 1}`}
+                  href={
+                    searchKeyword
+                      ? `/search/${searchKeyword}?page=${currentPage - 1}`
+                      : `/?page=${currentPage - 1}`
+                  }
                   isActive={currentPage > 1}
                 />
               </PaginationItem>
@@ -86,7 +92,11 @@ export function ProductGrid({
                 ) : (
                   <PaginationItem key={pageNum}>
                     <PaginationLink
-                      href={`/search/${searchKeyword}?page=${pageNum}`}
+                      href={
+                        searchKeyword
+                          ? `/search/${searchKeyword}?page=${pageNum}`
+                          : `/?page=${pageNum}`
+                      }
                       isActive={currentPage === pageNum}
                     >
                       {pageNum}
@@ -97,7 +107,11 @@ export function ProductGrid({
 
               <PaginationItem>
                 <PaginationNext
-                  href={`/search/${searchKeyword}?page=${currentPage + 1}`}
+                  href={
+                    searchKeyword
+                      ? `/search/${searchKeyword}?page=${currentPage + 1}`
+                      : `/?page=${currentPage + 1}`
+                  }
                   isActive={currentPage < pages}
                 />
               </PaginationItem>
