@@ -83,7 +83,10 @@ export function PaymentForm() {
                     >
                       <FormItem>
                         <FormControl>
-                          <div className="border rounded-lg p-4 cursor-pointer hover:border-primary [&:has(:checked)]:border-primary">
+                          <label
+                            htmlFor="PayPal"
+                            className="border rounded-lg p-4 cursor-pointer hover:border-primary [&:has(:checked)]:border-primary block"
+                          >
                             <RadioGroupItem
                               value="PayPal"
                               id="PayPal"
@@ -95,12 +98,15 @@ export function PaymentForm() {
                                 PayPal
                               </span>
                             </div>
-                          </div>
+                          </label>
                         </FormControl>
                       </FormItem>
                       <FormItem>
                         <FormControl>
-                          <div className="border rounded-lg p-4 cursor-pointer hover:border-primary [&:has(:checked)]:border-primary">
+                          <label
+                            htmlFor="Stripe"
+                            className="border rounded-lg p-4 cursor-pointer hover:border-primary [&:has(:checked)]:border-primary block"
+                          >
                             <RadioGroupItem
                               value="Stripe"
                               id="Stripe"
@@ -110,7 +116,7 @@ export function PaymentForm() {
                               <CreditCard className="h-6 w-6" />
                               <span className="text-sm font-medium">Card</span>
                             </div>
-                          </div>
+                          </label>
                         </FormControl>
                       </FormItem>
                     </RadioGroup>
