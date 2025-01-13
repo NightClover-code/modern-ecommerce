@@ -1,6 +1,5 @@
 'use client';
 
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
@@ -10,6 +9,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Order } from '@apps/shared/types/order';
 import { PayPalButton } from './paypal-button';
+import { StripeButton } from './stripe-button';
 
 interface OrderDetailsProps {
   order: Order;
@@ -143,9 +143,12 @@ export function OrderDetails({ order }: OrderDetailsProps) {
                 <span>${order.totalPrice.toFixed(2)}</span>
               </div>
 
-              {!order.isPaid && (
-                <PayPalButton orderId={order._id} amount={order.totalPrice} />
-              )}
+              {!order.isPaid &&
+                (order.paymentMethod === 'PayPal' ? (
+                  <PayPalButton orderId={order._id} amount={order.totalPrice} />
+                ) : (
+                  <StripeButton orderId={order._id} amount={order.totalPrice} />
+                ))}
             </div>
           </Card>
         </div>
