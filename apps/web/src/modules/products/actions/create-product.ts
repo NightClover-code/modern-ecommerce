@@ -20,13 +20,24 @@ export async function createProduct(
   formState: ProductResponseState,
   formData: FormData,
 ): Promise<ProductResponseState> {
-  const result = productSchema.safeParse(data);
+  const { images, ...restData } = data;
+  const validationSchema = productSchema.omit({ images: true });
+  const result = validationSchema.safeParse(restData);
 
   if (!result.success) {
     return {
       error: {
         title: 'Validation Error',
         description: result.error.message,
+      },
+    };
+  }
+
+  if (!formData.getAll('images').length) {
+    return {
+      error: {
+        title: 'Validation Error',
+        description: 'At least one image is required',
       },
     };
   }

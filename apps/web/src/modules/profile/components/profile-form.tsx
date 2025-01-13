@@ -26,8 +26,9 @@ const formSchema = z
     password: z
       .string()
       .min(6, 'Password must be at least 6 characters')
-      .nullish(),
-    confirmPassword: z.string().nullish(),
+      .optional()
+      .or(z.literal('')),
+    confirmPassword: z.string().optional().or(z.literal('')),
   })
   .refine(
     data => {
@@ -86,7 +87,7 @@ export function ProfileForm() {
   }
 
   return (
-    <Card className="max-w-2xl mx-auto">
+    <Card className="mt-10 max-w-2xl mx-auto">
       <div className="p-6">
         <h2 className="text-2xl font-bold mb-6">User Profile</h2>
         <Form {...form}>

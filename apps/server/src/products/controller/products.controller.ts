@@ -10,7 +10,10 @@ import {
   UseGuards,
   UseInterceptors,
   UploadedFile,
+  UploadedFiles,
   Res,
+  BadRequestException,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { AdminGuard } from 'src/guards/admin.guard';
 import { JwtAuthGuard } from '@/guards/jwt-auth.guard';
@@ -19,7 +22,7 @@ import { ReviewDto } from '../dtos/review.dto';
 import { ProductsService } from '../services/products.service';
 import { UserDocument } from '@/users/schemas/user.schema';
 import { CurrentUser } from '@/decorators/current-user.decorator';
-import { FileInterceptor } from '@nestjs/platform-express';
+import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { AppService } from '@/app/services/app.service';
 import { ProductExpertAgent } from '@/ai/agents/product-expert.agent';
 import { ChatRequest } from '@apps/shared/types/agents';
@@ -61,7 +64,7 @@ export class ProductsController {
   @UseGuards(AdminGuard)
   @Post()
   @UseInterceptors(
-    FileInterceptor('image', {
+    FilesInterceptor('images', 10, {
       fileFilter: (req, file, cb) => {
         if (!file.mimetype.match(/^image\/(jpg|jpeg|png|gif)$/)) {
           cb(new Error('Only image files are allowed!'), false);
@@ -71,11 +74,27 @@ export class ProductsController {
     }),
   )
   async createProduct(
-    @Body() productData: ProductDto,
-    @UploadedFile() file: Express.Multer.File,
+    @Body() productData: Omit<ProductDto, 'images'>,
+    @UploadedFiles() files: Express.Multer.File[],
   ) {
-    const imageUrl = await this.appService.uploadImageToCloudinary(file);
-    return this.productsService.create({ ...productData, images: [imageUrl] });
+    if (!files || files.length === 0) {
+      throw new BadRequestException('At least one image is required');
+    }
+
+    try {
+      const imageUrls = await Promise.all(
+        files.map(file => this.appService.uploadImageToCloudinary(file)),
+      );
+
+      return this.productsService.create({
+        ...productData,
+        images: imageUrls,
+      });
+    } catch (error) {
+      throw new InternalServerErrorException(
+        'Failed to process images or create product',
+      );
+    }
   }
 
   @UseGuards(AdminGuard)

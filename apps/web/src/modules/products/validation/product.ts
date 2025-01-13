@@ -1,13 +1,18 @@
 import * as z from 'zod';
 
+const fileSchema = z.custom<File>(file => {
+  return file instanceof File;
+}, 'Must be a file');
+
 export const productSchema = z.object({
-  name: z.string().min(3, 'Product name must be at least 3 characters'),
+  name: z.string().min(1, 'Product name is required'),
   description: z.string().min(10, 'Description must be at least 10 characters'),
-  price: z.number().min(0, 'Price must be greater than 0'),
-  image: z.string().optional(),
-  brand: z.string().min(1, 'Brand is required'),
+  brand: z.string().min(1, 'Brand name is required'),
   category: z.string().min(1, 'Category is required'),
-  countInStock: z.number().min(0, 'Stock count must be 0 or greater'),
+  price: z.coerce.number().positive('Price must be positive'),
+  countInStock: z.coerce.number().min(0, 'Stock cannot be negative'),
+  images: z.array(fileSchema).min(1, 'At least one image is required'),
+  brandLogo: fileSchema.optional(),
 });
 
 export type ProductFormData = z.infer<typeof productSchema>;

@@ -9,11 +9,13 @@ import { UserDocument } from 'src/users/schemas/user.schema';
 import { sampleProduct } from '../../utils/data/product';
 import { Product, ProductDocument } from '../schemas/product.schema';
 import { PaginatedResponse } from '../../../../shared/types';
+import { Order } from '../../orders/schemas/order.schema';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectModel(Product.name) private productModel: Model<Product>,
+    @InjectModel(Order.name) private orderModel: Model<Order>,
   ) {}
 
   async findTopRated(): Promise<ProductDocument[]> {
@@ -144,11 +146,24 @@ export class ProductsService {
     if (alreadyReviewed)
       throw new BadRequestException('Product already reviewed!');
 
+    const hasPurchased = await this.orderModel.findOne({
+      user: user._id,
+      'orderItems.productId': id,
+      status: 'delivered',
+    });
+
+    if (!hasPurchased)
+      throw new BadRequestException(
+        'You can only review products you have purchased',
+      );
+
     const review = {
       name: user.name,
       rating,
       comment,
       user,
+      createdAt: new Date(),
+      updatedAt: new Date(),
     };
 
     product.reviews.push(review);

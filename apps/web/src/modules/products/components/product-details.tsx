@@ -19,6 +19,8 @@ import {
 } from '@/components/ui/select';
 import { useCart } from '@/modules/cart/context/cart-context';
 import { useToast } from '@/hooks/use-toast';
+import { ReviewForm } from './review-form';
+import { useRouter } from 'next/navigation';
 
 interface ProductDetailsProps {
   product: Product;
@@ -30,6 +32,7 @@ export function ProductDetails({ product }: ProductDetailsProps) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   if (!product) return null;
 
@@ -205,7 +208,16 @@ export function ProductDetails({ product }: ProductDetailsProps) {
               </TabsContent>
 
               <TabsContent value="reviews">
-                <ProductReviews product={product} />
+                <div className="space-y-8">
+                  <ReviewForm
+                    productId={product._id}
+                    onSuccess={() => {
+                      // Refresh product data to show new review
+                      router.refresh();
+                    }}
+                  />
+                  <ProductReviews product={product} />
+                </div>
               </TabsContent>
             </Tabs>
           </div>

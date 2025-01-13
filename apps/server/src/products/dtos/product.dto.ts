@@ -1,4 +1,4 @@
-import { IsString, IsNumber, IsOptional } from 'class-validator';
+import { IsString, IsNumber, IsArray } from 'class-validator';
 
 export class ProductDto {
   @IsString()
@@ -10,9 +10,9 @@ export class ProductDto {
   @IsString()
   description!: string;
 
-  @IsOptional()
-  @IsString()
-  image?: string;
+  @IsArray()
+  @IsString({ each: true })
+  images!: string[];
 
   @IsString()
   brand!: string;

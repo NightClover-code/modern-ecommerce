@@ -18,8 +18,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-
-type ProductFormData = z.infer<typeof productSchema>;
+import { ProductFormData } from '@/modules/products/validation/product';
 
 const categories = [
   'Electronics',
@@ -30,29 +29,20 @@ const categories = [
   'Gaming',
 ];
 
-interface FormData {
-  name: string;
-  price: string;
-  description: string;
-  images: File[];
-  brand: string;
-  category: string;
-  countInStock: string;
-}
-
 export function CreateProductForm() {
   const router = useRouter();
   const [errors, setErrors] = useState<
     Partial<Record<keyof ProductFormData, string>>
   >({});
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<ProductFormData>({
     name: '',
-    price: '',
+    price: 0,
     description: '',
     images: [],
     brand: '',
     category: '',
-    countInStock: '',
+    countInStock: 0,
+    brandLogo: undefined,
   });
 
   const createProductBound = createProduct.bind(null, formData);
@@ -106,6 +96,7 @@ export function CreateProductForm() {
       ...prev,
       category: value,
     }));
+    validateField('category', value);
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,45 +108,70 @@ export function CreateProductForm() {
     }
   };
 
-  const handleSubmit = async (e: FormData) => {
-    const isValid = Object.keys(formData).every(field =>
-      validateField(
-        field as keyof ProductFormData,
-        formData[field as keyof ProductFormData],
-      ),
-    );
+  const handleBrandLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files?.[0]) {
+      setFormData(prev => ({
+        ...prev,
+        brandLogo: e.target.files![0],
+      }));
+    }
+  };
 
-    if (!isValid) {
+  const handleSubmit = async (formData: FormData) => {
+    // Convert formData to match our schema for validation
+    const dataToValidate = {
+      name: formData.get('name') as string,
+      description: formData.get('description') as string,
+      price: Number(formData.get('price')),
+      brand: formData.get('brand') as string,
+      category: formData.get('category') as string,
+      countInStock: Number(formData.get('countInStock')),
+      images: Array.from(formData.getAll('images')) as File[],
+      brandLogo: formData.get('brandLogo') as File,
+    };
+
+    // Validate all fields
+    const result = productSchema.safeParse(dataToValidate);
+
+    console.log(result);
+
+    if (!result.success) {
       toast({
         variant: 'destructive',
-        title: 'Validation Error',
-        description: 'Please check the form for errors',
+        title: 'Validation Error in `' + result.error.issues[0].path[0] + '`',
+        description: result.error.issues[0].message,
       });
       return;
     }
 
-    if (!formData.images.length) {
+    // Create new FormData to send
+    const formDataToSend = new FormData();
+
+    // Append all form fields
+    Object.entries(dataToValidate).forEach(([key, value]) => {
+      if (key !== 'images') {
+        formDataToSend.append(key, String(value));
+      }
+    });
+
+    // Append images
+    const files = formData.getAll('images');
+    if (files.length === 0) {
       toast({
         variant: 'destructive',
         title: 'Error',
-        description: 'Please select images',
+        description: 'Please select at least one image',
       });
       return;
     }
 
-    const formDataToSend = new FormData();
-
-    if (formData.images.length) {
-      formData.images.forEach((image, index) => {
-        formDataToSend.append('images', image);
-      });
-    }
-
-    Object.entries(formData).forEach(([key, value]) => {
-      if (key !== 'images') {
-        formDataToSend.append(key, value.toString());
-      }
+    files.forEach(file => {
+      formDataToSend.append('images', file);
     });
+
+    if (dataToValidate.brandLogo) {
+      formDataToSend.append('brandLogo', dataToValidate.brandLogo);
+    }
 
     return productAction(formDataToSend);
   };
@@ -236,6 +252,7 @@ export function CreateProductForm() {
         <div className="space-y-2">
           <Label htmlFor="category">Category</Label>
           <Select
+            name="category"
             value={formData.category}
             onValueChange={handleCategoryChange}
           >
@@ -266,6 +283,21 @@ export function CreateProductForm() {
           />
           {errors.countInStock && (
             <p className="text-red-500">{errors.countInStock}</p>
+          )}
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="brandLogo">Brand Logo</Label>
+          <Input
+            id="brandLogo"
+            name="brandLogo"
+            type="file"
+            accept="image/png, image/jpeg, image/gif"
+            onChange={handleBrandLogoChange}
+            required
+          />
+          {errors.brandLogo && (
+            <p className="text-red-500">{errors.brandLogo}</p>
           )}
         </div>
 
