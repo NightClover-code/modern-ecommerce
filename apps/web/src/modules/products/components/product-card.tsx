@@ -27,7 +27,7 @@ export function ProductCard({ product }: ProductCardProps) {
             <div className="flex items-center gap-1">
               <span>⭐</span>
               <span className="text-sm text-muted-foreground">
-                {product.rating} ({product.numReviews})
+                {product.rating.toFixed(1)} ({product.numReviews})
               </span>
             </div>
           </div>

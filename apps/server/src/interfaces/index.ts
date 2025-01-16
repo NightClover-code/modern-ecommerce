@@ -20,6 +20,7 @@ export interface PaymentResult {
   status: string;
   update_time: string;
   email_address: string;
+  provider?: 'PayPal' | 'Stripe';
 }
 
 export interface CartItem {
