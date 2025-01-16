@@ -63,23 +63,8 @@ A full-stack eCommerce platform built with Next.js, Nest.js, and MongoDB, featur
 ### Prerequisites
 - Node.js (v16 or higher)
 - pnpm (preferred package manager)
-- MongoDB instance
-- Cloudinary account
-- OpenAI API key
+- MongoDB instance (Docker preferred)
 
-### Installation
-
-1. Clone the repository
-
-## Built With ✨
-
-- [Nest.js](https://nestjs.com/) - node.js framework
-- React Bootstrap - UI library
-- Redux - State management library
-- JWT - tokens for authentication
-- [Next.js](https://nextjs.org/) - react.js framework
-- MongoDB - Document database
-- Typescript
 
 ## Running Locally 🖥️
 
@@ -101,16 +86,10 @@ Remove remote origin
 git remote remove origin
 ```
 
-Install dependencies - Client
+Install dependencies (root)
 
 ```bash
-yarn install
-```
-
-Install dependencies - Server
-
-```bash
-yarn install
+pnpm install
 ```
 
 Add Environment Variables - Client
@@ -118,35 +97,43 @@ Add Environment Variables - Client
 <details>
   <summary>Click to expand!</summary>
   
+  - `NEXT_PUBLIC_API_URL`
+  - `OPENAI_API_KEY`
   - `NEXT_PUBLIC_PAYPAL_CLIENT_ID`
+  - `STRIPE_SECRET_KEY`
+  - `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY`
 </details>
 
 Add Environment Variables - Server
 
 <details>
   <summary>Click to expand!</summary>
-  
-  - `MONGODB_PASSWORD`
-  - `MONGODB_DATABASE_NAME` 
+
+  - `ALLOWED_ORIGINS`
+  - `PORT`
   - `JWT_SECRET`
-  - `MONGODB_URL` 
-  - `SESSION_KEY`
-  - `CLIENT_URL`
+  - `JWT_ACCESS_SECRET`
+  - `JWT_REFRESH_SECRET`
+  - `CLOUDINARY_CLOUD_NAME`
   - `CLOUDINARY_API_KEY`
   - `CLOUDINARY_API_SECRET`
-  - `CLOUDINARY_NAME`
+  - `MONGODB_URI`
+  - `MONGO_USERNAME`
+  - `MONGO_PASSWORD`
+  - `REPLICATE_API_TOKEN`
+  - `OPENAI_API_KEY`
 </details>
 
 Start the server
 
 ```bash
-yarn start:dev
+pnpm start:server
 ```
 
 Start the client
 
 ```bash
-yarn dev
+pnpm start:web
 ```
 
 ## Deployment 🚀
