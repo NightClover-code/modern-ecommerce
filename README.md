@@ -1,23 +1,75 @@
-# Elecshop - eCommerce app w/ Next.js, Nest.js and MongoDB
+# Elecshop - Modern eCommerce Platform
 
-![Elecshop preview image](./client/public/design/preview.png)
+A full-stack eCommerce platform built with Next.js, Nest.js, and MongoDB, featuring AI-powered product management and modern authentication.
 
-## The Challenge ⚡️
+![Elecshop preview image](./apps/web/public/images/preview.png)
 
-I wanted to build another eCommerce website using newer technologies than my [previous eCommerce project](https://github.com/NightClover-code/basic-eCommerce-website), where I used `Firebase` to store data and `Redux` for state management.
+## Features 🚀
 
-I went with a `client-server` approach, and this time I mixed two frameworks for the first time, which were `Next.js` and `Nest.js`.
+### Core Features
+- Full-featured shopping cart with:
+  - server-side persistence for logged in users
+  - local storage for guests
+- Product reviews and ratings system
+- Advanced product search with pagination
+- User account management & order history
+- Secure authentication with JWT (access & refresh tokens)
+- Role-based access control (Admin/User)
 
-This project was very fun to build, as I encountred multiple challenges on how to coordinate between a fast, secure, and strictly-typed Nest.js API; and a Next.js app based on client-side fetching.
+### AI-Powered Features
+- AI Product Creator for generating product listings (Vercel AI SDK)
+- Image generation for product images (using Replicate)
+- Product Development Expert chat interface
+- Smart product recommendations
 
-Here was the challenge:
+### Technical Highlights
+- Modern monorepo structure with apps for web and server
+- Type-safe API communication with shared types
+- Real-time updates using modern state management
+- Cloudinary integration for image management
+- Secure payment processing with PayPal and Stripe
+- Modern UI with Shadcn components and Tailwind CSS
 
-- Server-side full-featured shopping cart from scratch.
-- Storing product reviews and ratings for every customer.
-- Adding pagination & searching features for products.
-- User account management & saving product orders.
-- Admin profile & product management.
-- Fast checkout process (shipping, payment method, etc).
+## Tech Stack 💻
+
+### Frontend
+- Next.js 15 with App Router
+- TypeScript
+- Tailwind CSS
+- Shadcn UI Components
+- Framer Motion for animations
+- Chat interface with Vercel AI SDK
+
+### Backend
+- Nest.js with TypeScript
+- MongoDB with Mongoose
+- JWT Authentication
+- Swagger API Documentation
+- Argon2 for password hashing
+- Cloudinary for media storage
+- OpenAI integration
+- Text Vercel AI SDK
+- Replicate for image generation
+
+### DevOps & Tools
+- Monorepo architecture
+- pnpm for package management
+- Docker support
+- Railway for backend deployment
+- Vercel for frontend deployment
+
+## Getting Started 🏃
+
+### Prerequisites
+- Node.js (v16 or higher)
+- pnpm (preferred package manager)
+- MongoDB instance
+- Cloudinary account
+- OpenAI API key
+
+### Installation
+
+1. Clone the repository
 
 ## Built With ✨
 
